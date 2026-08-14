@@ -18,3 +18,8 @@ Decision: Pilot the team in Codex using a Lead chat, short-lived subagents, and 
 
 Reason: Codex provides the lowest-friction local build, test, and review loop. OpenClaw can be considered later for always-on, multi-channel operation.
 
+## 2026-08-14: Create Private GitHub Repository
+
+Decision: Create `robinhyman/key-results-generator` as a private GitHub repository.
+
+Reason: The project needs GitHub issues and future project tracking for observability while the agent team is developed.

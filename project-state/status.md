@@ -4,7 +4,11 @@ Last updated: 2026-08-14
 
 ## Current State
 
-This repository currently contains the initial AI team operating artefacts. No application code has been created yet.
+This repository contains the initial AI team operating artefacts. No application code has been created yet.
+
+GitHub repository: `robinhyman/key-results-generator`
+
+Active GitHub issue: `#1 Set up AI agent team operating system`
 
 ## Active Goal
 
@@ -19,7 +23,5 @@ Design a reusable AI software delivery team that can run first in Codex and late
 
 ## Open Questions
 
-- Which GitHub repository and project should be used?
-- Should this directory be initialized as a Git repository?
 - What is the first software product goal for the team to build?
-
+- Should GitHub labels and project statuses be created manually, by GitHub CLI, or through a later OpenClaw workflow?
