@@ -10,6 +10,8 @@ GitHub Project: `Key Results Generator` at `https://github.com/users/robinhyman/
 
 GitHub issue `#1 Set up AI agent team operating system` tracks the remaining setup work and is in the Project with `Agent Status: In Progress`.
 
+The constitution and GitHub workflow now explicitly require `Agent Status` to reflect reality, including moving an issue to `In Progress` as soon as meaningful work starts.
+
 ## Next Best Actions
 
 1. Draft detailed role specs only for the roles needed in the first build.

@@ -29,3 +29,9 @@ Reason: The project needs GitHub issues and future project tracking for observab
 Decision: Agent-managed issues should be added to the `Key Results Generator` GitHub Project and tracked with a custom `Agent Status` field.
 
 Reason: Issues hold detailed context, while the Project gives a visible queue and workflow state for human observability.
+
+## 2026-08-14: Keep GitHub Project Status Truthful
+
+Decision: Move issues to `In Progress` as soon as meaningful work starts and keep `Agent Status` aligned with reality throughout the run.
+
+Reason: The Project is the user's live observability surface, so stale statuses undermine trust in the agent team.

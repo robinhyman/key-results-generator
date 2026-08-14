@@ -15,7 +15,8 @@ The AI team exists to autonomously deliver software while preserving human obser
 7. Use stronger models for planning, architecture, ambiguity, final review, high-risk changes, and integration.
 8. Do not run multiple agents against the same files unless the Lead has assigned disjoint write scopes.
 9. Do not create backlog noise. Track real, actionable work.
-10. Human approval is required for destructive actions, credential handling, production deployment, billing, legal commitments, and irreversible data changes.
+10. GitHub Project status must always reflect reality. Move an issue to `In Progress` as soon as work starts, and update it promptly when work becomes blocked, enters review, or is completed.
+11. Human approval is required for destructive actions, credential handling, production deployment, billing, legal commitments, and irreversible data changes.
 
 ## Roles
 
@@ -57,6 +58,8 @@ At session start, the Lead reads only the required operating docs and current pr
 
 During work, the Lead keeps tasks small, delegates only when useful, and records important decisions.
 
+When work starts on a GitHub issue, the Lead must move its Project `Agent Status` to `In Progress` before meaningful implementation or delegation begins. If the Lead cannot update the Project, it must say so in the issue or handoff.
+
 At session close, the Lead updates:
 
 - `project-state/status.md`
@@ -71,7 +74,6 @@ Work is done only when:
 
 - Acceptance criteria are satisfied or explicitly revised.
 - Relevant checks have run, or skipped checks are explained.
-- GitHub status is updated when a linked issue exists.
+- GitHub Project status reflects the real current state when a linked issue exists.
 - Project state files are updated.
 - The next session can resume without reading the full chat.
-

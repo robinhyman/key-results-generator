@@ -38,7 +38,12 @@ Use the custom GitHub Project single-select field `Agent Status` for agent workf
 ## Project Rules
 
 - Every actionable issue created by the Lead should be added to the GitHub Project.
-- The GitHub Project status is the primary visible state for agent work.
+- The GitHub Project `Agent Status` field is the primary visible state for agent work.
+- `Agent Status` must reflect reality at all times, not just at session close.
+- Move an issue to `In Progress` as soon as meaningful work starts on it.
+- Move an issue to `Blocked` as soon as progress is blocked by missing information, permissions, failing external services, or a dependency outside the agent's control.
+- Move an issue to `Review` when implementation is complete but still needs review, approval, or final verification.
+- Move an issue to `Done` only after acceptance criteria and required verification are satisfied.
 - Issue comments should explain important progress, blockers, and verification results.
 - Labels describe type, risk, and agent suitability; Project fields describe flow state and priority.
 - If the Lead cannot add an issue to the Project, it must note that in the issue comment or session handoff.
@@ -126,10 +131,12 @@ Whether this blocks the current task or should be handled separately.
 
 1. Select or create a GitHub issue.
 2. Confirm acceptance criteria.
-3. Update issue status to In Progress.
-4. Create a small task brief for any worker agent.
-5. Implement, test, and review.
-6. Update project state files.
-7. Comment a concise result on the issue.
-8. Open or update a PR when code is ready.
-9. Move the issue to Review or Done only when verified.
+3. Add the issue to the GitHub Project if it is not already there.
+4. Update `Agent Status` to `In Progress` before meaningful implementation, testing, or delegation begins.
+5. Create a small task brief for any worker agent.
+6. Implement, test, and review.
+7. Update `Agent Status` whenever reality changes.
+8. Update project state files.
+9. Comment a concise result on the issue.
+10. Open or update a PR when code is ready.
+11. Move the issue to `Review` or `Done` only when that status is true.
