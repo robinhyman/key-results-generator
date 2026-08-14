@@ -23,3 +23,9 @@ Reason: Codex provides the lowest-friction local build, test, and review loop. O
 Decision: Create `robinhyman/key-results-generator` as a private GitHub repository.
 
 Reason: The project needs GitHub issues and future project tracking for observability while the agent team is developed.
+
+## 2026-08-14: Require Agent Issues To Live In GitHub Project
+
+Decision: Agent-managed issues should be added to the `Key Results Generator` GitHub Project and tracked with a custom `Agent Status` field.
+
+Reason: Issues hold detailed context, while the Project gives a visible queue and workflow state for human observability.

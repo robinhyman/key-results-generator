@@ -26,6 +26,8 @@ Do not create issues for:
 
 ## Recommended Project Statuses
 
+Use the custom GitHub Project single-select field `Agent Status` for agent workflow state.
+
 - Inbox
 - Ready
 - In Progress

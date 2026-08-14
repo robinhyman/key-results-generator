@@ -6,15 +6,15 @@ Last updated: 2026-08-14
 
 The initial team operating model has been drafted and pushed to a private GitHub repository: `robinhyman/key-results-generator`.
 
-GitHub issue `#1 Set up AI agent team operating system` tracks the remaining setup work.
+GitHub Project: `Key Results Generator` at `https://github.com/users/robinhyman/projects/4`
+
+GitHub issue `#1 Set up AI agent team operating system` tracks the remaining setup work and is in the Project with `Agent Status: In Progress`.
 
 ## Next Best Actions
 
-1. Create a GitHub Project for `robinhyman/key-results-generator`.
-2. Add issue `#1` to the GitHub Project.
-3. Decide whether to create GitHub issue labels and project statuses.
-4. Draft detailed role specs only for the roles needed in the first build.
-5. Define the first product goal and create the first software-build GitHub issue.
+1. Draft detailed role specs only for the roles needed in the first build.
+2. Define the first product goal and create the first software-build GitHub issue.
+3. Add every agent-managed issue to the GitHub Project.
 
 ## Resume Instructions
 

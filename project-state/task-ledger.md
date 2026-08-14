@@ -9,19 +9,22 @@ Last updated: 2026-08-14
 - Created private GitHub repository `robinhyman/key-results-generator`.
 - Pushed initial commit.
 - Created GitHub issue `#1 Set up AI agent team operating system`.
+- Created GitHub Project `Key Results Generator`.
+- Added issue `#1` to the GitHub Project.
+- Created `Agent Status` Project field with Inbox, Ready, In Progress, Review, Blocked, and Done.
+- Created recommended agent, type, and risk labels.
+- Applied starter labels to issue `#1`.
 
 ## Active
 
-- Create and configure a GitHub Project for the AI team workflow.
+- Draft first-use role specs for the AI team workflow.
 
 ## Blocked
 
-- GitHub Project board and labels not yet created.
-- GitHub CLI currently needs refreshed authentication/project permissions for Project creation.
+- None.
 
 ## Next
 
-- Refresh GitHub CLI authentication if needed.
-- Create GitHub Project and add issue `#1`.
-- Create initial GitHub labels and issue templates.
 - Draft role specs for Project Lead, Builder, Tester, Reviewer, and Release Agent.
+- Define the first product goal.
+- Create the first software-build GitHub issue and add it to the Project.
