@@ -18,10 +18,10 @@ Design a reusable AI software delivery team that can run first in Codex and late
 
 - Codex main chat acts as Project Lead.
 - Short-lived subagents handle bounded worker tasks.
-- GitHub issues/projects will provide work tracking and observability once connected.
+- GitHub issues inside a GitHub Project will provide work tracking and observability once the project is created.
 - Repo state files provide compact continuation memory.
 
 ## Open Questions
 
 - What is the first software product goal for the team to build?
-- Should GitHub labels and project statuses be created manually, by GitHub CLI, or through a later OpenClaw workflow?
+- Should GitHub Project creation and field setup be completed via GitHub CLI after refreshing project permissions?

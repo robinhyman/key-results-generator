@@ -10,9 +10,11 @@ GitHub issue `#1 Set up AI agent team operating system` tracks the remaining set
 
 ## Next Best Actions
 
-1. Decide whether to create GitHub issue labels and project statuses.
-2. Draft detailed role specs only for the roles needed in the first build.
-3. Define the first product goal and create the first software-build GitHub issue.
+1. Create a GitHub Project for `robinhyman/key-results-generator`.
+2. Add issue `#1` to the GitHub Project.
+3. Decide whether to create GitHub issue labels and project statuses.
+4. Draft detailed role specs only for the roles needed in the first build.
+5. Define the first product goal and create the first software-build GitHub issue.
 
 ## Resume Instructions
 

@@ -2,6 +2,8 @@
 
 GitHub provides the work queue, discussion record, and observable progress trail.
 
+All agent-managed issues should live inside the repository's GitHub Project. Standalone issues are allowed only as a temporary fallback when the project is unavailable or the Lead lacks permission to update it.
+
 ## Issue Usage
 
 Use GitHub issues for:
@@ -31,6 +33,14 @@ Do not create issues for:
 - Blocked
 - Done
 
+## Project Rules
+
+- Every actionable issue created by the Lead should be added to the GitHub Project.
+- The GitHub Project status is the primary visible state for agent work.
+- Issue comments should explain important progress, blockers, and verification results.
+- Labels describe type, risk, and agent suitability; Project fields describe flow state and priority.
+- If the Lead cannot add an issue to the Project, it must note that in the issue comment or session handoff.
+
 ## Recommended Labels
 
 - `agent:ready`
@@ -52,6 +62,7 @@ Do not create issues for:
 The Lead may:
 
 - Create issues for actionable discovered work.
+- Add agent-managed issues to the GitHub Project.
 - Split large issues into smaller issues.
 - Comment progress summaries on active issues.
 - Link PRs to issues.
@@ -120,4 +131,3 @@ Whether this blocks the current task or should be handled separately.
 7. Comment a concise result on the issue.
 8. Open or update a PR when code is ready.
 9. Move the issue to Review or Done only when verified.
-

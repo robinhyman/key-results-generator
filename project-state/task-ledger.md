@@ -12,13 +12,16 @@ Last updated: 2026-08-14
 
 ## Active
 
-- Finish GitHub issue/project setup for the AI team workflow.
+- Create and configure a GitHub Project for the AI team workflow.
 
 ## Blocked
 
-- GitHub project board and labels not yet created.
+- GitHub Project board and labels not yet created.
+- GitHub CLI currently needs refreshed authentication/project permissions for Project creation.
 
 ## Next
 
+- Refresh GitHub CLI authentication if needed.
+- Create GitHub Project and add issue `#1`.
 - Create initial GitHub labels and issue templates.
 - Draft role specs for Project Lead, Builder, Tester, Reviewer, and Release Agent.
