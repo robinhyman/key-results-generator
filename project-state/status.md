@@ -40,7 +40,7 @@ Design a reusable AI software delivery team that can run first in Codex and late
 - Any `Done` notification for product work must include a checked app/demo link the user can open.
 - Each increment must define and report its verification plan.
 - New actionable tickets should use `ai-team/templates/issue-spec.md` and meet Ready Criteria before `Agent Status: Ready`.
-- Each completed increment must have a retrospective before the next increment starts.
+- Each completed, blocked, or paused increment must have a retrospective before the next increment starts.
 - Retrospective improvement proposals require user approval before operating files are changed.
 - Documentation impact must be assessed for every increment, and required docs are part of `Done`.
 

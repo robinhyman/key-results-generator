@@ -29,5 +29,5 @@ Last updated: 2026-08-15
 - First agent-run workflow against a real issue.
 - Testing workflow against a real software increment.
 - Intake/specification workflow against the first real product goal.
-- Retrospective workflow after the first completed increment.
+- Retrospective workflow after the first completed, blocked, or paused increment.
 - Documentation workflow during the first real software increment.

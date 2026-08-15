@@ -1,6 +1,6 @@
 # Retrospective Workflow
 
-Run a retrospective after each increment before starting the next increment.
+Run a retrospective after each completed, blocked, or paused increment before starting the next increment.
 
 The retrospective exists to improve the team's operating system without silently changing it.
 

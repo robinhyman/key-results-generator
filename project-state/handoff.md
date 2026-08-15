@@ -24,17 +24,16 @@ Intake rule: use `ai-team/workflows/intake-and-specification.md` and `ai-team/te
 
 Continuous improvement rule: after each increment, run `ai-team/workflows/retrospective.md`. Any constitutional or workflow improvement must be approved by the user before being applied, and approved changes should be committed before the next increment.
 
-Role specs now include Project Lead, Architect, Builder, Tester, Reviewer, and Release Agent.
+Role specs now include Project Lead, Architect, Builder, Tester, Reviewer, Release Agent, and Documentarian.
 
 Documentation rule: use `ai-team/workflows/documentation.md` to assess docs on every increment. Required documentation updates are part of `Done`.
 
 ## Next Best Actions
 
-1. Draft detailed role specs only for the roles needed in the first build.
-2. Define the first product goal and create the first software-build GitHub issue.
-3. Add every agent-managed issue to the GitHub Project.
-4. Use the increment workflow for the first software-build issue.
-5. Define the target demonstration environment for the first build increment.
+1. Define the first product goal and create the first software-build GitHub issue.
+2. Add every agent-managed issue to the GitHub Project.
+3. Use the increment workflow for the first software-build issue.
+4. Define the target demonstration environment for the first build increment.
 
 ## Resume Instructions
 
