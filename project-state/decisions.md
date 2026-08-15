@@ -125,3 +125,11 @@ Reason: A local URL is only useful while its server process is active. Reporting
 Decision: Product increments must delegate at least one bounded routine task to a cheaper/faster worker model before review or completion, unless a documented exception applies. PRs and increment reports must show the worker task, model tier, evidence, and any skipped-delegation reason.
 
 Reason: Cost-conscious model use should happen automatically, not only after user reminders. Making delegation a review gate gives the user visible evidence that routine work is being moved off the Lead model whenever practical.
+
+## 2026-08-15: Keep AI Generation Server-Side With Deterministic Fallback
+
+Decision: AI-backed graph generation and final KR synthesis run through server-side endpoints backed by `src/ai-service.js`. The browser never reads API keys. The service calls the OpenAI Responses API with structured JSON output, validates the returned graph/KR shapes, preserves clarification traceability, and falls back to the deterministic local generator when credentials, quota, provider availability, or output validity fail.
+
+Reason: Issue `#4` requires real AI-backed generation, but local-first development still needs a reliable demo and safe credential handling. Server-side validation treats AI output as untrusted while keeping the existing graph model serializable and ready for later persistence.
+
+Current default: `OPENAI_MODEL` / `AI_MODEL` can override the model; otherwise the service uses `gpt-5-mini`. Credentials are read from `OPENAI_API_KEY`, configured key path env vars, or ignored local `keys/key.txt`.

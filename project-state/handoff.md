@@ -12,15 +12,19 @@ GitHub issue `#1 Set up AI agent team operating system` is complete, closed, and
 
 GitHub issue `#2 Build first local MVP for objective-to-key-results generation` is complete. It was merged via PR `#3`, closed, and set to `Agent Status: Done`.
 
-GitHub issue `#4 Add AI-guided clarification step before key result generation` is reopened and ready. PR `#5 Add clarification step before final KRs` merged useful groundwork, but it did not complete the issue because the causal/metrics tree and final KR generation are still deterministic/local rather than AI-driven.
+GitHub issue `#4 Add AI-guided clarification step before key result generation` is complete pending release mechanics. PR `#5 Add clarification step before final KRs` merged useful groundwork; the current branch adds the real server-side AI provider path, and real-provider smoke checks pass after API credits were added.
 
 Clarified product flow: the app should not jump directly from objective input to final key results. It should first use AI to generate a causal/metrics tree, then ask the user which high-impact metrics are most influenceable and where the user perceives the biggest gaps, then use those answers to generate final KRs.
 
 Architecture clarification: the causal/metrics graph is now treated as a first-class intermediate artefact, not disposable render state. It is represented as serializable structured data with nodes, edges, rankings, user influenceability/gap assessments, and traceable links to the final KRs. For this local-first increment, database persistence remains out of scope, but the model is ready to persist later without redesign.
 
-Issue `#4` implementation status: partial. The generator now exports `generateCausalMetricsGraph`, `applyClarifications`, and `generateKeyResultsModel`; the UI now renders objective -> graph -> clarification controls -> final KRs. Final KRs are not populated until the clarification form is submitted. The missing acceptance criterion is real AI-backed graph generation and AI-synthesized final KRs.
+Issue `#4` implementation status: complete locally. The generator exports `generateCausalMetricsGraph`, `applyClarifications`, and `generateKeyResultsModel` as the deterministic fallback. New server-side AI service code in `src/ai-service.js` calls the OpenAI Responses API with structured JSON output for causal graph generation and final KR synthesis, validates AI output, preserves graph/assessment traceability, and falls back to deterministic generation when the provider cannot complete.
+
+The browser no longer imports generator logic directly. It posts to `/api/graph` after objective submission and `/api/key-results` after clarification submission, then renders provider status as AI or local fallback.
 
 AI credential status: the API key path was provided in a GitHub issue `#4` comment and the local file exists at that path. The `keys/` directory is ignored by Git and must remain untracked. Do not print, commit, or copy the key value into repo state, logs, issue comments, or chat.
+
+Current provider status: a minimal OpenAI API diagnostic now returns HTTP `200`. Real AI-backed graph generation and final KR synthesis were smoke-checked with `gpt-5-mini`, including live local server endpoint checks.
 
 The constitution and GitHub workflow now explicitly require `Agent Status` to reflect reality, including moving an issue to `In Progress` as soon as meaningful work starts.
 
@@ -48,12 +52,10 @@ This project is tagged at `ai-team-os-v0.1` as the pre-product baseline.
 
 ## Next Best Actions
 
-1. Implement real AI-backed causal/metrics tree generation and final KR synthesis for issue `#4`.
-2. Choose the concrete AI model during implementation and record it in the increment report.
-3. Preserve the existing structured graph and clarification UI from PR `#5` as groundwork.
-4. Consider follow-up issue `#6 Add browser-level tests for clarification flow`, now in the Project with `Agent Status: Ready`.
-5. Consider follow-up issue `#7 Improve GitHub Project status update tooling`, now in the Project with `Agent Status: Ready`.
-6. Keep the local demo server running only while the user still needs the local app link.
+1. Push branch `feature/4-ai-generation`, open/merge PR, close issue `#4`, and set `Agent Status: Done`.
+2. Consider issue `#6 Add browser-level tests for clarification flow` as the next product/test increment.
+3. Consider issue `#7 Improve GitHub Project status update tooling` as an operating-system follow-up.
+4. Keep the local demo server running only while the user still needs the local app link.
 
 ## Resume Instructions
 
@@ -84,7 +86,23 @@ Current verification for issue `#4`:
 - Local link check: HTTP `200`, page includes the clarification form and final key results section.
 - Generator contract check: clarified `cycle-time` with influenceability/gap `5/5` becomes the first KR variable and graph assessments survive serialization-compatible model flow.
 - Remaining coverage gap: no browser-level automated tests for slider submission, repeated objective generation, or malformed assessment inputs.
-- Completion gap: no actual AI provider call or AI-backed generation path exists yet; PR `#5` should be treated as partial groundwork, not done.
+- Completion gap from PR `#5`: no actual AI provider call or AI-backed generation path existed yet; PR `#5` should be treated as partial groundwork, not done. Current branch adds that provider path, with quota-limited verification still pending.
+
+Current issue `#4` verification after the AI-service implementation:
+
+- Model-use plan: Lead kept architecture/provider/credential handling; low-cost `gpt-5.6-luna` Reviewer/Tester worker inspected the current code and recommended server-side AI boundary, mocked provider tests, schema validation, fallback coverage, and README/state updates.
+- Test-first status: mocked AI provider and malformed-output tests were added before/alongside implementation of `src/ai-service.js`.
+- Automated checks: `npm run build` passes, including syntax checks for `server.js`, `src/generator.js`, `src/ai-service.js`, and `public/app.js`, plus 12/12 unit tests.
+- Real provider diagnostic: OpenAI API initially returned HTTP `429`, `insufficient_quota`, `credit_balance_exhausted`; after credits were added, the same minimal diagnostic returned HTTP `200`.
+- Real app-level provider check: `generateAiCausalMetricsGraph` and `generateAiKeyResultsModel` both returned AI mode with `gpt-5-mini`; graph had 8 nodes and 8 edges; final model had 4 KRs; first KR preserved assessment traceability.
+- Local demo: app server started at `http://127.0.0.1:5174/` because `5173` was already in use.
+- Local link check: HTTP `200` for `http://127.0.0.1:5174/`.
+- Local endpoint check: `/api/graph` returned fallback graph metadata with 10 nodes and 11 edges.
+- Local endpoint check: `/api/key-results` returned fallback final model with 4 KRs; clarified `cycle-time` with influenceability/gap `5/5` was first KR variable and assessment survived.
+- Live local endpoint recheck after credits: `/api/graph` returned HTTP `200`, AI mode, `gpt-5-mini`, 9 nodes, and 9 edges; `/api/key-results` returned HTTP `200`, AI mode, and 4 KRs.
+- Final live endpoint check before release: `/api/graph` returned HTTP `200`, AI mode, `gpt-5-mini`, 9 nodes, and 8 edges; `/api/key-results` returned HTTP `200`, AI mode, 4 KRs, and preserved clarification assessment traceability.
+- Low-cost worker evidence: `gpt-5.6-luna` Tester/Reviewer worker ran `git status --short --branch` and `npm run build`; branch was clean and 12/12 tests passed. Its isolated context could not reach the running local server, so lead-side live endpoint checks are the live-server evidence.
+- Manual UI check: the user confirmed the app is functional in the in-app browser at `http://127.0.0.1:5174/`.
 
 ## Issue #4 Retrospective
 

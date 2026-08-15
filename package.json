@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node server.js",
     "test": "node --test",
-    "lint": "node --check server.js && node --check src/generator.js && node --check public/app.js",
+    "lint": "node --check server.js && node --check src/generator.js && node --check src/ai-service.js && node --check public/app.js",
     "build": "npm run lint && npm test"
   },
   "engines": {

@@ -91,6 +91,34 @@ h1 {
   line-height: 1.55;
 }
 
+.provider-status {
+  margin: 0 0 18px;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  background: #fbfcfd;
+  color: #334155;
+  font-size: 0.88rem;
+  font-weight: 750;
+}
+
+.provider-status[data-mode="ai"] {
+  border-color: #9bc6bd;
+  background: #eef7f5;
+  color: var(--accent);
+}
+
+.provider-status[data-mode="fallback"] {
+  border-color: #e0c6a8;
+  background: #fff8ed;
+  color: #8a4b18;
+}
+
+.provider-status[data-mode="error"] {
+  border-color: #e4a6a6;
+  background: #fff1f1;
+  color: #9f2727;
+}
+
 .objective-form {
   display: grid;
   gap: 10px;
@@ -129,6 +157,12 @@ h1 {
 
 .input-row button:hover {
   background: #0f766e;
+}
+
+.input-row button:disabled,
+.clarification-actions button:disabled {
+  cursor: progress;
+  opacity: 0.65;
 }
 
 .results-panel {

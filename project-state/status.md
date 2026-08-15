@@ -38,7 +38,7 @@ Closed GitHub issue: `#1 Set up AI agent team operating system`, `Agent Status: 
 
 Closed GitHub issue: `#2 Build first local MVP for objective-to-key-results generation`, merged via PR #3 and set to `Agent Status: Done`.
 
-Reopened GitHub issue: `#4 Add AI-guided clarification step before key result generation`, partially addressed by PR #5 but not complete because no AI-backed generation is implemented. Current `Agent Status: Ready`.
+GitHub issue: `#4 Add AI-guided clarification step before key result generation`, completed by the current AI generation increment after PR #5 groundwork.
 
 Merged pull request: `#3 Build local objective-to-KR MVP`
 
@@ -50,9 +50,13 @@ Open follow-up issue: `#7 Improve GitHub Project status update tooling`, in the 
 
 ## Active Goal
 
-Continue issue `#4` by implementing real AI-backed causal/metrics tree generation and final KR synthesis.
+Complete the issue `#4` release flow by pushing, merging, closing the issue, and marking `Agent Status: Done`.
 
-Local implementation separates graph generation from final KR generation. `src/generator.js` exports a serializable graph step, applies user influenceability/gap assessments, and ranks final KRs from the clarified graph. The browser UI now shows the graph and clarification controls before final KRs are generated. However, the current generator is still deterministic/local and not AI-driven.
+Local implementation separates graph generation from final KR generation. `src/generator.js` exports the deterministic structured graph and fallback KR path. `src/ai-service.js` now adds a server-side OpenAI Responses API boundary for AI-backed graph generation and AI-synthesized final KRs, validates structured output, applies user influenceability/gap assessments, and falls back to the deterministic generator when the provider is unavailable.
+
+The browser UI now calls local server endpoints instead of importing generator logic directly. It shows whether output came from AI or the local fallback. The API key remains server-only and is read from `OPENAI_API_KEY`, configured key path env vars, or ignored local `keys/key.txt`.
+
+The configured OpenAI API credential now has sufficient quota for the issue `#4` smoke checks. Real AI graph generation and final KR synthesis have been verified with `gpt-5-mini`; live local endpoints returned AI-mode graph and KR responses.
 
 ## Current Runtime Assumption
 
@@ -71,10 +75,9 @@ Local implementation separates graph generation from final KR generation. `src/g
 - Cost control is now explicit: future increments should use cheaper/faster worker models whenever possible and reserve stronger models for Lead, Architect, ambiguity, integration, escalation, and final review.
 - Product requirements now explicitly include a clarification step before final KRs: the app asks the user which high-impact metrics are most influenceable and where the biggest perceived gaps are.
 - The causal/metrics graph is treated as a first-class intermediate artefact: serializable structured data with nodes, edges, rankings, user influenceability/gap assessments, and links to final KRs.
-- GitHub issue `#4` is reopened with `Agent Status: Ready` because PR #5 did not implement actual AI-driven generation. The API key path was provided in a GitHub issue comment and the local path exists; do not copy the key value into repo files, logs, or chat.
+- GitHub issue `#4` implementation is complete locally. The AI provider path is implemented and real-provider smoke checks pass. The API key path was provided in a GitHub issue comment and the local path exists; do not copy the key value into repo files, logs, issue comments, or chat.
 
 ## Open Questions
 
 - What hosted deployment target should be used for a future increment?
-- Which AI model should be used to complete issue `#4` with real AI-backed generation?
-- Should the next increment address browser-level clarification-flow tests (`#6`), GitHub Project status tooling (`#7`), durable persistence for clarified graph data, or real AI provider integration?
+- Should the next increment address browser-level clarification-flow tests (`#6`), GitHub Project status tooling (`#7`), or durable persistence for clarified graph data?
