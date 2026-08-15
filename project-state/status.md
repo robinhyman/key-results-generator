@@ -44,6 +44,10 @@ Merged pull request: `#3 Build local objective-to-KR MVP`
 
 Open draft pull request: `#5 Add clarification step before final KRs`
 
+Open follow-up issue: `#6 Add browser-level tests for clarification flow`
+
+Open follow-up issue: `#7 Improve GitHub Project status update tooling`
+
 ## Active Goal
 
 Finish issue `#4`: objective input, AI-generated causal/metrics tree, user clarification on influenceability and perceived gaps, then final KR generation.
@@ -73,4 +77,4 @@ Local implementation separates graph generation from final KR generation. `src/g
 
 - What hosted deployment target should be used for a future increment?
 - Which AI provider/model and credential path should be used for the first real AI-backed generation increment?
-- Should the next increment add durable persistence for clarified graph data or integrate a real AI provider first?
+- Should the next increment address browser-level clarification-flow tests (`#6`), GitHub Project status tooling (`#7`), durable persistence for clarified graph data, or real AI provider integration?

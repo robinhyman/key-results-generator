@@ -53,6 +53,9 @@ Last updated: 2026-08-15
 - Committed and pushed branch `feature/4-clarification-flow`.
 - Opened draft PR `#5 Add clarification step before final KRs`.
 - Delegated issue `#4` verification/review to a low-cost `gpt-5.6-luna` worker, which ran `npm run build`, confirmed 6/6 tests passed, inspected the clarification flow and local-demo-server rule, and found no merge-blocking bugs.
+- Ran the issue `#4` retrospective.
+- Created follow-up issue `#6 Add browser-level tests for clarification flow`.
+- Created follow-up issue `#7 Improve GitHub Project status update tooling`.
 
 ## Active
 
@@ -65,7 +68,7 @@ Last updated: 2026-08-15
 ## Next
 
 - Run or manually perform a full browser interaction check for issue `#4`.
-- Consider browser-level tests for slider submission, repeated objective generation, and malformed assessment inputs.
+- Consider issue `#6` for browser-level tests of slider submission, repeated objective generation, and malformed assessment inputs.
+- Consider issue `#7` for GitHub Project status update tooling.
 - Preserve the clarified flow: objective input -> AI-generated causal/metrics tree -> user clarification on influenceability and perceived gaps -> final KRs.
 - Preserve traceability from objective to graph, user assessments, and final KRs.
-- Run the issue `#4` retrospective after completion or pause.
