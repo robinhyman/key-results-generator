@@ -8,7 +8,7 @@ The initial team operating model has been drafted and pushed to a private GitHub
 
 GitHub Project: `Key Results Generator` at `https://github.com/users/robinhyman/projects/4`
 
-GitHub issue `#2 Build first local MVP for objective-to-key-results generation` is the first product increment and is in the Project with `Agent Status: Ready`.
+GitHub issue `#2 Build first local MVP for objective-to-key-results generation` is the first product increment. It has been moved to `Agent Status: In Progress` and implemented locally on branch `feature/2-local-mvp`.
 
 The constitution and GitHub workflow now explicitly require `Agent Status` to reflect reality, including moving an issue to `In Progress` as soon as meaningful work starts.
 
@@ -34,10 +34,10 @@ This project is tagged at `ai-team-os-v0.1` as the pre-product baseline.
 
 ## Next Best Actions
 
-1. Start a fresh Codex task for issue `#2`.
-2. Move issue `#2` to `Agent Status: In Progress` as soon as work begins.
-3. Use the increment workflow, testing workflow, documentation workflow, branch/PR policy, and web app local-first profile.
-4. Deliver a checked local app link before marking the increment `Done`.
+1. Review and publish the branch/PR for issue `#2` if not already done.
+2. Keep the local app running with `npm start` when handing a checked demo link to the user.
+3. Move issue `#2` to `Review` or `Done` only when GitHub, PR, and demo-link requirements are all truly satisfied.
+4. Start the next product increment only after the retrospective for issue `#2` is recorded.
 
 ## Resume Instructions
 
@@ -57,4 +57,11 @@ A fresh Lead should read:
 - `project-state/status.md`
 - `project-state/handoff.md`
 
-Then work on issue `#2` unless the user redirects.
+Then continue issue `#2` closeout unless the user redirects.
+
+## Issue #2 Local Verification
+
+- Local app URL checked: `http://127.0.0.1:5173/`
+- Example objective submitted: `Expand enterprise customer retention`
+- Browser check confirmed objective output, graph/model view, generated key results, ranking view, and no console errors.
+- Automated checks passed with `npm run build`.

@@ -4,7 +4,13 @@ Last updated: 2026-08-15
 
 ## Current State
 
-This repository contains the initial AI team operating artefacts. No application code has been created yet.
+This repository contains the initial AI team operating artefacts plus the first local web-app MVP for objective-to-key-results generation.
+
+The MVP is a dependency-free Node/local browser app. It can be started with `npm start` and opened at `http://127.0.0.1:5173/`.
+
+The app lets a user enter an objective, generates an inspectable causal metrics graph, ranks influenceable variables, and produces four graph-backed key results with rationales.
+
+The first generator is deterministic and local. It does not use external AI APIs, persistence, accounts, or hosting.
 
 The team now has an explicit increment workflow and Increment Definition Of Done in `ai-team/workflows/increment.md`.
 
@@ -32,7 +38,7 @@ Active GitHub issue: `#2 Build first local MVP for objective-to-key-results gene
 
 ## Active Goal
 
-Build the first local MVP for objective-to-key-results generation using the AI team operating system.
+Issue `#2` has been implemented locally and verified against the local demo environment. Prepare/publish the PR and keep GitHub status aligned with the final review outcome.
 
 ## Current Runtime Assumption
 
@@ -51,4 +57,5 @@ Build the first local MVP for objective-to-key-results generation using the AI t
 
 ## Open Questions
 
-- Should the first MVP use an external AI API if credentials are available, or keep the first increment deterministic/local?
+- What hosted deployment target should be used for a future increment?
+- Should a later increment add external AI generation, richer graph editing, or both first?

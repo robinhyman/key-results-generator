@@ -28,10 +28,16 @@ Last updated: 2026-08-15
 - Tagged reusable repository at `v0.1`.
 - Created first product issue `#2 Build first local MVP for objective-to-key-results generation`.
 - Added issue `#2` to the GitHub Project and set `Agent Status: Ready`.
+- Moved issue `#2` to `Agent Status: In Progress`.
+- Built first dependency-free local MVP for objective-to-key-results generation.
+- Added deterministic graph-backed KR generator and unit tests.
+- Added local Node server and browser UI for objective input, graph inspection, variable ranking, and KR output.
+- Added app README with run and check instructions.
+- Verified the local app at `http://127.0.0.1:5173/`.
 
 ## Active
 
-- Run the first product increment from issue `#2`.
+- Close out issue `#2` with GitHub issue report, retrospective, branch/PR publishing, and final Project status.
 
 ## Blocked
 
@@ -39,7 +45,5 @@ Last updated: 2026-08-15
 
 ## Next
 
-- Run the first build as a bounded increment.
-- Define the verification plan before implementing the first build increment.
-- Use Ready Criteria before marking the first software-build issue `Ready`.
-- Assess documentation impact during the first build increment.
+- Review the issue `#2` branch and PR.
+- Decide the next increment after issue `#2`: hosted deployment, external AI-backed generation, or richer graph editing.
