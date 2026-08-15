@@ -11,17 +11,18 @@ The increment is the team's default unit of delivery. Avoid open-ended work. If 
 3. Add the issue to the GitHub Project.
 4. Set `Agent Status` to `In Progress` as soon as meaningful work starts.
 5. Plan the smallest coherent change that satisfies the acceptance criteria.
-6. Define the verification plan using `ai-team/workflows/testing.md`.
-7. Delegate bounded worker tasks only when the work can be split safely.
-8. Build, test, and review the change.
-9. Deploy or start the target demonstration environment.
-10. Check the linked app or demo and confirm the increment works there.
-11. Assess and update documentation using `ai-team/workflows/documentation.md`.
-12. Capture follow-up work as separate GitHub issues when it is real, actionable, and out of scope.
-13. Update project state files and the GitHub issue.
-14. Move `Agent Status` to `Review`, `Blocked`, or `Done` according to the real current state.
-15. After completion, run the retrospective workflow before starting the next increment.
-16. Apply user-approved operating improvements, if any, before starting the next increment.
+6. Make a lightweight model-use plan using `ai-team/model-policy.md`.
+7. Define the verification plan using `ai-team/workflows/testing.md`.
+8. Delegate bounded worker tasks to cheaper/faster models whenever the work can be split safely.
+9. Build, test, and review the change.
+10. Deploy or start the target demonstration environment.
+11. Check the linked app or demo and confirm the increment works there.
+12. Assess and update documentation using `ai-team/workflows/documentation.md`.
+13. Capture follow-up work as separate GitHub issues when it is real, actionable, and out of scope.
+14. Update project state files and the GitHub issue.
+15. Move `Agent Status` to `Review`, `Blocked`, or `Done` according to the real current state.
+16. After completion, run the retrospective workflow before starting the next increment.
+17. Apply user-approved operating improvements, if any, before starting the next increment.
 
 ## Increment Definition Of Done
 
@@ -62,6 +63,13 @@ An increment is done only when all applicable checks below are true.
 - The Lead or Reviewer has inspected the changed files.
 - Risks, regressions, missing tests, and UX issues have been considered.
 - Higher-risk work has stronger-model or human review.
+
+### Model Use Is Cost-Conscious
+
+- The Lead made a lightweight model-use plan before implementation.
+- Routine build, test, documentation, release, and mechanical update work was delegated to cheaper/faster models where practical.
+- Any substantial worker work kept on a high-capability model is explained.
+- Worker outputs were reviewed before the increment was reported as complete or ready for review.
 
 ### GitHub Reflects Reality
 

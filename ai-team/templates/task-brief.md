@@ -4,6 +4,14 @@
 
 What this agent should accomplish.
 
+## Model Tier
+
+Suggested tier:
+
+Reason this tier is sufficient:
+
+Escalation trigger:
+
 ## Scope
 
 Files, features, or behaviors in scope.

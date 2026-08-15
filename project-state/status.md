@@ -4,7 +4,7 @@ Last updated: 2026-08-15
 
 ## Current State
 
-This repository contains the initial AI team operating artefacts plus the first local web-app MVP for objective-to-key-results generation.
+This repository contains the initial AI team operating artefacts plus the first local web-app MVP for objective-to-key-results generation, currently on PR #3.
 
 The MVP is a dependency-free Node/local browser app. It can be started with `npm start` and opened at `http://127.0.0.1:5173/`.
 
@@ -34,13 +34,17 @@ GitHub repository: `robinhyman/key-results-generator`
 
 GitHub Project: `Key Results Generator` at `https://github.com/users/robinhyman/projects/4`
 
-Active GitHub issue: `#2 Build first local MVP for objective-to-key-results generation`
+Closed GitHub issue: `#1 Set up AI agent team operating system`, `Agent Status: Done`.
+
+Active GitHub issue: `#2 Build first local MVP for objective-to-key-results generation`, currently in Review via PR #3.
+
+Next product requirement: `#4 Add AI-guided clarification step before key result generation`, currently Ready in the GitHub Project.
 
 Active pull request: `#3 Build local objective-to-KR MVP`
 
 ## Active Goal
 
-Issue `#2` has been implemented locally, verified against the local demo environment, pushed, and opened as draft PR `#3`. Current GitHub Project target status is `Agent Status: Review` until the PR is reviewed/merged or the user decides to mark the increment Done from the draft PR.
+Review and merge the first local MVP, then implement the clarified AI-guided flow: objective input, AI-generated causal/metrics tree, user clarification on influenceability and perceived gaps, then final KR generation.
 
 ## Current Runtime Assumption
 
@@ -56,8 +60,12 @@ Issue `#2` has been implemented locally, verified against the local demo environ
 - Retrospective improvement proposals require user approval before operating files are changed.
 - Documentation impact must be assessed for every increment, and required docs are part of `Done`.
 - Future reusable operating-system improvements should be considered for `robinhyman/ai-team-operating-system`.
+- Cost control is now explicit: future increments should use cheaper/faster worker models whenever possible and reserve stronger models for Lead, Architect, ambiguity, integration, escalation, and final review.
+- Product requirements now explicitly include a clarification step before final KRs: the app should ask the user which high-impact metrics are most influenceable and where the biggest perceived gaps are.
+- The causal/metrics graph should be treated as a first-class intermediate artefact: serializable structured data with nodes, edges, rankings, user influenceability/gap assessments, and links to final KRs.
 
 ## Open Questions
 
 - What hosted deployment target should be used for a future increment?
-- Should a later increment add external AI generation, richer graph editing, or both first?
+- Which AI provider/model and credential path should be used for the first real AI-backed generation increment?
+- For the next local-first increment, should graph data be persisted only in browser/session state, or saved to a local durable store as preparation for hosted use?
