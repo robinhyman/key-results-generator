@@ -33,6 +33,7 @@ Last updated: 2026-08-15
 - Added issue `#4` to the GitHub Project and set `Agent Status: Ready`.
 - Captured graph persistence clarification on issue `#4`: the causal/metrics graph is a first-class serializable intermediate artefact that should survive through clarification and KR generation.
 - Closed issue `#1 Set up AI agent team operating system` and set `Agent Status: Done`.
+- Tightened model-use policy so future increments must plan and report cost-conscious use of cheaper/faster worker models.
 
 ## Active
 

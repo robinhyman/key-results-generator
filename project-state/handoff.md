@@ -28,6 +28,8 @@ Testing rule: each increment must define a verification plan, follow `ai-team/wo
 
 TDD rule: prefer test-first development for behaviorally clear work. If skipped for a behavior change, explain why in the increment report.
 
+Cost-control rule: future increments must make a lightweight model-use plan before implementation. Use cheaper/faster worker models for bounded build, test, documentation, release, issue-summary, and mechanical-update tasks whenever practical. Reserve high-capability models for Lead/Architect judgement, ambiguity, integration, escalation, and final review. If substantial worker work stays on the Lead model, explain why in the increment report.
+
 Intake rule: use `ai-team/workflows/intake-and-specification.md` and `ai-team/templates/issue-spec.md` when turning goals or discoveries into GitHub issues.
 
 Continuous improvement rule: after each increment, run `ai-team/workflows/retrospective.md`. Any constitutional or workflow improvement must be approved by the user before being applied, and approved changes should be committed before the next increment.
@@ -46,7 +48,7 @@ This project is tagged at `ai-team-os-v0.1` as the pre-product baseline.
 2. Keep issue `#2` in Review until PR #3 is accepted/merged or explicitly superseded.
 3. Start the next implementation increment from issue `#4` after deciding whether PR #3 should be merged first.
 4. Move issue `#4` to `Agent Status: In Progress` as soon as work begins.
-5. Use the increment workflow, testing workflow, documentation workflow, branch/PR policy, and web app local-first profile.
+5. Use the increment workflow, model policy, testing workflow, documentation workflow, branch/PR policy, and web app local-first profile.
 6. Deliver a checked local app link before marking the increment `Done`.
 
 ## Resume Instructions

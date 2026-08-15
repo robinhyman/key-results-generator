@@ -55,6 +55,18 @@ Risks considered:
 
 Remaining concerns:
 
+## Model Use
+
+Lead model tier:
+
+Worker tasks delegated to cheaper/faster models:
+
+Tasks kept on high-capability model and why:
+
+Escalations:
+
+Cost-control notes for next increment:
+
 ## Documentation
 
 Docs affected:

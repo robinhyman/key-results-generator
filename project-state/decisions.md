@@ -101,3 +101,9 @@ Reason: It exercises the core product loop: objective input, graph-backed metric
 Decision: Represent the causal/metrics graph as serializable structured data, with nodes, edges, rankings, user influenceability/gap assessments, and traceable links to final KRs.
 
 Reason: The product workflow requires an intermediate clarification step between objective input and final KR generation. The AI-generated graph must survive that step so final recommendations can be explained, refined, persisted later, and audited against the objective and user answers.
+
+## 2026-08-15: Require Explicit Cost-Conscious Model Use
+
+Decision: Future increments must make a lightweight model-use plan before implementation, delegate bounded routine work to cheaper/faster worker models whenever practical, and report model-tier usage in the increment report.
+
+Reason: The first product run validated the process but did not visibly use cheaper workers for builder, tester, documentation, or release tasks. Cost efficiency is a core requirement for the team, so model allocation must be observable and reviewed.

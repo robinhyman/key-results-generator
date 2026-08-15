@@ -52,6 +52,7 @@ Review the first local MVP, then implement the clarified AI-guided flow: objecti
 - Retrospective improvement proposals require user approval before operating files are changed.
 - Documentation impact must be assessed for every increment, and required docs are part of `Done`.
 - Future reusable operating-system improvements should be considered for `robinhyman/ai-team-operating-system`.
+- Cost control is now explicit: future increments should use cheaper/faster worker models whenever possible and reserve stronger models for Lead, Architect, ambiguity, integration, escalation, and final review.
 - Product requirements now explicitly include a clarification step before final KRs: the app should ask the user which high-impact metrics are most influenceable and where the biggest perceived gaps are.
 - The causal/metrics graph should be treated as a first-class intermediate artefact: serializable structured data with nodes, edges, rankings, user influenceability/gap assessments, and links to final KRs.
 

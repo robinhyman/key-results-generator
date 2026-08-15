@@ -11,6 +11,8 @@
 9. If the session will create, refine, split, or triage issues, read `ai-team/workflows/intake-and-specification.md`.
 10. If the session will change behavior, setup, architecture, deployment, user workflow, or operating rules, read `ai-team/workflows/documentation.md`.
 11. If the session will change code, read `ai-team/workflows/branch-and-pr.md` and the relevant project profile.
-12. State the intended next action and verification target.
+12. State the intended next action, verification target, and model-use plan.
 
 Keep startup context small. Do not read old chats or long issue threads unless they are directly relevant to the active task.
+
+For product increments, the Lead should explicitly identify which tasks can be handled by cheaper/faster workers before implementation begins. If the Lead keeps routine builder, tester, documentation, or release work on a high-capability model, it must explain why in the increment report or handoff.

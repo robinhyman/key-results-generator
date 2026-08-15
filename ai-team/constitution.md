@@ -11,8 +11,8 @@ The AI team exists to autonomously deliver software while preserving human obser
 3. Chat history is temporary execution context, not memory.
 4. Every session must leave a fresh agent able to continue from compact state files.
 5. Prefer small, bounded increments with clear acceptance criteria.
-6. Use the cheapest capable model for each job.
-7. Use stronger models for planning, architecture, ambiguity, final review, high-risk changes, and integration.
+6. Use cheaper/faster worker models whenever they can reliably complete the job.
+7. Reserve stronger models for planning, architecture, ambiguity, final review, high-risk changes, integration, and escalation.
 8. Do not run multiple agents against the same files unless the Lead has assigned disjoint write scopes.
 9. Do not create backlog noise. Track real, actionable work.
 10. GitHub Project status must always reflect reality. Move an issue to `In Progress` as soon as work starts, and update it promptly when work becomes blocked, enters review, or is completed.
@@ -106,7 +106,11 @@ Keeps durable documentation concise, current, and useful to future sessions.
 
 At session start, the Lead reads only the required operating docs and current project state.
 
-During work, the Lead keeps tasks small, delegates only when useful, and records important decisions.
+During work, the Lead keeps tasks small, delegates routine worker tasks to cheaper/faster models whenever practical, and records important decisions.
+
+Before substantial implementation begins, the Lead must make a lightweight model-use plan: which parts need high-capability reasoning, which parts can be done by mid-capability or low-cost workers, and what evidence is needed from each worker.
+
+If the Lead performs substantial builder, tester, documentation, or release work directly on a high-capability model, the Lead must explain the reason in the increment report or handoff.
 
 When work starts on a GitHub issue, the Lead must move its Project `Agent Status` to `In Progress` before meaningful implementation or delegation begins. If the Lead cannot update the Project, it must say so in the issue or handoff.
 
