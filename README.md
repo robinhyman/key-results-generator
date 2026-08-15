@@ -7,6 +7,7 @@ Local-first MVP for generating key results from an objective through an inspecta
 Requirements:
 
 - Node.js 20 or newer
+- An OpenAI API key with available credits for AI-backed generation
 
 Commands:
 
@@ -20,29 +21,51 @@ Then open:
 http://127.0.0.1:5173/
 ```
 
+## AI Configuration
+
+The app keeps AI calls server-side so the browser never receives the API key.
+
+Credential lookup order:
+
+1. `OPENAI_API_KEY`
+2. `OPENAI_API_KEY_PATH`
+3. `AI_KEY_PATH`
+4. `keys/key.txt`
+
+The local `keys/` directory is ignored by Git. Do not commit key files.
+
+Optional model configuration:
+
+```bash
+OPENAI_MODEL=gpt-5-mini npm start
+```
+
+The default model is `gpt-5-mini`, called through the OpenAI Responses API with structured JSON output. The server validates AI output before rendering it. If credentials are missing, the provider is unavailable, quota is exhausted, or the response is malformed, the app falls back to the local deterministic generator and shows that status in the UI.
+
 ## Checks
 
 ```bash
 npm run build
 ```
 
-The build script runs syntax checks and unit tests for the generation and ranking logic.
+The build script runs syntax checks and unit tests for the generation, AI provider boundary, fallback, and ranking logic.
 
 ## Current Product Behavior
 
 The app lets a user enter a plain-language objective, then generates:
 
 - the objective as the downstream outcome
-- an inspectable causal metrics graph
+- an AI-backed inspectable causal metrics graph when the provider is available
 - ranked model variables with impact, confidence, and baseline influenceability
 - a clarification step for rating high-impact metrics by influenceability and perceived gap
-- four final key results with rationales, related drivers, and links back to clarified graph variables
+- AI-synthesized final key results with rationales, related drivers, and links back to clarified graph variables when the provider is available
 
-The local generator in `src/generator.js` now treats the causal metrics graph as a first-class structured artefact with nodes, edges, rankings, user assessments, and traceable key result links. It does not call an external AI service, require API keys, store user data, or persist projects.
+The generator treats the causal metrics graph as a first-class structured artefact with nodes, edges, rankings, user assessments, and traceable key result links. The browser calls local server endpoints; the server may send the objective, graph, and clarification ratings to OpenAI for generation. The app does not store user data or persist projects.
 
 ## Current Limitations
 
-- Generation is template-driven and deterministic.
+- AI quality depends on the configured model, quota, and provider availability.
+- The deterministic local generator is still used as a fallback when AI generation cannot complete.
 - The graph is inspectable but not editable.
 - Clarification ratings are kept in browser memory for the current generated model only.
-- There is no persistence, authentication, hosted deployment, or external AI integration.
+- There is no persistence, authentication, or hosted deployment.

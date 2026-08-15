@@ -63,10 +63,23 @@ Last updated: 2026-08-15
 - Confirmed the issue `#4` API key path from a GitHub comment exists locally.
 - Added `.gitignore` coverage for `keys/` and `.DS_Store` so local key material and Finder metadata are not committed.
 - Set issue `#4` `Agent Status: Ready`.
+- Moved issue `#4` `Agent Status` to `In Progress`.
+- Created local branch `feature/4-ai-generation`.
+- Added server-side AI generation service for OpenAI Responses API structured output, validation, and deterministic fallback.
+- Added local JSON endpoints for AI-backed graph generation and clarified final KR generation.
+- Updated browser UI to call server endpoints and show AI/fallback provider status.
+- Added mocked AI provider and fallback tests; `npm run build` passes with 12/12 tests.
+- Verified the configured API key reaches OpenAI but is blocked by exhausted credits: `insufficient_quota` / `credit_balance_exhausted`.
+- Started local fallback demo at `http://127.0.0.1:5174/` and checked page plus graph/final-KR endpoints.
+- Reran OpenAI checks after credits were added; minimal API diagnostic returned HTTP `200`.
+- Verified real AI graph and final-KR smoke checks through both direct service calls and live local endpoints.
+- Ran final lead-side `npm run build`, local URL check, and live AI endpoint check.
+- Delegated final routine verification to low-cost `gpt-5.6-luna` Tester/Reviewer worker; worker confirmed clean branch and `npm run build` passed with 12/12 tests.
+- User confirmed the local app is functional in the in-app browser.
 
 ## Active
 
-- Continue issue `#4` with real AI-backed generation.
+- Complete issue `#4` release mechanics: push branch, open/merge PR, close issue, and set `Agent Status: Done`.
 
 ## Blocked
 
@@ -74,6 +87,6 @@ Last updated: 2026-08-15
 
 ## Next
 
-- Complete issue `#4` with real AI-backed causal/metrics tree generation and AI-synthesized final KR generation.
+- Complete issue `#4` GitHub release flow and final issue report.
 - Consider issue `#6` for browser-level tests of slider submission, repeated objective generation, and malformed assessment inputs.
 - Consider issue `#7` for documenting the GitHub CLI Project status update fallback.

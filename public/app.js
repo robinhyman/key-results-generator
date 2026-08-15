@@ -1,8 +1,3 @@
-import {
-  generateCausalMetricsGraph,
-  generateKeyResultsModel,
-} from "/src/generator.js";
-
 const form = document.querySelector("#objective-form");
 const objectiveInput = document.querySelector("#objective");
 const objectiveHeading = document.querySelector("#objective-heading");
@@ -11,34 +6,59 @@ const graphGrid = document.querySelector("#graph-grid");
 const keyResultsList = document.querySelector("#kr-list");
 const rankedList = document.querySelector("#ranked-list");
 const clarificationForm = document.querySelector("#clarification-form");
+const providerStatus = document.querySelector("#provider-status");
 
 let currentGraph;
 
-form.addEventListener("submit", (event) => {
+form.addEventListener("submit", async (event) => {
   event.preventDefault();
-  renderGraphOnly(objectiveInput.value);
+  await renderGraphOnly(objectiveInput.value);
 });
 
-clarificationForm.addEventListener("submit", (event) => {
+clarificationForm.addEventListener("submit", async (event) => {
   event.preventDefault();
   if (!currentGraph) {
     return;
   }
 
   const clarifications = readClarifications();
-  const model = generateKeyResultsModel(currentGraph.objective, clarifications);
-  currentGraph = model.graph;
-  renderModel(model);
+  setBusy(true, "Synthesizing final KRs...");
+  renderPendingKeyResults("Generating final recommendations from your ratings.");
+
+  try {
+    const { model } = await postJson("/api/key-results", { graph: currentGraph, clarifications });
+    currentGraph = model.graph;
+    renderModel(model);
+    renderGenerationStatus(model.generation);
+  } catch {
+    renderPendingKeyResults("The final KR generation request failed. Try again.");
+    setProviderStatus("Generation failed", "error");
+  } finally {
+    setBusy(false);
+  }
 });
 
 renderGraphOnly(objectiveInput.value);
 
-function renderGraphOnly(objective) {
-  currentGraph = generateCausalMetricsGraph(objective);
+async function renderGraphOnly(objective) {
+  setBusy(true, "Generating causal metrics graph...");
+  renderPendingKeyResults("Awaiting clarification");
+
+  try {
+    const { graph } = await postJson("/api/graph", { objective });
+    currentGraph = graph;
+    renderGenerationStatus(graph.generation);
+  } catch {
+    setProviderStatus("Generation failed", "error");
+    return;
+  } finally {
+    setBusy(false);
+  }
+
   const model = toViewModel(currentGraph, []);
   renderModel(model);
   renderClarification(currentGraph);
-  renderPendingKeyResults();
+  renderPendingKeyResults("Rate the top metrics, then generate the final recommended set.");
 }
 
 function renderModel(model) {
@@ -223,7 +243,7 @@ function renderKeyResults(keyResults) {
   );
 }
 
-function renderPendingKeyResults() {
+function renderPendingKeyResults(message) {
   const item = document.createElement("li");
   item.className = "kr-item pending";
 
@@ -231,7 +251,7 @@ function renderPendingKeyResults() {
   title.textContent = "Awaiting clarification";
 
   const body = document.createElement("p");
-  body.textContent = "Rate the top metrics, then generate the final recommended set.";
+  body.textContent = message;
 
   item.append(title, body);
   keyResultsList.replaceChildren(item);
@@ -265,4 +285,45 @@ function formatType(type) {
     .split("-")
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(" ");
+}
+
+async function postJson(url, body) {
+  const response = await fetch(url, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  });
+
+  if (!response.ok) {
+    throw new Error("Request failed.");
+  }
+
+  return response.json();
+}
+
+function setBusy(isBusy, message = "") {
+  form.querySelector("button").disabled = isBusy;
+  clarificationForm.querySelector("button")?.toggleAttribute("disabled", isBusy);
+  if (message) {
+    setProviderStatus(message, "pending");
+  }
+}
+
+function renderGenerationStatus(generation) {
+  if (!generation) {
+    setProviderStatus("Generated locally", "fallback");
+    return;
+  }
+
+  if (generation.mode === "ai") {
+    setProviderStatus(`AI generated with ${generation.model}`, "ai");
+    return;
+  }
+
+  setProviderStatus("Local fallback used", "fallback");
+}
+
+function setProviderStatus(message, mode) {
+  providerStatus.textContent = message;
+  providerStatus.dataset.mode = mode;
 }

@@ -1,7 +1,12 @@
 import { createServer } from "node:http";
 import { readFile } from "node:fs/promises";
 import { extname, join, normalize } from "node:path";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
+
+import {
+  generateAiCausalMetricsGraph,
+  generateAiKeyResultsModel,
+} from "./src/ai-service.js";
 
 const root = fileURLToPath(new URL(".", import.meta.url));
 const publicDir = join(root, "public");
@@ -15,8 +20,21 @@ const mimeTypes = {
   ".json": "application/json; charset=utf-8",
 };
 
-const server = createServer(async (request, response) => {
+export const server = createServer(handleRequest);
+
+async function handleRequest(request, response) {
   const url = new URL(request.url ?? "/", `http://${request.headers.host}`);
+
+  if (url.pathname === "/api/graph" && request.method === "POST") {
+    await handleGraphRequest(request, response);
+    return;
+  }
+
+  if (url.pathname === "/api/key-results" && request.method === "POST") {
+    await handleKeyResultsRequest(request, response);
+    return;
+  }
+
   const filePath = resolveFilePath(url.pathname);
 
   try {
@@ -35,11 +53,33 @@ const server = createServer(async (request, response) => {
     response.writeHead(500, { "Content-Type": "text/plain; charset=utf-8" });
     response.end("Server error");
   }
-});
+}
 
-server.listen(port, host, () => {
-  console.log(`Key Results Generator running at http://${host}:${port}`);
-});
+if (import.meta.url === pathToFileURL(process.argv[1]).href) {
+  server.listen(port, host, () => {
+    console.log(`Key Results Generator running at http://${host}:${port}`);
+  });
+}
+
+async function handleGraphRequest(request, response) {
+  try {
+    const body = await readJsonBody(request);
+    const graph = await generateAiCausalMetricsGraph(body.objective);
+    sendJson(response, 200, { graph });
+  } catch {
+    sendJson(response, 400, { error: "Unable to generate a causal metrics graph." });
+  }
+}
+
+async function handleKeyResultsRequest(request, response) {
+  try {
+    const body = await readJsonBody(request);
+    const model = await generateAiKeyResultsModel(body.graph, body.clarifications);
+    sendJson(response, 200, { model });
+  } catch {
+    sendJson(response, 400, { error: "Unable to generate key results from the clarified graph." });
+  }
+}
 
 function resolveFilePath(pathname) {
   if (pathname === "/" || pathname === "/index.html") {
@@ -59,4 +99,21 @@ function safeJoin(baseDir, requestedPath) {
     return join(publicDir, "index.html");
   }
   return filePath;
+}
+
+async function readJsonBody(request) {
+  let rawBody = "";
+  for await (const chunk of request) {
+    rawBody += chunk;
+    if (rawBody.length > 100_000) {
+      throw new Error("Request body too large.");
+    }
+  }
+
+  return rawBody ? JSON.parse(rawBody) : {};
+}
+
+function sendJson(response, status, body) {
+  response.writeHead(status, { "Content-Type": "application/json; charset=utf-8" });
+  response.end(JSON.stringify(body));
 }

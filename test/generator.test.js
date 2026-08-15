@@ -7,6 +7,12 @@ import {
   generateKeyResultsModel,
   rankVariables,
 } from "../src/generator.js";
+import {
+  generateAiCausalMetricsGraph,
+  generateAiKeyResultsModel,
+  normalizeAiGraph,
+  normalizeAiKeyResults,
+} from "../src/ai-service.js";
 
 test("generateKeyResultsModel creates an inspectable graph and key results", () => {
   const model = generateKeyResultsModel("Improve dependable rail service");
@@ -142,3 +148,164 @@ test("rankVariables sorts by KR suitability and excludes the top outcome", () =>
   );
   assert.ok(ranked[0].score > ranked[1].score);
 });
+
+test("generateAiCausalMetricsGraph normalizes mocked AI graph output", async () => {
+  const graph = await generateAiCausalMetricsGraph("Improve onboarding activation", {
+    apiKey: "test-key",
+    fetch: async () => jsonResponse({
+      summary: "Activation depends on speed, clarity, and early value.",
+      nodes: [
+        aiNode("activation", "outcome", "Improve onboarding activation", 4, false),
+        aiNode("time-to-value", "driver", "Time to first value", 2, true, "reduce"),
+        aiNode("setup-completion", "evidence", "Setup completion rate", 3, true),
+        aiNode("guided-help", "upstream-driver", "Guided help quality", 1, true),
+      ],
+      edges: [
+        aiEdge("guided-help", "time-to-value"),
+        aiEdge("time-to-value", "setup-completion"),
+        aiEdge("setup-completion", "activation"),
+      ],
+    }),
+  });
+
+  assert.equal(graph.objective, "Improve onboarding activation");
+  assert.equal(graph.generation.mode, "ai");
+  assert.equal(graph.nodes.length, 4);
+  assert.equal(graph.edges.length, 3);
+  assert.ok(graph.rankings.some((variable) => variable.id === "time-to-value"));
+});
+
+test("generateAiCausalMetricsGraph falls back when no API key is configured", async () => {
+  const graph = await generateAiCausalMetricsGraph("Improve onboarding activation", {
+    keyPath: "/tmp/missing-openai-key-for-test",
+  });
+
+  assert.equal(graph.generation.mode, "fallback");
+  assert.equal(graph.generation.model, "deterministic-local");
+  assert.ok(graph.nodes.length >= 9);
+});
+
+test("normalizeAiGraph rejects malformed graph output", () => {
+  assert.throws(
+    () => normalizeAiGraph("Improve onboarding activation", { nodes: [], edges: [] }),
+    /at least four nodes/,
+  );
+});
+
+test("generateAiKeyResultsModel preserves clarification traceability from mocked AI output", async () => {
+  const graph = normalizeAiGraph("Improve onboarding activation", {
+    summary: "Activation depends on speed, clarity, and early value.",
+    nodes: [
+      aiNode("activation", "outcome", "Improve onboarding activation", 4, false),
+      aiNode("time-to-value", "driver", "Time to first value", 2, true, "reduce"),
+      aiNode("setup-completion", "evidence", "Setup completion rate", 3, true),
+      aiNode("guided-help", "upstream-driver", "Guided help quality", 1, true),
+    ],
+    edges: [
+      aiEdge("guided-help", "time-to-value"),
+      aiEdge("time-to-value", "setup-completion"),
+      aiEdge("setup-completion", "activation"),
+    ],
+  });
+
+  const model = await generateAiKeyResultsModel(graph, {
+    "time-to-value": { influenceability: 5, gap: 5 },
+  }, {
+    apiKey: "test-key",
+    fetch: async () => jsonResponse({
+      keyResults: [
+        aiKeyResult("kr-1", "time-to-value", "Reduce time to first value by 25% this quarter"),
+        aiKeyResult("kr-2", "setup-completion", "Increase setup completion rate by 15% this quarter"),
+        aiKeyResult("kr-3", "guided-help", "Improve guided help quality to green status"),
+        aiKeyResult("kr-4", "time-to-value", "Reduce avoidable onboarding waits by 20%"),
+      ],
+    }),
+  });
+
+  assert.equal(model.generation.mode, "ai");
+  assert.equal(model.keyResults.length, 4);
+  assert.equal(model.keyResults[0].variableId, "time-to-value");
+  assert.equal(model.keyResults[0].assessment.influenceability, 5);
+  assert.equal(model.graph.assessments["time-to-value"].gap, 5);
+});
+
+test("generateAiKeyResultsModel falls back when AI key results reference unknown variables", async () => {
+  const graph = generateCausalMetricsGraph("Improve onboarding activation");
+  const model = await generateAiKeyResultsModel(graph, {}, {
+    apiKey: "test-key",
+    fetch: async () => jsonResponse({
+      keyResults: [
+        aiKeyResult("kr-1", "unknown-variable", "Improve a metric the graph does not know"),
+      ],
+    }),
+  });
+
+  assert.equal(model.generation.mode, "fallback");
+  assert.equal(model.keyResults.length, 4);
+  assert.ok(model.keyResults.every((keyResult) => graph.nodes.some((node) => node.id === keyResult.variableId)));
+});
+
+test("normalizeAiKeyResults rejects unknown graph references", () => {
+  const graph = generateCausalMetricsGraph("Improve onboarding activation");
+
+  assert.throws(
+    () => normalizeAiKeyResults(graph, {
+      keyResults: [aiKeyResult("kr-1", "missing-node", "Improve missing node")],
+    }),
+    /unknown variable/,
+  );
+});
+
+function aiNode(id, type, label, stage, influenceable, direction = "increase") {
+  return {
+    id,
+    type,
+    label,
+    description: `${label} description`,
+    impact: 80,
+    confidence: 75,
+    influenceable,
+    stage,
+    direction,
+  };
+}
+
+function aiEdge(source, target) {
+  return {
+    id: `${source}-to-${target}`,
+    source,
+    target,
+    rationale: `${source} affects ${target}`,
+    strength: 78,
+  };
+}
+
+function aiKeyResult(id, variableId, text) {
+  return {
+    id,
+    variableId,
+    text,
+    rationale: `Selected because ${variableId} was highly ranked and matched the user clarification.`,
+    relatedDrivers: ["Guided help quality"],
+  };
+}
+
+function jsonResponse(data) {
+  return {
+    ok: true,
+    status: 200,
+    async json() {
+      return {
+        output: [
+          {
+            content: [
+              {
+                text: JSON.stringify(data),
+              },
+            ],
+          },
+        ],
+      };
+    },
+  };
+}

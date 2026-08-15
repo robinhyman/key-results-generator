@@ -58,6 +58,22 @@ Last updated: 2026-08-15
 - PR `#5` merged to `main`; final state updates were cherry-picked to `main` after merge and pushed.
 - Correction after user review: issue `#4` was reopened and moved to Project `Status: Todo` / `Agent Status: Blocked` because no actual AI-backed generation was implemented. PR `#5` is partial groundwork only.
 - Issue `#4` API key path was provided in a GitHub comment. The local key file exists, `keys/` is untracked and ignored by Git, and issue `#4` was moved to `Agent Status: Ready`.
+- Issue `#4` Agent Status was moved to `In Progress` before current implementation work.
+- Issue `#4` low-cost `gpt-5.6-luna` Reviewer/Tester worker inspected the current code read-only, ran `npm test` and `npm run lint`, confirmed existing checks passed, and recommended a server-side AI boundary, mocked AI tests, validation, fallback coverage, and README/state updates.
+- Issue `#4` AI-service tests were added for mocked AI graph output, missing-key fallback, malformed graph rejection, mocked AI final KR traceability, invalid KR-reference fallback, and explicit unknown-reference rejection.
+- Issue `#4` `npm test` passed with 12/12 tests.
+- Issue `#4` `npm run build` passed after adding `src/ai-service.js` to lint coverage. It ran syntax checks for `server.js`, `src/generator.js`, `src/ai-service.js`, and `public/app.js`, plus unit tests.
+- Issue `#4` minimal OpenAI diagnostic reached the provider but returned HTTP `429`, `insufficient_quota`, `credit_balance_exhausted`; no key value was printed.
+- Issue `#4` minimal OpenAI diagnostic was rerun after credits were added and returned HTTP `200`; no key value was printed.
+- Issue `#4` real app-level AI smoke check passed: `generateAiCausalMetricsGraph` returned AI mode using `gpt-5-mini` with 8 nodes and 8 edges; `generateAiKeyResultsModel` returned AI mode with 4 KRs and preserved clarification assessment traceability.
+- Issue `#4` local app server started at `http://127.0.0.1:5174/` because port `5173` was already in use.
+- Issue `#4` local URL checked: `http://127.0.0.1:5174/` returned HTTP `200`.
+- Issue `#4` live `/api/graph` endpoint checked with objective `Improve onboarding activation`; returned fallback graph metadata with 10 nodes and 11 edges.
+- Issue `#4` live `/api/key-results` endpoint checked with clarified `cycle-time` influenceability/gap `5/5`; returned fallback model with 4 KRs, first KR variable `cycle-time`, and assessment gap preserved as `5`.
+- Issue `#4` live endpoint recheck after credits passed in AI mode: `/api/graph` returned HTTP `200`, `gpt-5-mini`, 9 nodes, and 9 edges; `/api/key-results` returned HTTP `200`, AI mode, and 4 KRs.
+- Issue `#4` final lead-side live endpoint check before release passed in AI mode: `/api/graph` returned HTTP `200`, `gpt-5-mini`, 9 nodes, and 8 edges; `/api/key-results` returned HTTP `200`, AI mode, 4 KRs, and preserved clarification assessment traceability.
+- Issue `#4` final low-cost `gpt-5.6-luna` Tester/Reviewer worker verified clean branch state and `npm run build` with 12/12 tests passing. Its isolated context could not reach the running local server, so it reported live AI endpoint verification unavailable from that worker context.
+- Issue `#4` user confirmed the in-browser app at `http://127.0.0.1:5174/` is functional.
 
 ## Not Yet Verified
 
@@ -66,5 +82,6 @@ Last updated: 2026-08-15
 - Full graph editor behavior. It is out of scope for issue `#2`.
 - Issue `#4` full in-browser interaction screenshot/console check. The in-app browser connector initialized but did not return usable visible diagnostics in this session; local HTTP and generator contract checks were used instead.
 - Issue `#4` browser-level tests for slider submission, repeated objective generation, and malformed assessment inputs are absent. The low-cost worker flagged these as missing coverage but not merge-blocking for the current local-first PR.
-- Issue `#4` real AI-backed causal/metrics tree generation and AI-synthesized final KR generation are not implemented.
+- Issue `#4` real AI-backed causal/metrics tree generation and AI-synthesized final KR generation are implemented behind the server-side provider boundary and have passed smoke checks after API credits were added.
+- Issue `#4` full automated browser console/network inspection remains unverified; issue `#6` tracks browser-level clarification-flow coverage. Live HTTP page checks, live AI endpoint checks, and user in-browser functional confirmation passed.
 - Hosted deployment. It remains out of scope for issue `#4`.
