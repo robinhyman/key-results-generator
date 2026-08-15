@@ -38,13 +38,17 @@ Closed GitHub issue: `#1 Set up AI agent team operating system`, `Agent Status: 
 
 Closed GitHub issue: `#2 Build first local MVP for objective-to-key-results generation`, merged via PR #3 and set to `Agent Status: Done`.
 
-Next product requirement: `#4 Add AI-guided clarification step before key result generation`, currently Ready in the GitHub Project.
+Active product increment: `#4 Add AI-guided clarification step before key result generation`, implemented on branch `feature/4-clarification-flow` with draft PR `#5`.
 
 Merged pull request: `#3 Build local objective-to-KR MVP`
 
+Open draft pull request: `#5 Add clarification step before final KRs`
+
 ## Active Goal
 
-Implement the clarified AI-guided flow from issue `#4`: objective input, AI-generated causal/metrics tree, user clarification on influenceability and perceived gaps, then final KR generation.
+Finish issue `#4`: objective input, AI-generated causal/metrics tree, user clarification on influenceability and perceived gaps, then final KR generation.
+
+Local implementation separates graph generation from final KR generation. `src/generator.js` exports a serializable graph step, applies user influenceability/gap assessments, and ranks final KRs from the clarified graph. The browser UI now shows the graph and clarification controls before final KRs are generated.
 
 ## Current Runtime Assumption
 
@@ -61,11 +65,12 @@ Implement the clarified AI-guided flow from issue `#4`: objective input, AI-gene
 - Documentation impact must be assessed for every increment, and required docs are part of `Done`.
 - Future reusable operating-system improvements should be considered for `robinhyman/ai-team-operating-system`.
 - Cost control is now explicit: future increments should use cheaper/faster worker models whenever possible and reserve stronger models for Lead, Architect, ambiguity, integration, escalation, and final review.
-- Product requirements now explicitly include a clarification step before final KRs: the app should ask the user which high-impact metrics are most influenceable and where the biggest perceived gaps are.
-- The causal/metrics graph should be treated as a first-class intermediate artefact: serializable structured data with nodes, edges, rankings, user influenceability/gap assessments, and links to final KRs.
+- Product requirements now explicitly include a clarification step before final KRs: the app asks the user which high-impact metrics are most influenceable and where the biggest perceived gaps are.
+- The causal/metrics graph is treated as a first-class intermediate artefact: serializable structured data with nodes, edges, rankings, user influenceability/gap assessments, and links to final KRs.
+- GitHub issue `#4` has a progress comment and draft PR `#5`. The current connector exposed issue comments and PR creation but not the GitHub Project `Agent Status` field update, so the Project field may still need manual or later-tool update to `Review`.
 
 ## Open Questions
 
 - What hosted deployment target should be used for a future increment?
 - Which AI provider/model and credential path should be used for the first real AI-backed generation increment?
-- For the next local-first increment, should graph data be persisted only in browser/session state, or saved to a local durable store as preparation for hosted use?
+- Should the next increment add durable persistence for clarified graph data or integrate a real AI provider first?

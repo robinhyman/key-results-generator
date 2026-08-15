@@ -44,9 +44,20 @@ Last updated: 2026-08-15
 - Final `main` verification: `npm run build` passed.
 - Final `main` local URL checked: `http://127.0.0.1:5173/` returned HTTP 200.
 - Final HTML order checked: Generated key results appear before the Causal metrics graph.
+- Issue `#4` test-first generator tests were added and confirmed failing for the expected missing `applyClarifications` export before implementation.
+- Issue `#4` `npm test` passed after implementing serializable graph generation, clarification capture, and clarified KR ranking.
+- Issue `#4` `npm run build` passed after implementation. It ran syntax checks for `server.js`, `src/generator.js`, and `public/app.js`, plus unit tests.
+- Issue `#4` local app started at `http://127.0.0.1:5173/`.
+- Issue `#4` local URL checked: `http://127.0.0.1:5173/` returned HTTP 200 and served markup containing the clarification form and final key results section.
+- Issue `#4` generator contract smoke check confirmed a clarified `cycle-time` metric with influenceability/gap `5/5` becomes the first final KR variable and graph assessments are present on the final model.
+- Issue `#4` branch `feature/4-clarification-flow` pushed and draft PR `#5` opened.
+- Issue `#4` low-cost Tester/Reviewer worker ran on `gpt-5.6-luna` with low reasoning. Worker verified clean branch state, compared PR commit against `origin/main`, ran `npm run build` successfully, confirmed 6/6 unit tests passed, inspected the clarification flow and local-demo-server operating-system rule, and found no merge-blocking bugs.
 
 ## Not Yet Verified
 
 - Hosted deployment. It is out of scope for issue `#2`.
 - External AI generation quality. The first MVP intentionally uses a deterministic local generator.
 - Full graph editor behavior. It is out of scope for issue `#2`.
+- Issue `#4` full in-browser interaction screenshot/console check. The in-app browser connector initialized but did not return usable visible diagnostics in this session; local HTTP and generator contract checks were used instead.
+- Issue `#4` browser-level tests for slider submission, repeated objective generation, and malformed assessment inputs are absent. The low-cost worker flagged these as missing coverage but not merge-blocking for the current local-first PR.
+- Hosted deployment. It remains out of scope for issue `#4`.

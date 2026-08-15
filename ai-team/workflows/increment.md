@@ -13,7 +13,7 @@ The increment is the team's default unit of delivery. Avoid open-ended work. If 
 5. Plan the smallest coherent change that satisfies the acceptance criteria.
 6. Make a lightweight model-use plan using `ai-team/model-policy.md`.
 7. Define the verification plan using `ai-team/workflows/testing.md`.
-8. Delegate bounded worker tasks to cheaper/faster models whenever the work can be split safely.
+8. Delegate at least one bounded routine worker task to a cheaper/faster model, or record the delegation exception before review/completion.
 9. Build, test, and review the change.
 10. Deploy or start the target demonstration environment.
 11. Check the linked app or demo and confirm the increment works there.
@@ -67,8 +67,10 @@ An increment is done only when all applicable checks below are true.
 ### Model Use Is Cost-Conscious
 
 - The Lead made a lightweight model-use plan before implementation.
-- Routine build, test, documentation, release, and mechanical update work was delegated to cheaper/faster models where practical.
-- Any substantial worker work kept on a high-capability model is explained.
+- At least one routine worker task was delegated to a cheaper/faster model, unless a documented exception applies.
+- Routine build, test, documentation, release, focused review, issue/PR summary, and mechanical update work was delegated to cheaper/faster models by default when available.
+- Worker model tier, task brief, commands/checks run, findings, and gaps are recorded in the increment report or PR.
+- Any skipped delegation or substantial worker work kept on a high-capability model is explained with reason and risk.
 - Worker outputs were reviewed before the increment was reported as complete or ready for review.
 
 ### GitHub Reflects Reality
