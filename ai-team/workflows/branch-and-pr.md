@@ -28,6 +28,7 @@ Each PR should include:
 - Acceptance criteria status.
 - Test-first status.
 - Verification run.
+- Model use summary, including cheaper/faster worker tasks delegated, worker model tier, worker evidence, and any delegation exception.
 - Demo/deployment link when available.
 - Known risks or skipped checks.
 - Follow-up issues.
@@ -49,6 +50,6 @@ Merge only when:
 
 - Review is complete.
 - Required checks pass or skipped checks are justified.
+- The required cheaper/faster worker delegation evidence is present, or a documented delegation exception is justified.
 - The target demo/deployment link has been checked.
 - GitHub Project status and issue comments are current.
-

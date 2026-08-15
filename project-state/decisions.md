@@ -119,3 +119,9 @@ Reason: The first product run validated the process but did not visibly use chea
 Decision: When a completion or review response gives the user a local app/demo URL, the local server must still be running at final response time and should be left running unless the user explicitly says they do not need it.
 
 Reason: A local URL is only useful while its server process is active. Reporting a checked local URL after stopping the server creates a false demo link and violates the intent of the checked-link rule.
+
+## 2026-08-15: Make Cheaper-Worker Delegation A Required Gate
+
+Decision: Product increments must delegate at least one bounded routine task to a cheaper/faster worker model before review or completion, unless a documented exception applies. PRs and increment reports must show the worker task, model tier, evidence, and any skipped-delegation reason.
+
+Reason: Cost-conscious model use should happen automatically, not only after user reminders. Making delegation a review gate gives the user visible evidence that routine work is being moved off the Lead model whenever practical.

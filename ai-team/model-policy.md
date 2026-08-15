@@ -63,9 +63,11 @@ Escalate to a stronger model when:
 ## Delegation Rules
 
 - Before implementation begins, the Lead must identify which parts of the increment can be delegated to mid-capability or low-cost workers.
-- The Lead should delegate routine build, test, documentation, release-note, and mechanical update tasks whenever the work has clear inputs, bounded scope, and low blast radius.
-- The Lead may keep a worker task only when delegation overhead would exceed the task cost, the task is too small to split, or the task requires continuous architectural judgement.
-- If the Lead keeps substantial worker work on a high-capability model, the increment report must explain why.
+- For every product increment, the Lead must delegate at least one routine worker task to a cheaper/faster model before the increment is reported for review or completion, unless a documented exception applies.
+- Default delegated tasks are routine verification, build/test runs, focused review, documentation checks, release-note drafts, issue/PR summaries, and mechanical updates with clear inputs, bounded scope, and low blast radius.
+- The Lead may skip delegation only when delegation overhead would exceed the task cost, the task is too small to split, no subagent/tooling path is available, or the task requires continuous architectural judgement.
+- Any skipped delegation must be recorded in the increment report and PR with the reason, risk, and what will be delegated next time.
+- If the Lead keeps substantial worker work on a high-capability model, the increment report and PR must explain why.
 - Worker briefs must include a suggested model tier and enough context to avoid making the worker read the full project history.
 - Worker outputs must be reviewed by the Lead before merge, release, or Done status.
 
@@ -85,5 +87,8 @@ Every substantial increment report should include:
 
 - Which role or task used which model tier.
 - Which tasks were delegated to cheaper/faster workers.
+- The exact cheaper/faster model tier used for each delegated task.
+- Evidence returned by each worker, such as commands run, files inspected, bugs found, or gaps identified.
 - Which tasks used a high-capability model and why.
+- Whether the required delegation gate was satisfied or an exception was used.
 - Any obvious missed opportunity to use a cheaper model next time.

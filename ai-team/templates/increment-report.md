@@ -61,9 +61,17 @@ Remaining concerns:
 
 Lead model tier:
 
+Delegation gate satisfied or exception:
+
 Worker tasks delegated to cheaper/faster models:
 
+Worker model tier(s):
+
+Worker evidence:
+
 Tasks kept on high-capability model and why:
+
+Skipped delegation reason and risk, if any:
 
 Escalations:
 
