@@ -4,7 +4,7 @@ Last updated: 2026-08-15
 
 ## Current State
 
-This repository contains the initial AI team operating artefacts. No application code has been created yet.
+This repository contains the initial AI team operating artefacts. The first application prototype exists on PR #3, not yet merged into main.
 
 The team now has an explicit increment workflow and Increment Definition Of Done in `ai-team/workflows/increment.md`.
 
@@ -28,11 +28,13 @@ GitHub repository: `robinhyman/key-results-generator`
 
 GitHub Project: `Key Results Generator` at `https://github.com/users/robinhyman/projects/4`
 
-Active GitHub issue: `#2 Build first local MVP for objective-to-key-results generation`
+Active GitHub issue: `#2 Build first local MVP for objective-to-key-results generation`, currently in Review via PR #3.
+
+Next product requirement: `#4 Add AI-guided clarification step before key result generation`, currently Ready in the GitHub Project.
 
 ## Active Goal
 
-Build the first local MVP for objective-to-key-results generation using the AI team operating system.
+Review the first local MVP, then implement the clarified AI-guided flow: objective input, AI-generated causal/metrics tree, user clarification on influenceability and perceived gaps, then final KR generation.
 
 ## Current Runtime Assumption
 
@@ -48,7 +50,8 @@ Build the first local MVP for objective-to-key-results generation using the AI t
 - Retrospective improvement proposals require user approval before operating files are changed.
 - Documentation impact must be assessed for every increment, and required docs are part of `Done`.
 - Future reusable operating-system improvements should be considered for `robinhyman/ai-team-operating-system`.
+- Product requirements now explicitly include a clarification step before final KRs: the app should ask the user which high-impact metrics are most influenceable and where the biggest perceived gaps are.
 
 ## Open Questions
 
-- Should the first MVP use an external AI API if credentials are available, or keep the first increment deterministic/local?
+- Which AI provider/model and credential path should be used for the first real AI-backed generation increment?
