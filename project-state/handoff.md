@@ -8,15 +8,15 @@ The initial team operating model has been drafted and pushed to a private GitHub
 
 GitHub Project: `Key Results Generator` at `https://github.com/users/robinhyman/projects/4`
 
-Architecture hardening iteration is active on branch `codex/architecture-hardening`.
+Architecture hardening iteration completed and merged to `main` via PR #13.
 
 Current issue map:
 
-- `#9 Harden server routing, validation, and AI fallback diagnostics`: in the GitHub Project with `Agent Status: In Progress`.
-- `#10 Split frontend workflow into focused browser modules`: in the GitHub Project with `Agent Status: In Progress`.
-- `#6 Add browser-level tests for clarification flow`: in the GitHub Project with `Agent Status: In Progress`.
-- `#7 Improve GitHub Project status update tooling`: in the GitHub Project with `Agent Status: In Progress`.
-- `#12 Document architecture hardening decisions and close the review iteration`: in the GitHub Project with `Agent Status: Ready`.
+- `#9 Harden server routing, validation, and AI fallback diagnostics`: completed by PR #13 with `Agent Status: Done`.
+- `#10 Split frontend workflow into focused browser modules`: completed by PR #13 with `Agent Status: Done`.
+- `#6 Add browser-level tests for clarification flow`: completed by PR #13 with `Agent Status: Done`.
+- `#7 Improve GitHub Project status update tooling`: completed by PR #13 with `Agent Status: Done`.
+- `#12 Document architecture hardening decisions and close the review iteration`: completed by PR #13 with `Agent Status: Done`.
 - `#11 Add browser-level tests for the clarification workflow`: closed as duplicate of `#6`, with `Agent Status: Done`.
 
 Current implementation summary:
@@ -34,11 +34,9 @@ Verification so far:
 - Local app link checked: `http://127.0.0.1:5175/` returned HTTP `200`; `/src/generator.js` returned HTTP `404`; `/api/graph` returned HTTP `200` with AI mode using `gpt-5-mini`.
 - Low-cost `gpt-5.6-luna` Tester/Reviewer worker provided read-only test/risk/docs checklist for this iteration.
 
-Remaining before marking the iteration done:
+Remaining:
 
-- Comment completion reports on issues `#9`, `#10`, `#6`, `#7`, and `#12`.
-- Set completed issue `Agent Status` values to `Done`.
-- Run the retrospective workflow after completion.
+- Run the retrospective workflow for the architecture-hardening iteration.
 
 GitHub issue `#1 Set up AI agent team operating system` is complete, closed, and has `Agent Status: Done`.
 

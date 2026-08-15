@@ -84,14 +84,16 @@ Last updated: 2026-08-15
 - Created architecture hardening issues `#9`, `#10`, `#11`, and `#12`.
 - Added issues `#9`, `#10`, `#11`, and `#12` to the GitHub Project.
 - Closed issue `#11` as a duplicate of existing browser-test issue `#6` and set `Agent Status: Done`.
+- Completed issue `#9` with server/API validation, static routing hardening, and fallback diagnostics in PR #13.
+- Completed issue `#10` with the native browser module split in PR #13.
+- Completed issue `#6` with Playwright browser workflow coverage in PR #13.
+- Completed issue `#7` with the documented GitHub CLI Project-status fallback in PR #13.
+- Completed issue `#12` with README and project-state closeout in PR #13.
+- Merged PR `#13 Harden architecture and browser workflow coverage`.
 
 ## Active
 
-- Issue `#9` is in progress: server/API validation, static routing hardening, and AI fallback diagnostics implemented locally with tests passing.
-- Issue `#10` is in progress: browser workflow split into focused native ES modules with build passing.
-- Issue `#6` is in progress: Playwright browser workflow test added and passing locally.
-- Issue `#7` is in progress: GitHub CLI Project-status fallback documented in `ai-team/github-workflow.md`.
-- Issue `#12` is ready for final documentation/state closeout after final verification.
+- None.
 
 ## Blocked
 
@@ -99,6 +101,5 @@ Last updated: 2026-08-15
 
 ## Next
 
-- Finish final verification for the architecture-hardening iteration.
-- Comment completion reports on issues `#9`, `#10`, `#6`, `#7`, and `#12`.
-- Move completed issues to `Agent Status: Done` only after local demo verification and state closeout.
+- Run the architecture-hardening retrospective.
+- Consider durable persistence or graph editing as the next product increment.

@@ -89,6 +89,7 @@ Last updated: 2026-08-15
 - Architecture hardening issue `#7`: used authenticated `gh project` commands outside the sandbox to add issues to the GitHub Project and update `Agent Status`; documented the fallback procedure in `ai-team/github-workflow.md`.
 - Low-cost worker evidence for architecture hardening: `gpt-5.6-luna` Tester/Reviewer inspected the repo read-only and returned missing test cases, implementation risks, docs/state update targets, and a verification checklist. Its findings informed the server tests, browser test, docs updates, and final checklist.
 - Architecture hardening final verification: `npm run build` passed with 20/20 unit/API tests; `npm run test:browser` passed with 1/1 Playwright test; local app link `http://127.0.0.1:5175/` returned HTTP `200`; `/src/generator.js` returned HTTP `404`; `/api/graph` returned HTTP `200` with AI mode using `gpt-5-mini`.
+- PR `#13 Harden architecture and browser workflow coverage` merged to `main`. Post-merge state cleanup updated project-state files to mark issues `#9`, `#10`, `#6`, `#7`, and `#12` complete.
 
 ## Not Yet Verified
 
