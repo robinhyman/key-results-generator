@@ -65,3 +65,15 @@ Reason: Failing tests give worker agents concrete targets, reduce requirement dr
 Decision: Use `ai-team/workflows/intake-and-specification.md` to turn goals and discoveries into GitHub issues, and mark issues `Ready` only when a fresh agent can start without hidden chat context.
 
 Reason: Good agent execution depends on clear, bounded, observable tickets. Ready Criteria prevent vague or underspecified work from being handed to worker agents.
+
+## 2026-08-15: Define First Operating Roles And Web Profile
+
+Decision: Add lightweight role specs for Project Lead, Builder, Tester, Reviewer, and Release Agent, plus branch/PR policy and a web app local-first project profile.
+
+Reason: The team needs enough role, code-flow, and project-specific guidance to start work without over-designing every possible future role.
+
+## 2026-08-15: Require Retrospectives And User-Approved Improvements
+
+Decision: Run a retrospective after each increment. Suggested constitutional or workflow improvements require user approval before application and should be committed before the next increment starts.
+
+Reason: The team should improve continuously while preserving user control over the operating system.

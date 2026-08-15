@@ -20,9 +20,11 @@ Last updated: 2026-08-15
 - Testing workflow created and linked from increment/session workflows.
 - Test-first preference added to the testing workflow and increment report.
 - Intake/specification workflow and issue spec template created.
+- Role specs, branch/PR policy, web local-first profile, and retrospective workflow created.
 
 ## Not Yet Verified
 
 - First agent-run workflow against a real issue.
 - Testing workflow against a real software increment.
 - Intake/specification workflow against the first real product goal.
+- Retrospective workflow after the first completed increment.

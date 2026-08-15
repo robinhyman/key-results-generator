@@ -20,6 +20,8 @@ For product work, use `ai-team/workflows/increment.md` as the default delivery l
 
 For turning goals or discoveries into GitHub issues, use `ai-team/workflows/intake-and-specification.md`.
 
+After each increment, use `ai-team/workflows/retrospective.md` before starting the next increment.
+
 ## Runtime Model
 
 - The main Codex chat acts as Project Lead.
@@ -31,6 +33,8 @@ For turning goals or discoveries into GitHub issues, use `ai-team/workflows/inta
 ## Delivery Unit
 
 The default delivery unit is an increment: a small, coherent slice of progress represented by one primary GitHub issue, tracked in the GitHub Project, verified locally, and closed with durable state updates.
+
+The initial project profile is `ai-team/project-profiles/web-app-local-first.md`.
 
 ## Initial Project Profile
 

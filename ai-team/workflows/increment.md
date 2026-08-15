@@ -17,8 +17,10 @@ The increment is the team's default unit of delivery. Avoid open-ended work. If 
 9. Deploy or start the target demonstration environment.
 10. Check the linked app or demo and confirm the increment works there.
 11. Capture follow-up work as separate GitHub issues when it is real, actionable, and out of scope.
-12. Update project state files and the GitHub issue.
-13. Move `Agent Status` to `Review`, `Blocked`, or `Done` according to the real current state.
+12. Run the retrospective workflow.
+13. Apply user-approved operating improvements, if any.
+14. Update project state files and the GitHub issue.
+15. Move `Agent Status` to `Review`, `Blocked`, or `Done` according to the real current state.
 
 ## Increment Definition Of Done
 
@@ -86,6 +88,13 @@ An increment is done only when all applicable checks below are true.
 - The next useful issue is identified or created.
 - The current increment does not depend on hidden chat context.
 
+### Retrospective Has Run
+
+- Role inputs were gathered from participating roles.
+- Process issues and suggested improvements were recorded.
+- Constitutional or workflow changes were proposed to the user before application.
+- User-approved operating changes were applied before the next increment.
+
 ## Status Guidance
 
 - Use `Inbox` for raw work that has not been triaged.
@@ -100,3 +109,5 @@ An increment is done only when all applicable checks below are true.
 At the end of each increment, add a concise report to the GitHub issue and update `project-state/handoff.md`. A `Done` report must include the checked app/demo link.
 
 Use `ai-team/templates/increment-report.md` when the work is substantial or when another session will continue from the result.
+
+Then run `ai-team/workflows/retrospective.md`.

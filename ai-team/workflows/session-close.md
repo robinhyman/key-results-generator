@@ -10,5 +10,6 @@ Before ending a serious work session:
 6. Update the relevant GitHub issue or PR if one exists.
 7. For product increments, confirm the Increment Definition Of Done in `ai-team/workflows/increment.md` is satisfied or record exactly what remains.
 8. Record testing performed, skipped checks, known failures, and follow-up bugs in `project-state/verification.md`.
+9. For completed increments, run or record the retrospective before starting another increment.
 
 The handoff must be short enough for a fresh Lead to read quickly.

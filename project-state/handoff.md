@@ -22,6 +22,8 @@ TDD rule: prefer test-first development for behaviorally clear work. If skipped 
 
 Intake rule: use `ai-team/workflows/intake-and-specification.md` and `ai-team/templates/issue-spec.md` when turning goals or discoveries into GitHub issues.
 
+Continuous improvement rule: after each increment, run `ai-team/workflows/retrospective.md`. Any constitutional or workflow improvement must be approved by the user before being applied, and approved changes should be committed before the next increment.
+
 ## Next Best Actions
 
 1. Draft detailed role specs only for the roles needed in the first build.
@@ -41,6 +43,9 @@ A fresh Lead should read:
 - `ai-team/workflows/increment.md`, when doing product work
 - `ai-team/workflows/testing.md`, when doing product work
 - `ai-team/workflows/intake-and-specification.md`, when creating or refining issues
+- `ai-team/workflows/branch-and-pr.md`, when changing code
+- `ai-team/workflows/retrospective.md`, after each increment
+- `ai-team/project-profiles/web-app-local-first.md`, for the first web app
 - `project-state/status.md`
 - `project-state/handoff.md`
 

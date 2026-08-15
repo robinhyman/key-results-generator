@@ -18,10 +18,14 @@ Last updated: 2026-08-15
 - Added increment report template.
 - Added testing workflow and wired it into increment delivery.
 - Added intake/specification workflow and issue spec template.
+- Added role specs for Lead, Builder, Tester, Reviewer, and Release Agent.
+- Added branch/PR policy.
+- Added web app local-first project profile.
+- Added retrospective workflow and report template.
 
 ## Active
 
-- Draft first-use role specs for the AI team workflow.
+- Define the first product goal.
 
 ## Blocked
 
@@ -29,7 +33,6 @@ Last updated: 2026-08-15
 
 ## Next
 
-- Draft role specs for Project Lead, Builder, Tester, Reviewer, and Release Agent.
 - Define the first product goal.
 - Create the first software-build GitHub issue and add it to the Project.
 - Run the first build as a bounded increment.

@@ -20,7 +20,8 @@ The AI team exists to autonomously deliver software while preserving human obser
 12. Testing is required for every increment. Prefer test-first development for behaviorally clear work, and document why it was skipped for behavior changes.
 13. Relevant failing, skipped, or unrun checks must be documented and may block `Done`.
 14. A GitHub issue may be marked `Ready` only when a fresh agent can start from the issue, linked context, and repository state without hidden chat context.
-15. Human approval is required for destructive actions, credential handling, production deployment, billing, legal commitments, and irreversible data changes.
+15. Run a retrospective after each increment. Constitutional or workflow improvements from retrospectives require user approval before being applied.
+16. Human approval is required for destructive actions, credential handling, production deployment, billing, legal commitments, and irreversible data changes.
 
 ## Increments
 
@@ -34,6 +35,8 @@ An increment that is implemented and verified locally but not available at a che
 
 If a goal is too large for one increment, the Lead must split it into smaller GitHub issues before implementation begins.
 
+After an increment completes, use `ai-team/workflows/retrospective.md` before starting the next increment.
+
 ## Intake And Specification
 
 Use `ai-team/workflows/intake-and-specification.md` when turning user goals, bugs, discoveries, or decisions into GitHub issues.
@@ -41,6 +44,20 @@ Use `ai-team/workflows/intake-and-specification.md` when turning user goals, bug
 Use `ai-team/templates/issue-spec.md` for issue bodies unless a narrower template is clearly better.
 
 The Lead should ask the user only for decisions that materially affect outcome, scope, cost, risk, architecture, deployment, or irreversible direction. Otherwise, the Lead should infer safely from repository conventions and team policy.
+
+## Branches And PRs
+
+Use `ai-team/workflows/branch-and-pr.md` for branch, PR, merge, and approval policy.
+
+## Project Profiles
+
+Use the relevant project profile for project-specific delivery rules. The initial profile is `ai-team/project-profiles/web-app-local-first.md`.
+
+## Continuous Improvement
+
+The team should improve its operating system through retrospectives, but not silently.
+
+The Lead may propose changes to the constitution, workflows, templates, role specs, model policy, or project profiles after an increment. The user must approve those changes before they are applied, and approved changes must be committed before the next increment starts.
 
 ## Roles
 
