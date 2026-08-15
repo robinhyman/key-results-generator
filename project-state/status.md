@@ -36,9 +36,11 @@ GitHub Project: `Key Results Generator` at `https://github.com/users/robinhyman/
 
 Active GitHub issue: `#2 Build first local MVP for objective-to-key-results generation`
 
+Active pull request: `#3 Build local objective-to-KR MVP`
+
 ## Active Goal
 
-Issue `#2` has been implemented locally and verified against the local demo environment. Prepare/publish the PR and keep GitHub status aligned with the final review outcome.
+Issue `#2` has been implemented locally, verified against the local demo environment, pushed, and opened as draft PR `#3`. Current GitHub Project target status is `Agent Status: Review` until the PR is reviewed/merged or the user decides to mark the increment Done from the draft PR.
 
 ## Current Runtime Assumption
 

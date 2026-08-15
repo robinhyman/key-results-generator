@@ -36,6 +36,8 @@ Last updated: 2026-08-15
 - Browser flow checked with objective `Expand enterprise customer retention`.
 - Browser check confirmed submitted objective, graph/model view, generated key results, ranking view, and no console errors.
 - Visual screenshot check performed for the local app flow.
+- Draft PR `#3` opened for review.
+- Retrospective completed for issue `#2`.
 
 ## Not Yet Verified
 

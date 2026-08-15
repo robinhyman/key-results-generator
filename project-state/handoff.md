@@ -8,7 +8,7 @@ The initial team operating model has been drafted and pushed to a private GitHub
 
 GitHub Project: `Key Results Generator` at `https://github.com/users/robinhyman/projects/4`
 
-GitHub issue `#2 Build first local MVP for objective-to-key-results generation` is the first product increment. It has been moved to `Agent Status: In Progress` and implemented locally on branch `feature/2-local-mvp`.
+GitHub issue `#2 Build first local MVP for objective-to-key-results generation` is the first product increment. It has been moved from `Ready` to `In Progress`, implemented locally on branch `feature/2-local-mvp`, and opened as draft PR `#3`.
 
 The constitution and GitHub workflow now explicitly require `Agent Status` to reflect reality, including moving an issue to `In Progress` as soon as meaningful work starts.
 
@@ -34,10 +34,10 @@ This project is tagged at `ai-team-os-v0.1` as the pre-product baseline.
 
 ## Next Best Actions
 
-1. Review and publish the branch/PR for issue `#2` if not already done.
+1. Review draft PR `#3`: `https://github.com/robinhyman/key-results-generator/pull/3`.
 2. Keep the local app running with `npm start` when handing a checked demo link to the user.
-3. Move issue `#2` to `Review` or `Done` only when GitHub, PR, and demo-link requirements are all truly satisfied.
-4. Start the next product increment only after the retrospective for issue `#2` is recorded.
+3. Merge PR `#3` and close issue `#2` only after the user is satisfied with the local demo.
+4. Choose the next increment: hosted deployment, external AI-backed generation, or richer graph editing.
 
 ## Resume Instructions
 
@@ -65,3 +65,10 @@ Then continue issue `#2` closeout unless the user redirects.
 - Example objective submitted: `Expand enterprise customer retention`
 - Browser check confirmed objective output, graph/model view, generated key results, ranking view, and no console errors.
 - Automated checks passed with `npm run build`.
+
+## Issue #2 Retrospective
+
+- What went well: the issue spec was strong enough to build without human clarification; test-first worked well for the deterministic graph/ranking logic; the no-dependency stack kept the local demo reliable.
+- What was harder than expected: browser screenshot capture needed adjustment because full-page capture duplicated sticky content, and the sandbox required approvals for local server and Git metadata operations.
+- Gaps discovered: future increments need a clearer product decision on external AI versus graph editing priority.
+- Suggested operating changes: none applied. No constitution, workflow, template, role, model-policy, or profile change is proposed from this increment.

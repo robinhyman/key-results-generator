@@ -34,10 +34,12 @@ Last updated: 2026-08-15
 - Added local Node server and browser UI for objective input, graph inspection, variable ranking, and KR output.
 - Added app README with run and check instructions.
 - Verified the local app at `http://127.0.0.1:5173/`.
+- Opened draft PR `#3` for issue `#2`.
+- Ran and recorded the issue `#2` retrospective.
 
 ## Active
 
-- Close out issue `#2` with GitHub issue report, retrospective, branch/PR publishing, and final Project status.
+- Review draft PR `#3` and decide whether to merge/mark issue `#2` Done.
 
 ## Blocked
 
