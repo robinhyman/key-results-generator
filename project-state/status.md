@@ -14,6 +14,8 @@ Testing is a first-class increment gate. Use `ai-team/workflows/testing.md` for 
 
 Test-first development is preferred for behaviorally clear work and should be reported per increment.
 
+Lead intake and ticket creation are governed by `ai-team/workflows/intake-and-specification.md`.
+
 GitHub repository: `robinhyman/key-results-generator`
 
 GitHub Project: `Key Results Generator` at `https://github.com/users/robinhyman/projects/4`
@@ -33,6 +35,7 @@ Design a reusable AI software delivery team that can run first in Codex and late
 - Product work should be delivered in increments, each tied to one primary GitHub issue.
 - Any `Done` notification for product work must include a checked app/demo link the user can open.
 - Each increment must define and report its verification plan.
+- New actionable tickets should use `ai-team/templates/issue-spec.md` and meet Ready Criteria before `Agent Status: Ready`.
 
 ## Open Questions
 

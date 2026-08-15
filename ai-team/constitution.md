@@ -19,7 +19,8 @@ The AI team exists to autonomously deliver software while preserving human obser
 11. An increment may be called `Done` only when it is deployed or otherwise available in the target demonstration environment, checked by the Lead, and reported with a working link the user can open.
 12. Testing is required for every increment. Prefer test-first development for behaviorally clear work, and document why it was skipped for behavior changes.
 13. Relevant failing, skipped, or unrun checks must be documented and may block `Done`.
-14. Human approval is required for destructive actions, credential handling, production deployment, billing, legal commitments, and irreversible data changes.
+14. A GitHub issue may be marked `Ready` only when a fresh agent can start from the issue, linked context, and repository state without hidden chat context.
+15. Human approval is required for destructive actions, credential handling, production deployment, billing, legal commitments, and irreversible data changes.
 
 ## Increments
 
@@ -32,6 +33,14 @@ Use `ai-team/workflows/testing.md` for verification planning, tester responsibil
 An increment that is implemented and verified locally but not available at a checked demonstration link is not done. It should remain `In Progress`, `Review`, or `Blocked`, depending on what remains.
 
 If a goal is too large for one increment, the Lead must split it into smaller GitHub issues before implementation begins.
+
+## Intake And Specification
+
+Use `ai-team/workflows/intake-and-specification.md` when turning user goals, bugs, discoveries, or decisions into GitHub issues.
+
+Use `ai-team/templates/issue-spec.md` for issue bodies unless a narrower template is clearly better.
+
+The Lead should ask the user only for decisions that materially affect outcome, scope, cost, risk, architecture, deployment, or irreversible direction. Otherwise, the Lead should infer safely from repository conventions and team policy.
 
 ## Roles
 

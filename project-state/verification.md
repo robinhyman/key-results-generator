@@ -19,8 +19,10 @@ Last updated: 2026-08-15
 - Increment Definition Of Done updated to require a checked app/demo link before `Done`.
 - Testing workflow created and linked from increment/session workflows.
 - Test-first preference added to the testing workflow and increment report.
+- Intake/specification workflow and issue spec template created.
 
 ## Not Yet Verified
 
 - First agent-run workflow against a real issue.
 - Testing workflow against a real software increment.
+- Intake/specification workflow against the first real product goal.

@@ -23,6 +23,12 @@ What this agent must not change.
 - Relevant files:
 - Relevant state file:
 
+## Requirement Source
+
+- Issue spec:
+- Acceptance criteria:
+- Out-of-scope notes:
+
 ## Verification
 
 Checks to run or evidence to collect.
@@ -33,4 +39,3 @@ Checks to run or evidence to collect.
 - Files changed
 - Checks run
 - Risks or follow-up issues found
-

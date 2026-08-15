@@ -24,6 +24,8 @@ Do not create issues for:
 - Tiny fixes that can be handled inside the current task
 - Speculative refactors without user or technical value
 
+Use `ai-team/workflows/intake-and-specification.md` before creating or marking issues `Ready`.
+
 ## Recommended Project Statuses
 
 Use the custom GitHub Project single-select field `Agent Status` for agent workflow state.
@@ -83,6 +85,8 @@ The Lead must ask the user before:
 - Changing project structure or labels in a way that affects existing workflow.
 
 ## Issue Template
+
+Prefer `ai-team/templates/issue-spec.md` for new actionable issues.
 
 ```markdown
 ## Summary

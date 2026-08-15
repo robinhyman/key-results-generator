@@ -20,6 +20,8 @@ Testing rule: each increment must define a verification plan, follow `ai-team/wo
 
 TDD rule: prefer test-first development for behaviorally clear work. If skipped for a behavior change, explain why in the increment report.
 
+Intake rule: use `ai-team/workflows/intake-and-specification.md` and `ai-team/templates/issue-spec.md` when turning goals or discoveries into GitHub issues.
+
 ## Next Best Actions
 
 1. Draft detailed role specs only for the roles needed in the first build.
@@ -38,6 +40,7 @@ A fresh Lead should read:
 - `ai-team/github-workflow.md`
 - `ai-team/workflows/increment.md`, when doing product work
 - `ai-team/workflows/testing.md`, when doing product work
+- `ai-team/workflows/intake-and-specification.md`, when creating or refining issues
 - `project-state/status.md`
 - `project-state/handoff.md`
 

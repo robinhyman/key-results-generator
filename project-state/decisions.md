@@ -59,3 +59,9 @@ Reason: General "relevant tests pass" language is too easy for agents to interpr
 Decision: Prefer test-first development for behaviorally clear work, especially bugs, business logic, validation, APIs, regressions, and workflows.
 
 Reason: Failing tests give worker agents concrete targets, reduce requirement drift, improve handoffs, and let cheaper agents implement against executable acceptance criteria.
+
+## 2026-08-15: Require Ready Criteria For Agent Tickets
+
+Decision: Use `ai-team/workflows/intake-and-specification.md` to turn goals and discoveries into GitHub issues, and mark issues `Ready` only when a fresh agent can start without hidden chat context.
+
+Reason: Good agent execution depends on clear, bounded, observable tickets. Ready Criteria prevent vague or underspecified work from being handed to worker agents.

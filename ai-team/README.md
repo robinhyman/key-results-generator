@@ -18,6 +18,8 @@ Use only the extra workflow or template files that match the current task.
 
 For product work, use `ai-team/workflows/increment.md` as the default delivery loop.
 
+For turning goals or discoveries into GitHub issues, use `ai-team/workflows/intake-and-specification.md`.
+
 ## Runtime Model
 
 - The main Codex chat acts as Project Lead.
