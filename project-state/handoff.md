@@ -50,7 +50,8 @@ This project is tagged at `ai-team-os-v0.1` as the pre-product baseline.
 2. If tooling becomes available, move issue `#4` Project `Agent Status` to `Review`.
 3. Run or manually perform a full browser interaction check for the clarification controls and final KR generation.
 4. Include or confirm the checked local app link `http://127.0.0.1:5173/` before marking the increment `Done`.
-5. Run the retrospective workflow after issue `#4` is completed or paused.
+5. Consider follow-up issue `#6 Add browser-level tests for clarification flow`.
+6. Consider follow-up issue `#7 Improve GitHub Project status update tooling`.
 
 ## Resume Instructions
 
@@ -81,6 +82,17 @@ Current verification for issue `#4`:
 - Local link check: HTTP `200`, page includes the clarification form and final key results section.
 - Generator contract check: clarified `cycle-time` with influenceability/gap `5/5` becomes the first KR variable and graph assessments survive serialization-compatible model flow.
 - Remaining coverage gap: no browser-level automated tests for slider submission, repeated objective generation, or malformed assessment inputs.
+
+## Issue #4 Retrospective
+
+- Role inputs: Lead/Architect/Builder/Documentarian/Release perspectives were provided by the Lead; Tester/Reviewer input came from a low-cost `gpt-5.6-luna` worker.
+- What went well: the clarified graph-first product requirement translated cleanly into test-first generator contracts; the local deterministic generator stayed dependency-free and serializable; the user feedback loop exposed two operating gaps while there was still time to fix them.
+- What went wrong or was harder than expected: the final local URL was initially reported after the server had been stopped; cheaper-worker delegation happened only after the user challenged the lack of evidence; GitHub Project status updates were not available through the exposed connector.
+- Process gaps discovered: local demo links must be treated as live-process commitments, not historical verification notes; cheaper-worker delegation needed to be a hard gate; Project status update tooling needs either automation or a clear manual fallback.
+- Documentation gaps: the local-first profile, session-close workflow, model policy, increment workflow, branch/PR workflow, increment report template, and decisions log were updated after user approval.
+- Improvements applied: local demo servers must remain running when sharing local URLs; product increments and PRs now require cheaper/faster worker delegation evidence or a documented exception.
+- Follow-up issues created: `#6 Add browser-level tests for clarification flow`; `#7 Improve GitHub Project status update tooling`.
+- Suggested further operating changes: none pending approval from this retrospective.
 
 ## Issue #2 Local Verification
 
