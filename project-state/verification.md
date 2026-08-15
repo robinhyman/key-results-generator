@@ -91,6 +91,7 @@ Last updated: 2026-08-15
 - Architecture hardening final verification: `npm run build` passed with 20/20 unit/API tests; `npm run test:browser` passed with 1/1 Playwright test; local app link `http://127.0.0.1:5175/` returned HTTP `200`; `/src/generator.js` returned HTTP `404`; `/api/graph` returned HTTP `200` with AI mode using `gpt-5-mini`.
 - PR `#13 Harden architecture and browser workflow coverage` merged to `main`. Post-merge state cleanup updated project-state files to mark issues `#9`, `#10`, `#6`, `#7`, and `#12` complete.
 - Architecture hardening retrospective posted to issue `#12`; no new operating-rule changes were proposed.
+- User approved retrospective follow-up changes. Updated intake workflow, GitHub workflow, testing workflow, local-first project profile, handoff, task ledger, and decisions log to record the rationale and prevent recurrence of the observed process failures.
 
 ## Not Yet Verified
 

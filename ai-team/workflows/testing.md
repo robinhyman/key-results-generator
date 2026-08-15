@@ -83,6 +83,14 @@ For web-based increments, use these checks when applicable:
 - Console and network error check where practical.
 - Basic accessibility sanity check for interactive UI.
 
+When adding or updating Playwright browser tests, verify that the required browser binary is installed before treating the test result as meaningful. For Chromium-only coverage, the standard setup command is:
+
+```bash
+npx playwright install chromium
+```
+
+If the first browser run fails because the browser binary is missing, install the binary and rerun the browser test before recording the check as failed product behavior.
+
 ## Tester Role
 
 Use a Tester agent when verification can be performed independently from implementation.

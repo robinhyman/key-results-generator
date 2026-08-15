@@ -34,6 +34,14 @@ Run when applicable:
 - Screenshot or visual evidence for UI changes.
 - Basic accessibility sanity check for interactive UI.
 
+For Playwright-based browser checks, install the required browser binary after dependency installation or updates:
+
+```bash
+npx playwright install chromium
+```
+
+Record browser-binary installation failures separately from product failures, then rerun the browser check after setup succeeds.
+
 ## Done Rule
 
 No web increment is `Done` without a checked working app/demo link.

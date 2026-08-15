@@ -41,6 +41,7 @@ Use the custom GitHub Project single-select field `Agent Status` for agent workf
 
 - Every actionable issue created by the Lead should be added to the GitHub Project.
 - The GitHub Project `Agent Status` field is the primary visible state for agent work.
+- If the Project also has the standard single-select `Status` field, keep both `Status` and `Agent Status` aligned when moving agent-managed issues.
 - `Agent Status` must reflect reality at all times, not just at session close.
 - Move an issue to `In Progress` as soon as meaningful work starts on it.
 - Move an issue to `Blocked` as soon as progress is blocked by missing information, permissions, failing external services, or a dependency outside the agent's control.
@@ -52,7 +53,7 @@ Use the custom GitHub Project single-select field `Agent Status` for agent workf
 
 ## Project Status Fallback With GitHub CLI
 
-When the GitHub connector can create or comment on issues but does not expose GitHub Project v2 mutations, use the GitHub CLI if it is authenticated with `project` scope.
+When the GitHub connector can create or comment on issues but does not expose GitHub Project v2 mutations, use the GitHub CLI if it is authenticated with `project` scope. If `gh auth status` fails inside the sandbox, retry with approved unsandboxed execution before concluding the token is invalid.
 
 1. Confirm authentication and scope:
 
@@ -85,9 +86,19 @@ gh project item-list 4 --owner robinhyman --format json --limit 100
 gh project item-edit --id ITEM_ID --project-id PROJECT_ID --field-id AGENT_STATUS_FIELD_ID --single-select-option-id OPTION_ID
 ```
 
+6. If the Project also uses the regular `Status` field, set it to the matching value:
+
+```bash
+gh project item-edit --id ITEM_ID --project-id PROJECT_ID --field-id STATUS_FIELD_ID --single-select-option-id STATUS_OPTION_ID
+```
+
 Current Project constants:
 
 - Project id: `PVT_kwHOACPlI84BgYKU`
+- `Status` field id: `PVTSSF_lAHOACPlI84BgYKUzhakihY`
+- `Status` `Todo`: `f75ad846`
+- `Status` `In Progress`: `47fc9ee4`
+- `Status` `Done`: `98236657`
 - `Agent Status` field id: `PVTSSF_lAHOACPlI84BgYKUzhakixk`
 - `Inbox`: `465e83e4`
 - `Ready`: `b2f84160`
@@ -96,7 +107,7 @@ Current Project constants:
 - `Blocked`: `cebb2f4c`
 - `Done`: `743a4795`
 
-If CLI authentication is unavailable or lacks `project` scope, comment on the issue and update `project-state/handoff.md` with the exact Project update that remains blocked.
+If approved unsandboxed CLI authentication is unavailable or lacks `project` scope, comment on the issue and update `project-state/handoff.md` with the exact Project update that remains blocked.
 
 ## Recommended Labels
 

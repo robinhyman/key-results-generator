@@ -34,7 +34,7 @@ Verification so far:
 - Local app link checked: `http://127.0.0.1:5175/` returned HTTP `200`; `/src/generator.js` returned HTTP `404`; `/api/graph` returned HTTP `200` with AI mode using `gpt-5-mini`.
 - Low-cost `gpt-5.6-luna` Tester/Reviewer worker provided read-only test/risk/docs checklist for this iteration.
 
-Retrospective: posted to issue `#12`. No new operating-rule changes proposed.
+Retrospective: posted to issue `#12`. User approved follow-up operating-doc improvements. Applied updates require duplicate checks before creating issues, dual Project `Status` / `Agent Status` alignment, unsandboxed `gh auth status` retry before declaring auth invalid, and Playwright Chromium setup guidance.
 
 GitHub issue `#1 Set up AI agent team operating system` is complete, closed, and has `Agent Status: Done`.
 

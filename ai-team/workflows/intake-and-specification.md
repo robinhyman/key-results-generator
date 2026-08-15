@@ -35,15 +35,17 @@ Do not create issues for vague ideas, duplicates, speculative refactors, or tiny
 1. Capture the user goal or discovered need.
 2. Determine whether it is a feature, bug, chore, docs task, research spike, or decision.
 3. Identify the user/business outcome.
-4. Decide whether the work can fit into one increment.
-5. Split large or mixed work before implementation begins.
-6. Define observable acceptance criteria.
-7. Define the verification plan and target demonstration environment.
-8. Identify dependencies, constraints, risks, and required user decisions.
-9. Create or update GitHub issues using `ai-team/templates/issue-spec.md`.
-10. Add each actionable issue to the GitHub Project.
-11. Apply labels for type, risk, and agent suitability.
-12. Set `Agent Status` to `Inbox`, `Ready`, or `Blocked` based on readiness.
+4. Search existing open, ready, blocked, or recently closed issues for overlapping scope before creating a new issue.
+5. Update or reuse an existing issue when it already covers the same acceptance criteria.
+6. Decide whether the work can fit into one increment.
+7. Split large or mixed work before implementation begins.
+8. Define observable acceptance criteria.
+9. Define the verification plan and target demonstration environment.
+10. Identify dependencies, constraints, risks, and required user decisions.
+11. Create or update GitHub issues using `ai-team/templates/issue-spec.md`.
+12. Add each actionable issue to the GitHub Project.
+13. Apply labels for type, risk, and agent suitability.
+14. Set `Agent Status` to `Inbox`, `Ready`, or `Blocked` based on readiness.
 
 ## Ready Criteria
 
@@ -130,6 +132,8 @@ Use labels to guide model and role choice:
 
 When creating an actionable issue, the Lead must:
 
+- Check for duplicate or overlapping existing issues first.
+- Prefer updating, reopening, or linking an existing issue over creating a new issue with the same acceptance criteria.
 - Add it to the GitHub Project.
 - Set `Agent Status` to `Ready` only if the Ready Criteria are satisfied.
 - Otherwise set `Agent Status` to `Inbox` or `Blocked`.
@@ -138,4 +142,3 @@ When creating an actionable issue, the Lead must:
 - Note any unanswered questions.
 
 If the Lead cannot update the GitHub Project, it must say so in the issue comment and `project-state/handoff.md`.
-

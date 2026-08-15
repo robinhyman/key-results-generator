@@ -151,3 +151,9 @@ Reason: The UI had grown enough to need clearer file boundaries, but not enough 
 Decision: Add Playwright as a dev dependency and keep browser workflow tests in a separate `npm run test:browser` command rather than the default unit/build loop.
 
 Reason: The clarification flow needs real browser coverage for DOM events, module loading, repeated submissions, and console/page/request failures. Keeping it separate preserves a fast sandbox-friendly `npm run build` while enabling stronger local verification before marking web increments done.
+
+## 2026-08-15: Tighten Intake, Project Status, And Browser-Test Setup
+
+Decision: Update the operating workflow to require duplicate-issue checks before ticket creation, keep both GitHub Project `Status` and `Agent Status` aligned when both exist, retry `gh auth status` outside the sandbox before treating CLI auth as invalid, and document Playwright browser binary setup.
+
+Reason: The architecture-hardening retrospective found avoidable process friction: a duplicate browser-test issue was created despite existing issue `#6`, Project status briefly became contradictory because only `Agent Status` was updated, sandboxed `gh auth status` initially gave a misleading auth failure, and the first Playwright verification failed because Chromium had not been installed yet. These rules reduce backlog noise, keep the Project board truthful, and make browser-test failures easier to classify.
