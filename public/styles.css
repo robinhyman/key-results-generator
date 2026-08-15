@@ -281,6 +281,80 @@ h1 {
   counter-reset: kr;
 }
 
+.clarification-form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.clarification-field {
+  display: grid;
+  gap: 12px;
+  min-width: 0;
+  margin: 0;
+  padding: 16px;
+  border: 1px solid var(--line);
+  background: #fcfcfb;
+}
+
+.clarification-field legend {
+  padding: 0;
+  font-weight: 800;
+}
+
+.clarification-field p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+
+.range-control {
+  display: grid;
+  grid-template-columns: minmax(112px, 1fr) minmax(110px, 1.4fr) 28px;
+  align-items: center;
+  gap: 10px;
+  min-height: 34px;
+  color: #334155;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.range-control input {
+  width: 100%;
+  accent-color: var(--accent);
+}
+
+.range-control output {
+  display: grid;
+  width: 28px;
+  height: 28px;
+  place-items: center;
+  background: #eef7f5;
+  color: var(--accent);
+  font-weight: 850;
+}
+
+.clarification-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  grid-column: 1 / -1;
+}
+
+.clarification-actions button {
+  min-height: 46px;
+  border: 0;
+  padding: 0 18px;
+  background: var(--accent);
+  color: white;
+  font-weight: 850;
+  cursor: pointer;
+}
+
+.clarification-actions button:hover {
+  background: var(--ink);
+}
+
 .kr-item {
   position: relative;
   min-height: 190px;
@@ -288,6 +362,11 @@ h1 {
   border: 1px solid var(--line);
   background: #fcfcfb;
   counter-increment: kr;
+}
+
+.kr-item.pending {
+  grid-column: 1 / -1;
+  min-height: 120px;
 }
 
 .kr-item::before {
@@ -369,6 +448,7 @@ h1 {
     font-size: 2.5rem;
   }
 
+  .clarification-form,
   .graph-grid,
   .kr-list {
     grid-template-columns: 1fr;
@@ -424,6 +504,11 @@ h1 {
     min-height: 44px;
     padding-inline: 10px;
     font-size: 0.86rem;
+  }
+
+  .range-control {
+    grid-template-columns: 1fr 76px 28px;
+    font-size: 0.82rem;
   }
 
   .kr-item {

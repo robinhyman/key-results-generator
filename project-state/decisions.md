@@ -113,3 +113,9 @@ Reason: The product workflow requires an intermediate clarification step between
 Decision: Future increments must make a lightweight model-use plan before implementation, delegate bounded routine work to cheaper/faster worker models whenever practical, and report model-tier usage in the increment report.
 
 Reason: The first product run validated the process but did not visibly use cheaper workers for builder, tester, documentation, or release tasks. Cost efficiency is a core requirement for the team, so model allocation must be observable and reviewed.
+
+## 2026-08-15: Keep Local Demo Servers Running When Sharing Local URLs
+
+Decision: When a completion or review response gives the user a local app/demo URL, the local server must still be running at final response time and should be left running unless the user explicitly says they do not need it.
+
+Reason: A local URL is only useful while its server process is active. Reporting a checked local URL after stopping the server creates a false demo link and violates the intent of the checked-link rule.

@@ -1,4 +1,7 @@
-import { generateKeyResultsModel } from "/src/generator.js";
+import {
+  generateCausalMetricsGraph,
+  generateKeyResultsModel,
+} from "/src/generator.js";
 
 const form = document.querySelector("#objective-form");
 const objectiveInput = document.querySelector("#objective");
@@ -7,21 +10,55 @@ const modelSummary = document.querySelector("#model-summary");
 const graphGrid = document.querySelector("#graph-grid");
 const keyResultsList = document.querySelector("#kr-list");
 const rankedList = document.querySelector("#ranked-list");
+const clarificationForm = document.querySelector("#clarification-form");
+
+let currentGraph;
 
 form.addEventListener("submit", (event) => {
   event.preventDefault();
-  renderModel(objectiveInput.value);
+  renderGraphOnly(objectiveInput.value);
 });
 
-renderModel(objectiveInput.value);
+clarificationForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+  if (!currentGraph) {
+    return;
+  }
 
-function renderModel(objective) {
-  const model = generateKeyResultsModel(objective);
+  const clarifications = readClarifications();
+  const model = generateKeyResultsModel(currentGraph.objective, clarifications);
+  currentGraph = model.graph;
+  renderModel(model);
+});
+
+renderGraphOnly(objectiveInput.value);
+
+function renderGraphOnly(objective) {
+  currentGraph = generateCausalMetricsGraph(objective);
+  const model = toViewModel(currentGraph, []);
+  renderModel(model);
+  renderClarification(currentGraph);
+  renderPendingKeyResults();
+}
+
+function renderModel(model) {
   objectiveHeading.textContent = model.objective;
   modelSummary.textContent = model.summary;
   renderGraph(model);
-  renderKeyResults(model);
+  renderKeyResults(model.keyResults);
   renderRanking(model);
+}
+
+function toViewModel(graph, keyResults) {
+  return {
+    objective: graph.objective,
+    summary: graph.summary,
+    graph,
+    variables: graph.nodes,
+    relationships: graph.edges,
+    rankedVariables: graph.rankings,
+    keyResults,
+  };
 }
 
 function renderGraph(model) {
@@ -61,7 +98,15 @@ function createVariableNode(variable, model) {
 
   const meta = document.createElement("p");
   meta.className = "node-meta";
-  meta.textContent = `${formatType(variable.type)} | Impact ${variable.impact} | Confidence ${variable.confidence}`;
+  meta.textContent = [
+    formatType(variable.type),
+    `Impact ${variable.impact}`,
+    `Confidence ${variable.confidence}`,
+    variable.userInfluenceability ? `Influence ${variable.userInfluenceability}/5` : null,
+    variable.userGap ? `Gap ${variable.userGap}/5` : null,
+  ]
+    .filter(Boolean)
+    .join(" | ");
 
   const description = document.createElement("p");
   description.textContent = variable.description;
@@ -85,9 +130,80 @@ function createVariableNode(variable, model) {
   return node;
 }
 
-function renderKeyResults(model) {
+function renderClarification(graph) {
+  const fields = graph.rankings.slice(0, 6).map((variable) => createClarificationField(variable));
+  const actions = document.createElement("div");
+  actions.className = "clarification-actions";
+
+  const previewButton = document.createElement("button");
+  previewButton.type = "submit";
+  previewButton.textContent = "Generate final KRs";
+
+  actions.append(previewButton);
+  clarificationForm.replaceChildren(...fields, actions);
+}
+
+function createClarificationField(variable) {
+  const field = document.createElement("fieldset");
+  field.className = "clarification-field";
+
+  const legend = document.createElement("legend");
+  legend.textContent = variable.label;
+
+  const meta = document.createElement("p");
+  meta.textContent = `${formatType(variable.type)} | Impact ${variable.impact} | Score ${variable.score}`;
+
+  field.append(
+    legend,
+    meta,
+    createRangeControl(variable.id, "influenceability", "Influenceability", defaultInfluenceValue(variable)),
+    createRangeControl(variable.id, "gap", "Perceived gap", 3),
+  );
+
+  return field;
+}
+
+function createRangeControl(variableId, name, labelText, value) {
+  const label = document.createElement("label");
+  label.className = "range-control";
+
+  const text = document.createElement("span");
+  text.textContent = labelText;
+
+  const input = document.createElement("input");
+  input.type = "range";
+  input.min = "1";
+  input.max = "5";
+  input.value = String(value);
+  input.name = `${variableId}:${name}`;
+  input.dataset.variableId = variableId;
+  input.dataset.assessment = name;
+
+  const output = document.createElement("output");
+  output.textContent = input.value;
+  input.addEventListener("input", () => {
+    output.textContent = input.value;
+  });
+
+  label.append(text, input, output);
+  return label;
+}
+
+function readClarifications() {
+  const clarifications = {};
+  for (const input of clarificationForm.querySelectorAll("input[type='range']")) {
+    const variableId = input.dataset.variableId;
+    const assessment = input.dataset.assessment;
+    clarifications[variableId] ??= {};
+    clarifications[variableId][assessment] = Number(input.value);
+  }
+
+  return clarifications;
+}
+
+function renderKeyResults(keyResults) {
   keyResultsList.replaceChildren(
-    ...model.keyResults.map((keyResult) => {
+    ...keyResults.map((keyResult) => {
       const item = document.createElement("li");
       item.className = "kr-item";
 
@@ -107,6 +223,20 @@ function renderKeyResults(model) {
   );
 }
 
+function renderPendingKeyResults() {
+  const item = document.createElement("li");
+  item.className = "kr-item pending";
+
+  const title = document.createElement("h3");
+  title.textContent = "Awaiting clarification";
+
+  const body = document.createElement("p");
+  body.textContent = "Rate the top metrics, then generate the final recommended set.";
+
+  item.append(title, body);
+  keyResultsList.replaceChildren(item);
+}
+
 function renderRanking(model) {
   rankedList.replaceChildren(
     ...model.rankedVariables.slice(0, 6).map((variable) => {
@@ -124,6 +254,10 @@ function renderRanking(model) {
       return row;
     }),
   );
+}
+
+function defaultInfluenceValue(variable) {
+  return variable.influenceable ? 4 : 2;
 }
 
 function formatType(type) {

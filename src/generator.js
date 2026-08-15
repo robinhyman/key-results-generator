@@ -139,11 +139,28 @@ const RELATIONSHIP_BLUEPRINTS = [
   ["experience-quality", "outcome", "The objective is strongest when users experience the improvement directly."],
 ];
 
-export function generateKeyResultsModel(rawObjective) {
+export function generateKeyResultsModel(rawObjective, clarifications = {}) {
+  const graph = applyClarifications(generateCausalMetricsGraph(rawObjective), clarifications);
+  const keyResults = graph.rankings.slice(0, 4).map((variable, index) =>
+    toKeyResult(variable, graph.edges, graph.nodes, index, graph.assessments[variable.id]),
+  );
+
+  return {
+    objective: graph.objective,
+    summary: graph.summary,
+    graph,
+    variables: graph.nodes,
+    relationships: graph.edges,
+    rankedVariables: graph.rankings,
+    keyResults,
+  };
+}
+
+export function generateCausalMetricsGraph(rawObjective) {
   const objective = normalizeObjective(rawObjective);
   const focus = extractFocus(objective);
   const context = { objective, focus };
-  const variables = VARIABLE_BLUEPRINTS.map((blueprint) => ({
+  const nodes = VARIABLE_BLUEPRINTS.map((blueprint) => ({
     id: blueprint.id,
     type: blueprint.type,
     label: blueprint.label(context),
@@ -154,28 +171,48 @@ export function generateKeyResultsModel(rawObjective) {
     stage: blueprint.stage,
     direction: blueprint.direction ?? "improve",
   }));
-  const variableIds = new Set(variables.map((variable) => variable.id));
-  const relationships = RELATIONSHIP_BLUEPRINTS.filter(
-    ([source, target]) => variableIds.has(source) && variableIds.has(target),
+  const nodeIds = new Set(nodes.map((node) => node.id));
+  const edges = RELATIONSHIP_BLUEPRINTS.filter(
+    ([source, target]) => nodeIds.has(source) && nodeIds.has(target),
   ).map(([source, target, rationale], index) => ({
     id: `rel-${index + 1}`,
     source,
     target,
     rationale,
-    strength: relationshipStrength(source, target, variables),
+    strength: relationshipStrength(source, target, nodes),
   }));
-  const rankedVariables = rankVariables(variables);
-  const keyResults = rankedVariables.slice(0, 4).map((variable, index) =>
-    toKeyResult(variable, relationships, variables, index),
-  );
 
   return {
     objective,
     summary: `A causal metrics model for "${objective}" that works backward from the outcome to direct evidence, operating drivers, upstream causes, experience factors, and failure modes.`,
-    variables,
-    relationships,
-    rankedVariables,
-    keyResults,
+    nodes,
+    edges,
+    rankings: rankVariables(nodes),
+    assessments: {},
+  };
+}
+
+export function applyClarifications(graph, clarifications = {}) {
+  const assessments = normalizeAssessments(clarifications);
+  const nodes = graph.nodes.map((node) => {
+    const assessment = assessments[node.id];
+    if (!assessment) {
+      return { ...node };
+    }
+
+    return {
+      ...node,
+      userInfluenceability: assessment.influenceability,
+      userGap: assessment.gap,
+    };
+  });
+
+  return {
+    ...graph,
+    nodes,
+    edges: graph.edges.map((edge) => ({ ...edge })),
+    assessments,
+    rankings: rankVariables(nodes),
   };
 }
 
@@ -184,10 +221,12 @@ export function rankVariables(variables) {
     .filter((variable) => variable.type !== "outcome")
     .map((variable) => ({
       ...variable,
+      nodeId: variable.id,
       score: Math.round(
         variable.impact * 0.55 +
           variable.confidence * 0.25 +
-          (variable.influenceable ? 18 : 0) +
+          influenceabilityScore(variable) +
+          gapScore(variable) +
           typeWeight(variable.type),
       ),
     }))
@@ -232,21 +271,25 @@ function relationshipStrength(sourceId, targetId, variables) {
   return Math.round(((source?.impact ?? 50) + (target?.impact ?? 50)) / 2);
 }
 
-function toKeyResult(variable, relationships, variables, index) {
+function toKeyResult(variable, relationships, variables, index, assessment) {
   const inbound = relationships.filter((relationship) => relationship.target === variable.id);
   const relatedDrivers = inbound.map((relationship) => {
     const source = variables.find((candidate) => candidate.id === relationship.source);
     return source?.label ?? relationship.source;
   });
   const phrase = targetPhrase(variable, index);
+  const clarificationContext = assessment
+    ? `, and your clarification rated this metric ${assessment.influenceability}/5 for influenceability and ${assessment.gap}/5 for perceived gap`
+    : "";
 
   return {
     id: `kr-${index + 1}`,
     variableId: variable.id,
     text: phrase,
-    rationale: `${variable.label} is a strong KR candidate because it is ${variable.influenceable ? "influenceable" : "observable"}, has high estimated impact (${variable.impact}/100), and connects the objective to ${relatedDrivers.length > 0 ? relatedDrivers.join(", ") : "the causal model"}.`,
+    rationale: `${variable.label} is a strong KR candidate because it is ${variable.influenceable ? "influenceable" : "observable"}, has high estimated impact (${variable.impact}/100), and connects the objective to ${relatedDrivers.length > 0 ? relatedDrivers.join(", ") : "the causal model"}${clarificationContext}.`,
     relatedDrivers,
     score: variable.score,
+    assessment: assessment ?? null,
   };
 }
 
@@ -264,4 +307,39 @@ function targetPhrase(variable, index) {
   }
 
   return `Improve ${variable.label} to a clearly measured green status in ${timeframe}`;
+}
+
+function normalizeAssessments(clarifications) {
+  return Object.fromEntries(
+    Object.entries(clarifications)
+      .map(([nodeId, assessment]) => [
+        nodeId,
+        {
+          influenceability: clampAssessment(assessment?.influenceability),
+          gap: clampAssessment(assessment?.gap),
+        },
+      ])
+      .filter(([, assessment]) => assessment.influenceability > 0 || assessment.gap > 0),
+  );
+}
+
+function clampAssessment(value) {
+  const number = Number(value);
+  if (!Number.isFinite(number)) {
+    return 0;
+  }
+
+  return Math.max(1, Math.min(5, Math.round(number)));
+}
+
+function influenceabilityScore(variable) {
+  if (variable.userInfluenceability) {
+    return variable.userInfluenceability * 5;
+  }
+
+  return variable.influenceable ? 18 : 0;
+}
+
+function gapScore(variable) {
+  return variable.userGap ? variable.userGap * 4 : 0;
 }

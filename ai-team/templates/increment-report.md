@@ -43,6 +43,8 @@ Target environment:
 
 Checked app/demo link:
 
+Local server left running, if applicable:
+
 What was checked:
 
 Result:

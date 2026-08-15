@@ -17,6 +17,8 @@ For any user-facing increment:
 - Open the URL and check the affected flow.
 - Confirm there are no obvious page-load, console, or network failures.
 - Include the checked link in the increment report.
+- If the checked link is a local URL, leave the local server running when handing the link to the user unless the user explicitly says they do not need it. Do not stop the server before final response.
+- If the server cannot be left running, do not present the local URL as currently available. Say exactly how to start it again, record the limitation, and keep the increment out of `Done` if the user needs a live demo.
 
 ## Default Verification
 
@@ -52,4 +54,3 @@ When hosting is selected, update this profile with:
 - Environment variable handling.
 - Preview URL rules.
 - Production approval rules.
-
