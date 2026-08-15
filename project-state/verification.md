@@ -92,6 +92,18 @@ Last updated: 2026-08-15
 - PR `#13 Harden architecture and browser workflow coverage` merged to `main`. Post-merge state cleanup updated project-state files to mark issues `#9`, `#10`, `#6`, `#7`, and `#12` complete.
 - Architecture hardening retrospective posted to issue `#12`; no new operating-rule changes were proposed.
 - User approved retrospective follow-up changes. Updated intake workflow, GitHub workflow, testing workflow, local-first project profile, handoff, task ledger, and decisions log to record the rationale and prevent recurrence of the observed process failures.
+- Issue `#14` AI instruction specification was approved by the user and closed with `Agent Status: Done`.
+- Issue `#15` was moved to `In Progress` before implementation.
+- Issue `#15` implementation branch created: `feature/15-ai-instructions`.
+- Issue `#15` added approved shared system instruction plus graph-generation and KR-synthesis task instructions to `src/ai-service.js`.
+- Issue `#15` AI KR schema and normalization now accept 3 to 5 KRs; fewer than 3 is rejected and more than 5 is capped by normalization/schema.
+- Issue `#15` tests added for approved instruction composition, 3-5 KR schema construction, three/five KR normalization, and fewer-than-three rejection.
+- Issue `#15` `npm run build` passed with 24/24 tests.
+- Issue `#15` first `npm run test:browser` failed because the sandbox blocked binding `127.0.0.1`; approved unsandboxed rerun passed with 1/1 Playwright test.
+- Issue `#15` local app started at `http://127.0.0.1:5176/`.
+- Issue `#15` local URL checked: `http://127.0.0.1:5176/` returned HTTP `200`.
+- Issue `#15` live local endpoint check passed: `/api/graph` and `/api/key-results` returned HTTP `200`, AI mode for both, and final KR count `4`, which is valid within the new 3-5 requirement.
+- Issue `#15` low-cost `gpt-5.6-luna` Tester/Reviewer worker inspected `src/ai-service.js` and `test/generator.test.js`, ran `npm run build` and `git diff --check`, and found no blocking exact-4 assumption in `src/ai-service.js`.
 
 ## Not Yet Verified
 
@@ -103,3 +115,4 @@ Last updated: 2026-08-15
 - Issue `#4` real AI-backed causal/metrics tree generation and AI-synthesized final KR generation are implemented behind the server-side provider boundary and have passed smoke checks after API credits were added.
 - Full automated browser console/network inspection for the core clarification flow is now covered by the Playwright test added for issue `#6`.
 - Hosted deployment. It remains out of scope for issue `#4`.
+- Issue `#15` leading/lagging KR mix is instruction-only. It is not enforceable by schema/tests until a later `indicatorType` or classification rule is approved.

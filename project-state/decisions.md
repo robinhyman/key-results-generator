@@ -157,3 +157,11 @@ Reason: The clarification flow needs real browser coverage for DOM events, modul
 Decision: Update the operating workflow to require duplicate-issue checks before ticket creation, keep both GitHub Project `Status` and `Agent Status` aligned when both exist, retry `gh auth status` outside the sandbox before treating CLI auth as invalid, and document Playwright browser binary setup.
 
 Reason: The architecture-hardening retrospective found avoidable process friction: a duplicate browser-test issue was created despite existing issue `#6`, Project status briefly became contradictory because only `Agent Status` was updated, sandboxed `gh auth status` initially gave a misleading auth failure, and the first Playwright verification failed because Chromium had not been installed yet. These rules reduce backlog noise, keep the Project board truthful, and make browser-test failures easier to classify.
+
+## 2026-08-15: Use Approved Graph-First AI Instructions
+
+Decision: Use a concise shared system instruction plus task-specific graph-generation and KR-synthesis prompts for AI calls. Final AI KRs should be generated as a set of 3 to 5, with prompt guidance targeting 1 or 2 lagging KRs and 2 or 3 leading KRs.
+
+Reason: The prior shared system instruction was too generic to consistently express the product method. Keeping stable shared guidance separate from task-specific instructions improves token discipline while making graph-first reasoning, measurable influenceable variables, user clarification, traceability, and leading/lagging balance explicit.
+
+Current limitation: leading/lagging mix is prompt guidance only. Enforcing it requires a later schema/model decision such as adding `indicatorType` or a reliable classification rule.

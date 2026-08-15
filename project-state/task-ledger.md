@@ -92,15 +92,23 @@ Last updated: 2026-08-15
 - Merged PR `#13 Harden architecture and browser workflow coverage`.
 - Posted the architecture-hardening retrospective to issue `#12`; no new operating-rule changes proposed.
 - Applied user-approved retrospective improvements to intake, GitHub Project status, browser-test setup, and decision records.
+- Completed issue `#14 Specify AI instructions for graph-first OKR generation`; user approved the shared system instruction, graph-generation prompt, KR-synthesis prompt, 3-5 KR count, and 1-2 lagging / 2-3 leading target mix.
 
 ## Active
 
-- None.
+- Issue `#15 Implement approved AI instruction structure in the generation service`.
+- Created branch `feature/15-ai-instructions`.
+- Implemented approved AI instructions in `src/ai-service.js`.
+- Updated AI KR schema and normalization to support 3 to 5 KRs.
+- Added focused tests for instruction composition and 3-5 KR normalization.
+- Verified `npm run build`, `npm run test:browser`, local app link, live local AI endpoints, and low-cost worker review.
 
 ## Blocked
 
-- None.
+- Issue `#16 Add regression checks for AI instruction and output quality` remains blocked until issue `#15` is merged or explicitly handed to a tester.
 
 ## Next
 
-- Consider durable persistence or graph editing as the next product increment.
+- Open a PR for `feature/15-ai-instructions` against issue `#15`.
+- Move issue `#15` to `Review` after the PR is open.
+- Decide later whether to add explicit leading/lagging classification; current #15 implementation treats the mix as prompt guidance only.
