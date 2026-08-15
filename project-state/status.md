@@ -38,11 +38,11 @@ Closed GitHub issue: `#1 Set up AI agent team operating system`, `Agent Status: 
 
 Closed GitHub issue: `#2 Build first local MVP for objective-to-key-results generation`, merged via PR #3 and set to `Agent Status: Done`.
 
-Active product increment: `#4 Add AI-guided clarification step before key result generation`, implemented on branch `feature/4-clarification-flow` with draft PR `#5` and `Agent Status: Review`.
+Closed GitHub issue: `#4 Add AI-guided clarification step before key result generation`, merged via PR #5 and set to `Agent Status: Done`.
 
 Merged pull request: `#3 Build local objective-to-KR MVP`
 
-Open draft pull request: `#5 Add clarification step before final KRs`
+Merged pull request: `#5 Add clarification step before final KRs`
 
 Open follow-up issue: `#6 Add browser-level tests for clarification flow`, in the GitHub Project with `Agent Status: Ready`.
 
@@ -50,7 +50,7 @@ Open follow-up issue: `#7 Improve GitHub Project status update tooling`, in the 
 
 ## Active Goal
 
-Finish issue `#4`: objective input, AI-generated causal/metrics tree, user clarification on influenceability and perceived gaps, then final KR generation.
+Choose the next increment. Ready follow-ups are `#6 Add browser-level tests for clarification flow` and `#7 Improve GitHub Project status update tooling`.
 
 Local implementation separates graph generation from final KR generation. `src/generator.js` exports a serializable graph step, applies user influenceability/gap assessments, and ranks final KRs from the clarified graph. The browser UI now shows the graph and clarification controls before final KRs are generated.
 
@@ -71,7 +71,7 @@ Local implementation separates graph generation from final KR generation. `src/g
 - Cost control is now explicit: future increments should use cheaper/faster worker models whenever possible and reserve stronger models for Lead, Architect, ambiguity, integration, escalation, and final review.
 - Product requirements now explicitly include a clarification step before final KRs: the app asks the user which high-impact metrics are most influenceable and where the biggest perceived gaps are.
 - The causal/metrics graph is treated as a first-class intermediate artefact: serializable structured data with nodes, edges, rankings, user influenceability/gap assessments, and links to final KRs.
-- GitHub issue `#4` has a progress comment and draft PR `#5`. The GitHub CLI Project path was used to set issue `#4` `Agent Status: Review` and follow-up issues `#6` and `#7` `Agent Status: Ready`.
+- GitHub issue `#4` is closed with `Agent Status: Done`. The GitHub CLI Project path was used to set follow-up issues `#6` and `#7` `Agent Status: Ready`.
 
 ## Open Questions
 
