@@ -12,13 +12,15 @@ GitHub issue `#1 Set up AI agent team operating system` is complete, closed, and
 
 GitHub issue `#2 Build first local MVP for objective-to-key-results generation` is complete. It was merged via PR `#3`, closed, and set to `Agent Status: Done`.
 
-GitHub issue `#4 Add AI-guided clarification step before key result generation` is reopened and blocked. PR `#5 Add clarification step before final KRs` merged useful groundwork, but it did not complete the issue because the causal/metrics tree and final KR generation are still deterministic/local rather than AI-driven.
+GitHub issue `#4 Add AI-guided clarification step before key result generation` is reopened and ready. PR `#5 Add clarification step before final KRs` merged useful groundwork, but it did not complete the issue because the causal/metrics tree and final KR generation are still deterministic/local rather than AI-driven.
 
 Clarified product flow: the app should not jump directly from objective input to final key results. It should first use AI to generate a causal/metrics tree, then ask the user which high-impact metrics are most influenceable and where the user perceives the biggest gaps, then use those answers to generate final KRs.
 
 Architecture clarification: the causal/metrics graph is now treated as a first-class intermediate artefact, not disposable render state. It is represented as serializable structured data with nodes, edges, rankings, user influenceability/gap assessments, and traceable links to the final KRs. For this local-first increment, database persistence remains out of scope, but the model is ready to persist later without redesign.
 
 Issue `#4` implementation status: partial. The generator now exports `generateCausalMetricsGraph`, `applyClarifications`, and `generateKeyResultsModel`; the UI now renders objective -> graph -> clarification controls -> final KRs. Final KRs are not populated until the clarification form is submitted. The missing acceptance criterion is real AI-backed graph generation and AI-synthesized final KRs.
+
+AI credential status: the API key path was provided in a GitHub issue `#4` comment and the local file exists at that path. The `keys/` directory is ignored by Git and must remain untracked. Do not print, commit, or copy the key value into repo state, logs, issue comments, or chat.
 
 The constitution and GitHub workflow now explicitly require `Agent Status` to reflect reality, including moving an issue to `In Progress` as soon as meaningful work starts.
 
@@ -46,8 +48,8 @@ This project is tagged at `ai-team-os-v0.1` as the pre-product baseline.
 
 ## Next Best Actions
 
-1. Unblock issue `#4` by choosing the AI provider/model and credential path.
-2. Implement real AI-backed causal/metrics tree generation and final KR synthesis for issue `#4`.
+1. Implement real AI-backed causal/metrics tree generation and final KR synthesis for issue `#4`.
+2. Choose the concrete AI model during implementation and record it in the increment report.
 3. Preserve the existing structured graph and clarification UI from PR `#5` as groundwork.
 4. Consider follow-up issue `#6 Add browser-level tests for clarification flow`, now in the Project with `Agent Status: Ready`.
 5. Consider follow-up issue `#7 Improve GitHub Project status update tooling`, now in the Project with `Agent Status: Ready`.
@@ -71,7 +73,7 @@ A fresh Lead should read:
 - `project-state/status.md`
 - `project-state/handoff.md`
 
-Then continue issue `#4` once the AI provider/model and credential path are decided, unless the user redirects.
+Then continue issue `#4` unless the user redirects.
 
 Current verification for issue `#4`:
 

@@ -60,15 +60,17 @@ Last updated: 2026-08-15
 - Set issue `#4` `Agent Status: Review` in the GitHub Project.
 - PR `#5 Add clarification step before final KRs` was merged into `main`.
 - Reopened issue `#4 Add AI-guided clarification step before key result generation` because PR `#5` did not implement actual AI-driven generation.
-- Set issue `#4` `Agent Status: Blocked` pending AI provider/model and credential path.
+- Confirmed the issue `#4` API key path from a GitHub comment exists locally.
+- Added `.gitignore` coverage for `keys/` and `.DS_Store` so local key material and Finder metadata are not committed.
+- Set issue `#4` `Agent Status: Ready`.
 
 ## Active
 
-- Unblock issue `#4` by deciding the AI provider/model and credential path for real AI-backed generation.
+- Continue issue `#4` with real AI-backed generation.
 
 ## Blocked
 
-- Issue `#4` is blocked on AI provider/model and credential path. The merged implementation is partial groundwork only.
+- None.
 
 ## Next
 

@@ -57,6 +57,7 @@ Last updated: 2026-08-15
 - GitHub Project initially updated with `gh project`: issue `#4` set to `Agent Status: Done`; follow-up issues `#6` and `#7` added to the Project and set to `Agent Status: Ready`.
 - PR `#5` merged to `main`; final state updates were cherry-picked to `main` after merge and pushed.
 - Correction after user review: issue `#4` was reopened and moved to Project `Status: Todo` / `Agent Status: Blocked` because no actual AI-backed generation was implemented. PR `#5` is partial groundwork only.
+- Issue `#4` API key path was provided in a GitHub comment. The local key file exists, `keys/` is untracked and ignored by Git, and issue `#4` was moved to `Agent Status: Ready`.
 
 ## Not Yet Verified
 
