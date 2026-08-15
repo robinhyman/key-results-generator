@@ -109,6 +109,11 @@ Last updated: 2026-08-15
 - Issue `#16` was unblocked and set to `Agent Status: Ready`.
 - Final merged-main verification after PR #17: `npm run build` passed with 24/24 tests.
 - Final merged-main local URL check: `http://127.0.0.1:5176/` returned HTTP `200`.
+- Issue `#16` was moved to `In Progress` before implementation.
+- Issue `#16` branch created: `chore/16-ai-instruction-regression-checks`.
+- Issue `#16` added focused tests for approved prompt principles without full prompt snapshots, serialized clarification assessments in provider requests, provider HTTP fallback diagnostics, invalid JSON fallback diagnostics, missing output fallback diagnostics, provider output capping at 5 KRs, and outcome graph reference rejection.
+- Issue `#16` `npm run build` passed with 30/30 tests.
+- Issue `#16` low-cost `gpt-5.6-luna` Tester/Reviewer worker inspected `src/ai-service.js`, `src/generator.js`, `test/generator.test.js`, and `test/server.test.js`; ran `npm run build`; found no blockers; and recommended additional tests for clarification serialization and provider fallback diagnostics, which were added.
 
 ## Not Yet Verified
 
@@ -121,3 +126,4 @@ Last updated: 2026-08-15
 - Full automated browser console/network inspection for the core clarification flow is now covered by the Playwright test added for issue `#6`.
 - Hosted deployment. It remains out of scope for issue `#4`.
 - Issue `#15` leading/lagging KR mix is instruction-only. It is not enforceable by schema/tests until a later `indicatorType` or classification rule is approved.
+- Issue `#16` still cannot verify the returned leading/lagging mix because the schema/model has no explicit indicator classification. Prompt text is covered; output enforcement remains a future schema/model decision.
