@@ -16,11 +16,12 @@ The increment is the team's default unit of delivery. Avoid open-ended work. If 
 8. Build, test, and review the change.
 9. Deploy or start the target demonstration environment.
 10. Check the linked app or demo and confirm the increment works there.
-11. Capture follow-up work as separate GitHub issues when it is real, actionable, and out of scope.
-12. Run the retrospective workflow.
-13. Apply user-approved operating improvements, if any.
-14. Update project state files and the GitHub issue.
-15. Move `Agent Status` to `Review`, `Blocked`, or `Done` according to the real current state.
+11. Assess and update documentation using `ai-team/workflows/documentation.md`.
+12. Capture follow-up work as separate GitHub issues when it is real, actionable, and out of scope.
+13. Run the retrospective workflow.
+14. Apply user-approved operating improvements, if any.
+15. Update project state files and the GitHub issue.
+16. Move `Agent Status` to `Review`, `Blocked`, or `Done` according to the real current state.
 
 ## Increment Definition Of Done
 
@@ -77,6 +78,13 @@ An increment is done only when all applicable checks below are true.
 - `project-state/task-ledger.md` reflects completed, active, blocked, and next tasks.
 - `project-state/verification.md` records checks run and remaining gaps.
 - `project-state/decisions.md` is updated when a durable decision was made.
+
+### Documentation Is Current
+
+- Documentation impact was assessed using `ai-team/workflows/documentation.md`.
+- Required docs were updated.
+- Stale or conflicting docs were fixed or captured as follow-up issues.
+- Skipped documentation updates are explained in the increment report.
 
 ### Evidence Exists
 

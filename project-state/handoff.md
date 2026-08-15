@@ -26,6 +26,8 @@ Continuous improvement rule: after each increment, run `ai-team/workflows/retros
 
 Role specs now include Project Lead, Architect, Builder, Tester, Reviewer, and Release Agent.
 
+Documentation rule: use `ai-team/workflows/documentation.md` to assess docs on every increment. Required documentation updates are part of `Done`.
+
 ## Next Best Actions
 
 1. Draft detailed role specs only for the roles needed in the first build.
@@ -46,6 +48,7 @@ A fresh Lead should read:
 - `ai-team/workflows/testing.md`, when doing product work
 - `ai-team/workflows/intake-and-specification.md`, when creating or refining issues
 - `ai-team/workflows/branch-and-pr.md`, when changing code
+- `ai-team/workflows/documentation.md`, when behavior, setup, architecture, deployment, user workflow, or operating rules may change
 - `ai-team/workflows/retrospective.md`, after each increment
 - `ai-team/project-profiles/web-app-local-first.md`, for the first web app
 - `project-state/status.md`

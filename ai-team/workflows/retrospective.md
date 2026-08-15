@@ -27,6 +27,7 @@ Each participating role should answer:
 - What slowed the increment down?
 - What risks, defects, or gaps were discovered?
 - Were the issue spec, acceptance criteria, and verification plan good enough?
+- Were documentation updates sufficient and in the right place?
 - Did the GitHub Project status reflect reality throughout?
 - Did the checked demo/deployment link requirement work cleanly?
 - Should any operating rule, template, workflow, or role spec change?
@@ -59,4 +60,3 @@ If rejected or deferred, record the outcome in the retrospective report or issue
 Add the retrospective summary to the completed increment's GitHub issue.
 
 Use `ai-team/templates/retrospective-report.md` when the increment involved code, multiple roles, unexpected issues, or suggested constitutional changes.
-

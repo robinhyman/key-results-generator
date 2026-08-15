@@ -77,3 +77,9 @@ Reason: The team needs enough role, code-flow, and project-specific guidance to 
 Decision: Run a retrospective after each increment. Suggested constitutional or workflow improvements require user approval before application and should be committed before the next increment starts.
 
 Reason: The team should improve continuously while preserving user control over the operating system.
+
+## 2026-08-15: Treat Documentation As Part Of Done
+
+Decision: Assess documentation impact on every increment and require needed documentation updates before `Done`.
+
+Reason: Fresh sessions, users, and future maintainers need durable repository truth rather than hidden chat context or stale instructions.

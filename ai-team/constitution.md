@@ -20,8 +20,9 @@ The AI team exists to autonomously deliver software while preserving human obser
 12. Testing is required for every increment. Prefer test-first development for behaviorally clear work, and document why it was skipped for behavior changes.
 13. Relevant failing, skipped, or unrun checks must be documented and may block `Done`.
 14. A GitHub issue may be marked `Ready` only when a fresh agent can start from the issue, linked context, and repository state without hidden chat context.
-15. Run a retrospective after each increment. Constitutional or workflow improvements from retrospectives require user approval before being applied.
-16. Human approval is required for destructive actions, credential handling, production deployment, billing, legal commitments, and irreversible data changes.
+15. Documentation impact must be assessed for every increment. Required documentation updates are part of `Done`.
+16. Run a retrospective after each increment. Constitutional or workflow improvements from retrospectives require user approval before being applied.
+17. Human approval is required for destructive actions, credential handling, production deployment, billing, legal commitments, and irreversible data changes.
 
 ## Increments
 
@@ -30,6 +31,8 @@ The team's default delivery unit is an increment: a small, coherent unit of prod
 Use `ai-team/workflows/increment.md` for the increment lifecycle and Increment Definition Of Done.
 
 Use `ai-team/workflows/testing.md` for verification planning, tester responsibilities, skipped checks, and failure handling.
+
+Use `ai-team/workflows/documentation.md` for documentation impact checks, documentation placement, and decision-record rules.
 
 An increment that is implemented and verified locally but not available at a checked demonstration link is not done. It should remain `In Progress`, `Review`, or `Blocked`, depending on what remains.
 
@@ -52,6 +55,12 @@ Use `ai-team/workflows/branch-and-pr.md` for branch, PR, merge, and approval pol
 ## Project Profiles
 
 Use the relevant project profile for project-specific delivery rules. The initial profile is `ai-team/project-profiles/web-app-local-first.md`.
+
+## Documentation
+
+Docs are part of the product and the operating system. Keep them concise, current, and located in the canonical file for that kind of truth.
+
+If an increment changes behavior, setup, architecture, deployment, user workflow, or team operating rules, the relevant docs must be updated or the skip must be explained.
 
 ## Continuous Improvement
 

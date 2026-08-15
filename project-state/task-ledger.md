@@ -22,6 +22,7 @@ Last updated: 2026-08-15
 - Added branch/PR policy.
 - Added web app local-first project profile.
 - Added retrospective workflow and report template.
+- Added Documentarian role and documentation workflow.
 
 ## Active
 
@@ -38,3 +39,4 @@ Last updated: 2026-08-15
 - Run the first build as a bounded increment.
 - Define the verification plan before implementing the first build increment.
 - Use Ready Criteria before marking the first software-build issue `Ready`.
+- Assess documentation impact during the first build increment.

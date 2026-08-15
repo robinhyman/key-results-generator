@@ -22,6 +22,8 @@ For turning goals or discoveries into GitHub issues, use `ai-team/workflows/inta
 
 After each increment, use `ai-team/workflows/retrospective.md` before starting the next increment.
 
+For documentation standards, use `ai-team/workflows/documentation.md`.
+
 ## Runtime Model
 
 - The main Codex chat acts as Project Lead.

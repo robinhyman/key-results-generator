@@ -18,6 +18,8 @@ Lead intake and ticket creation are governed by `ai-team/workflows/intake-and-sp
 
 Role specs, branch/PR policy, web local-first project profile, and retrospective workflow are now defined.
 
+Documentation standards are defined in `ai-team/workflows/documentation.md`, with a Documentarian role spec in `ai-team/roles/documentarian.md`.
+
 GitHub repository: `robinhyman/key-results-generator`
 
 GitHub Project: `Key Results Generator` at `https://github.com/users/robinhyman/projects/4`
@@ -40,6 +42,7 @@ Design a reusable AI software delivery team that can run first in Codex and late
 - New actionable tickets should use `ai-team/templates/issue-spec.md` and meet Ready Criteria before `Agent Status: Ready`.
 - Each completed increment must have a retrospective before the next increment starts.
 - Retrospective improvement proposals require user approval before operating files are changed.
+- Documentation impact must be assessed for every increment, and required docs are part of `Done`.
 
 ## Open Questions
 

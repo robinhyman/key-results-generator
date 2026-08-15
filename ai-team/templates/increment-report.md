@@ -55,6 +55,18 @@ Risks considered:
 
 Remaining concerns:
 
+## Documentation
+
+Docs affected:
+
+Docs updated:
+
+Docs skipped and why:
+
+Stale docs found:
+
+Documentation follow-up issues:
+
 ## GitHub Updates
 
 Project status:

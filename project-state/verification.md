@@ -22,6 +22,7 @@ Last updated: 2026-08-15
 - Intake/specification workflow and issue spec template created.
 - Role specs for Lead, Architect, Builder, Tester, Reviewer, and Release Agent created.
 - Branch/PR policy, web local-first profile, and retrospective workflow created.
+- Documentarian role and documentation workflow created.
 
 ## Not Yet Verified
 
@@ -29,3 +30,4 @@ Last updated: 2026-08-15
 - Testing workflow against a real software increment.
 - Intake/specification workflow against the first real product goal.
 - Retrospective workflow after the first completed increment.
+- Documentation workflow during the first real software increment.
