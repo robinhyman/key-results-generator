@@ -205,6 +205,8 @@ test("generateAiCausalMetricsGraph sends approved shared and graph instructions"
   assert.match(requestBody.input[1].content, /causal metrics graph/);
   assert.match(requestBody.input[1].content, /downstream outcome/);
   assert.match(requestBody.input[1].content, /failure modes/);
+  assert.match(requestBody.input[1].content, /domain-specific variables/);
+  assert.match(requestBody.input[1].content, /concrete measurable factors/);
   assert.match(requestBody.input[1].content, /vanity metrics/);
 });
 
@@ -307,6 +309,76 @@ test("generateAiKeyResultsModel sends approved KR count and indicator mix instru
   assert.match(requestBody.input[1].content, /2 or 3 leading KRs/);
   assert.match(requestBody.input[1].content, /existing non-outcome graph variables/);
   assert.match(requestBody.input[1].content, /influenceability and perceived-gap ratings/);
+  assert.match(requestBody.input[1].content, /measurable, time-bounded, and outcome-oriented/);
+  assert.match(requestBody.input[1].content, /rather than an activity checklist/);
+});
+
+test("generateAiKeyResultsModel serializes clarification assessments into the provider request", async () => {
+  let requestBody;
+  const graph = generateCausalMetricsGraph("Improve onboarding activation");
+
+  await generateAiKeyResultsModel(graph, {
+    "cycle-time": { influenceability: 5, gap: 4 },
+    "failure-rate": { influenceability: 3, gap: 2 },
+  }, {
+    apiKey: "test-key",
+    fetch: async (_url, options) => {
+      requestBody = JSON.parse(options.body);
+      return jsonResponse({
+        keyResults: [
+          aiKeyResult("kr-1", "cycle-time", "Reduce cycle time by 20% this quarter"),
+          aiKeyResult("kr-2", "failure-rate", "Reduce failure rate by 20% this quarter"),
+          aiKeyResult("kr-3", "primary-result", "Increase success rate by 15% this quarter"),
+        ],
+      });
+    },
+  });
+
+  const serializedGraph = JSON.parse(requestBody.input[1].content.slice(requestBody.input[1].content.indexOf("{")));
+  assert.deepEqual(serializedGraph.assessments["cycle-time"], { influenceability: 5, gap: 4 });
+  assert.deepEqual(serializedGraph.assessments["failure-rate"], { influenceability: 3, gap: 2 });
+});
+
+test("generateAiKeyResultsModel records provider HTTP fallback diagnostics", async () => {
+  const graph = generateCausalMetricsGraph("Improve onboarding activation");
+  const model = await generateAiKeyResultsModel(graph, {}, {
+    apiKey: "test-key",
+    fetch: async () => ({
+      ok: false,
+      status: 503,
+      async json() {
+        return {};
+      },
+    }),
+  });
+
+  assert.equal(model.generation.mode, "fallback");
+  assert.equal(model.generation.reasonCode, "provider_http_error");
+  assert.equal(model.keyResults.length, 4);
+});
+
+test("generateAiKeyResultsModel records invalid JSON fallback diagnostics", async () => {
+  const graph = generateCausalMetricsGraph("Improve onboarding activation");
+  const model = await generateAiKeyResultsModel(graph, {}, {
+    apiKey: "test-key",
+    fetch: async () => textResponse("not json"),
+  });
+
+  assert.equal(model.generation.mode, "fallback");
+  assert.equal(model.generation.reasonCode, "invalid_provider_output");
+  assert.equal(model.keyResults.length, 4);
+});
+
+test("generateAiKeyResultsModel records missing output fallback diagnostics", async () => {
+  const graph = generateCausalMetricsGraph("Improve onboarding activation");
+  const model = await generateAiKeyResultsModel(graph, {}, {
+    apiKey: "test-key",
+    fetch: async () => jsonEnvelope({ output: [] }),
+  });
+
+  assert.equal(model.generation.mode, "fallback");
+  assert.equal(model.generation.reasonCode, "invalid_provider_output");
+  assert.equal(model.keyResults.length, 4);
 });
 
 test("normalizeAiKeyResults accepts three to five key results", () => {
@@ -331,6 +403,24 @@ test("normalizeAiKeyResults accepts three to five key results", () => {
   }).length, 5);
 });
 
+test("normalizeAiKeyResults caps provider output at five key results", () => {
+  const graph = generateCausalMetricsGraph("Improve onboarding activation");
+
+  assert.deepEqual(
+    normalizeAiKeyResults(graph, {
+      keyResults: [
+        aiKeyResult("kr-1", "cycle-time", "Reduce cycle time by 20%"),
+        aiKeyResult("kr-2", "failure-rate", "Reduce failure rate by 20%"),
+        aiKeyResult("kr-3", "primary-result", "Increase success rate by 15%"),
+        aiKeyResult("kr-4", "experience-quality", "Increase experience quality by 15%"),
+        aiKeyResult("kr-5", "throughput", "Increase throughput by 15%"),
+        aiKeyResult("kr-6", "capacity", "Increase capacity by 15%"),
+      ],
+    }).map((keyResult) => keyResult.id),
+    ["kr-1", "kr-2", "kr-3", "kr-4", "kr-5"],
+  );
+});
+
 test("normalizeAiKeyResults rejects fewer than three key results", () => {
   const graph = generateCausalMetricsGraph("Improve onboarding activation");
 
@@ -342,6 +432,21 @@ test("normalizeAiKeyResults rejects fewer than three key results", () => {
       ],
     }),
     /at least three key results/,
+  );
+});
+
+test("normalizeAiKeyResults rejects outcome graph references", () => {
+  const graph = generateCausalMetricsGraph("Improve onboarding activation");
+
+  assert.throws(
+    () => normalizeAiKeyResults(graph, {
+      keyResults: [
+        aiKeyResult("kr-1", "outcome", "Improve the objective directly"),
+        aiKeyResult("kr-2", "cycle-time", "Reduce cycle time by 20%"),
+        aiKeyResult("kr-3", "failure-rate", "Reduce failure rate by 20%"),
+      ],
+    }),
+    /unknown variable/,
   );
 });
 
@@ -395,6 +500,30 @@ function aiKeyResult(id, variableId, text) {
 }
 
 function jsonResponse(data) {
+  return jsonEnvelope({
+    output: [
+      {
+        content: [
+          {
+            text: JSON.stringify(data),
+          },
+        ],
+      },
+    ],
+  });
+}
+
+function jsonEnvelope(body) {
+  return {
+    ok: true,
+    status: 200,
+    async json() {
+      return body;
+    },
+  };
+}
+
+function textResponse(text) {
   return {
     ok: true,
     status: 200,
@@ -402,11 +531,7 @@ function jsonResponse(data) {
       return {
         output: [
           {
-            content: [
-              {
-                text: JSON.stringify(data),
-              },
-            ],
+            content: [{ text }],
           },
         ],
       };

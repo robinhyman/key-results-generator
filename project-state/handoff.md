@@ -14,11 +14,13 @@ Issue `#14 Specify AI instructions for graph-first OKR generation` is complete. 
 
 Issue `#15 Implement approved AI instruction structure in the generation service` is complete. PR #17 was squash-merged to `main`, the issue was closed, and GitHub Project `Agent Status` is `Done`.
 
+Issue `#16 Add regression checks for AI instruction and output quality` is in progress on branch `chore/16-ai-instruction-regression-checks`.
+
 Current issue map:
 
 - `#14 Specify AI instructions for graph-first OKR generation`: completed with `Agent Status: Done`.
 - `#15 Implement approved AI instruction structure in the generation service`: completed by PR #17 with `Agent Status: Done`.
-- `#16 Add regression checks for AI instruction and output quality`: unblocked and set to `Agent Status: Ready`.
+- `#16 Add regression checks for AI instruction and output quality`: in progress.
 - `#9 Harden server routing, validation, and AI fallback diagnostics`: completed by PR #13 with `Agent Status: Done`.
 - `#10 Split frontend workflow into focused browser modules`: completed by PR #13 with `Agent Status: Done`.
 - `#6 Add browser-level tests for clarification flow`: completed by PR #13 with `Agent Status: Done`.
@@ -44,6 +46,8 @@ Verification so far:
 - Low-cost `gpt-5.6-luna` Tester/Reviewer worker provided read-only test/risk/docs checklist for this iteration.
 - Issue `#15` verification after PR #17 merge to `main`: `npm run build` passed with 24/24 tests; `npm run test:browser` passed with 1/1 Playwright test before merge; local app link `http://127.0.0.1:5176/` returned HTTP `200`; live local `/api/graph` and `/api/key-results` endpoint smoke check returned HTTP `200`, AI mode for both, and 4 KRs.
 - Low-cost `gpt-5.6-luna` Tester/Reviewer worker for issue `#15` inspected `src/ai-service.js` and `test/generator.test.js`, ran `npm run build` and `git diff --check`, and found no blocking exact-4 assumption in `src/ai-service.js`.
+- Issue `#16` verification so far: `npm run build` passes with 30/30 tests after adding focused regression checks for prompt anti-pattern language, serialized clarification assessments, provider fallback diagnostics, output capping at 5 KRs, and outcome-node rejection.
+- Low-cost `gpt-5.6-luna` Tester/Reviewer worker for issue `#16` inspected `src/ai-service.js`, `src/generator.js`, `test/generator.test.js`, and `test/server.test.js`, ran `npm run build`, and recommended the additional tests now added.
 
 Issue `#15` residual gap: the requested leading/lagging mix is currently instruction-only. The schema/model has no explicit `indicatorType`, so the app cannot enforce 1-2 lagging and 2-3 leading KRs until a later classification decision/change.
 
@@ -93,8 +97,8 @@ This project is tagged at `ai-team-os-v0.1` as the pre-product baseline.
 
 ## Next Best Actions
 
-1. Consider issue `#16 Add regression checks for AI instruction and output quality` as the next quality/regression increment.
-2. Decide later whether to add explicit leading/lagging classification; current #15 implementation treats the mix as prompt guidance only.
+1. Finish issue `#16`: run final checks, commit/push branch, open PR, and update Project status.
+2. Decide later whether to add explicit leading/lagging classification; current implementation treats the mix as prompt guidance only.
 3. Keep the local demo server at `http://127.0.0.1:5176/` running only while the user still needs the local app link.
 
 ## Resume Instructions

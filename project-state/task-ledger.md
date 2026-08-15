@@ -101,10 +101,14 @@ Last updated: 2026-08-15
 - Opened and merged PR `#17 Implement approved AI instruction structure`.
 - Closed issue `#15 Implement approved AI instruction structure in the generation service` and set `Agent Status: Done`.
 - Unblocked issue `#16 Add regression checks for AI instruction and output quality` and set `Agent Status: Ready`.
+- Moved issue `#16 Add regression checks for AI instruction and output quality` to `Agent Status: In Progress`.
+- Created branch `chore/16-ai-instruction-regression-checks`.
+- Added focused regression tests for approved prompt anti-pattern guidance, serialized clarification assessments, provider fallback diagnostics, output capping at 5 KRs, and outcome-node rejection.
+- Delegated read-only regression gap review to low-cost `gpt-5.6-luna` Tester/Reviewer worker.
 
 ## Active
 
-- None.
+- Issue `#16 Add regression checks for AI instruction and output quality`.
 
 ## Blocked
 
@@ -112,5 +116,5 @@ Last updated: 2026-08-15
 
 ## Next
 
-- Consider issue `#16 Add regression checks for AI instruction and output quality` as the next quality/regression increment.
+- Finish issue `#16`: final checks, commit/push, PR, Project status update.
 - Decide later whether to add explicit leading/lagging classification; current #15 implementation treats the mix as prompt guidance only.
