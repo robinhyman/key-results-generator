@@ -38,15 +38,15 @@ Closed GitHub issue: `#1 Set up AI agent team operating system`, `Agent Status: 
 
 Closed GitHub issue: `#2 Build first local MVP for objective-to-key-results generation`, merged via PR #3 and set to `Agent Status: Done`.
 
-Active product increment: `#4 Add AI-guided clarification step before key result generation`, implemented on branch `feature/4-clarification-flow` with draft PR `#5`.
+Active product increment: `#4 Add AI-guided clarification step before key result generation`, implemented on branch `feature/4-clarification-flow` with draft PR `#5` and `Agent Status: Review`.
 
 Merged pull request: `#3 Build local objective-to-KR MVP`
 
 Open draft pull request: `#5 Add clarification step before final KRs`
 
-Open follow-up issue: `#6 Add browser-level tests for clarification flow`
+Open follow-up issue: `#6 Add browser-level tests for clarification flow`, in the GitHub Project with `Agent Status: Ready`.
 
-Open follow-up issue: `#7 Improve GitHub Project status update tooling`
+Open follow-up issue: `#7 Improve GitHub Project status update tooling`, in the GitHub Project with `Agent Status: Ready`.
 
 ## Active Goal
 
@@ -71,7 +71,7 @@ Local implementation separates graph generation from final KR generation. `src/g
 - Cost control is now explicit: future increments should use cheaper/faster worker models whenever possible and reserve stronger models for Lead, Architect, ambiguity, integration, escalation, and final review.
 - Product requirements now explicitly include a clarification step before final KRs: the app asks the user which high-impact metrics are most influenceable and where the biggest perceived gaps are.
 - The causal/metrics graph is treated as a first-class intermediate artefact: serializable structured data with nodes, edges, rankings, user influenceability/gap assessments, and links to final KRs.
-- GitHub issue `#4` has a progress comment and draft PR `#5`. The current connector exposed issue comments and PR creation but not the GitHub Project `Agent Status` field update, so the Project field may still need manual or later-tool update to `Review`.
+- GitHub issue `#4` has a progress comment and draft PR `#5`. The GitHub CLI Project path was used to set issue `#4` `Agent Status: Review` and follow-up issues `#6` and `#7` `Agent Status: Ready`.
 
 ## Open Questions
 

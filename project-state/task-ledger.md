@@ -56,6 +56,8 @@ Last updated: 2026-08-15
 - Ran the issue `#4` retrospective.
 - Created follow-up issue `#6 Add browser-level tests for clarification flow`.
 - Created follow-up issue `#7 Improve GitHub Project status update tooling`.
+- Added follow-up issues `#6` and `#7` to the GitHub Project and set `Agent Status: Ready`.
+- Set issue `#4` `Agent Status: Review` in the GitHub Project.
 
 ## Active
 
@@ -63,12 +65,12 @@ Last updated: 2026-08-15
 
 ## Blocked
 
-- GitHub Project `Agent Status` field update was not exposed by the current connector; issue `#4` may still need manual or later-tool update to `Review`.
+- None.
 
 ## Next
 
 - Run or manually perform a full browser interaction check for issue `#4`.
 - Consider issue `#6` for browser-level tests of slider submission, repeated objective generation, and malformed assessment inputs.
-- Consider issue `#7` for GitHub Project status update tooling.
+- Consider issue `#7` for documenting the GitHub CLI Project status update fallback.
 - Preserve the clarified flow: objective input -> AI-generated causal/metrics tree -> user clarification on influenceability and perceived gaps -> final KRs.
 - Preserve traceability from objective to graph, user assessments, and final KRs.
