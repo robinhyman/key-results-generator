@@ -54,8 +54,9 @@ Last updated: 2026-08-15
 - Issue `#4` low-cost Tester/Reviewer worker ran on `gpt-5.6-luna` with low reasoning. Worker verified clean branch state, compared PR commit against `origin/main`, ran `npm run build` successfully, confirmed 6/6 unit tests passed, inspected the clarification flow and local-demo-server operating-system rule, and found no merge-blocking bugs.
 - Issue `#4` retrospective completed and posted to GitHub issue `#4`; compact note posted to PR `#5`.
 - Follow-up GitHub issues created: `#6 Add browser-level tests for clarification flow`; `#7 Improve GitHub Project status update tooling`.
-- GitHub Project updated with `gh project`: issue `#4` set to `Agent Status: Done`; follow-up issues `#6` and `#7` added to the Project and set to `Agent Status: Ready`.
+- GitHub Project initially updated with `gh project`: issue `#4` set to `Agent Status: Done`; follow-up issues `#6` and `#7` added to the Project and set to `Agent Status: Ready`.
 - PR `#5` merged to `main`; final state updates were cherry-picked to `main` after merge and pushed.
+- Correction after user review: issue `#4` was reopened and moved to Project `Status: Todo` / `Agent Status: Blocked` because no actual AI-backed generation was implemented. PR `#5` is partial groundwork only.
 
 ## Not Yet Verified
 
@@ -64,4 +65,5 @@ Last updated: 2026-08-15
 - Full graph editor behavior. It is out of scope for issue `#2`.
 - Issue `#4` full in-browser interaction screenshot/console check. The in-app browser connector initialized but did not return usable visible diagnostics in this session; local HTTP and generator contract checks were used instead.
 - Issue `#4` browser-level tests for slider submission, repeated objective generation, and malformed assessment inputs are absent. The low-cost worker flagged these as missing coverage but not merge-blocking for the current local-first PR.
+- Issue `#4` real AI-backed causal/metrics tree generation and AI-synthesized final KR generation are not implemented.
 - Hosted deployment. It remains out of scope for issue `#4`.

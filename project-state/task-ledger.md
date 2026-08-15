@@ -59,17 +59,19 @@ Last updated: 2026-08-15
 - Added follow-up issues `#6` and `#7` to the GitHub Project and set `Agent Status: Ready`.
 - Set issue `#4` `Agent Status: Review` in the GitHub Project.
 - PR `#5 Add clarification step before final KRs` was merged into `main`.
-- Closed issue `#4 Add AI-guided clarification step before key result generation` and set `Agent Status: Done`.
+- Reopened issue `#4 Add AI-guided clarification step before key result generation` because PR `#5` did not implement actual AI-driven generation.
+- Set issue `#4` `Agent Status: Blocked` pending AI provider/model and credential path.
 
 ## Active
 
-- Choose the next increment from ready follow-up issues.
+- Unblock issue `#4` by deciding the AI provider/model and credential path for real AI-backed generation.
 
 ## Blocked
 
-- None.
+- Issue `#4` is blocked on AI provider/model and credential path. The merged implementation is partial groundwork only.
 
 ## Next
 
+- Complete issue `#4` with real AI-backed causal/metrics tree generation and AI-synthesized final KR generation.
 - Consider issue `#6` for browser-level tests of slider submission, repeated objective generation, and malformed assessment inputs.
 - Consider issue `#7` for documenting the GitHub CLI Project status update fallback.

@@ -38,11 +38,11 @@ Closed GitHub issue: `#1 Set up AI agent team operating system`, `Agent Status: 
 
 Closed GitHub issue: `#2 Build first local MVP for objective-to-key-results generation`, merged via PR #3 and set to `Agent Status: Done`.
 
-Closed GitHub issue: `#4 Add AI-guided clarification step before key result generation`, merged via PR #5 and set to `Agent Status: Done`.
+Reopened GitHub issue: `#4 Add AI-guided clarification step before key result generation`, partially addressed by PR #5 but not complete because no AI-backed generation is implemented. Current `Agent Status: Blocked`.
 
 Merged pull request: `#3 Build local objective-to-KR MVP`
 
-Merged pull request: `#5 Add clarification step before final KRs`
+Merged pull request: `#5 Add clarification step before final KRs` as partial groundwork for issue `#4`.
 
 Open follow-up issue: `#6 Add browser-level tests for clarification flow`, in the GitHub Project with `Agent Status: Ready`.
 
@@ -50,9 +50,9 @@ Open follow-up issue: `#7 Improve GitHub Project status update tooling`, in the 
 
 ## Active Goal
 
-Choose the next increment. Ready follow-ups are `#6 Add browser-level tests for clarification flow` and `#7 Improve GitHub Project status update tooling`.
+Unblock issue `#4` by deciding the AI provider/model and credential path, then implement real AI-backed causal/metrics tree generation and final KR synthesis.
 
-Local implementation separates graph generation from final KR generation. `src/generator.js` exports a serializable graph step, applies user influenceability/gap assessments, and ranks final KRs from the clarified graph. The browser UI now shows the graph and clarification controls before final KRs are generated.
+Local implementation separates graph generation from final KR generation. `src/generator.js` exports a serializable graph step, applies user influenceability/gap assessments, and ranks final KRs from the clarified graph. The browser UI now shows the graph and clarification controls before final KRs are generated. However, the current generator is still deterministic/local and not AI-driven.
 
 ## Current Runtime Assumption
 
@@ -71,10 +71,10 @@ Local implementation separates graph generation from final KR generation. `src/g
 - Cost control is now explicit: future increments should use cheaper/faster worker models whenever possible and reserve stronger models for Lead, Architect, ambiguity, integration, escalation, and final review.
 - Product requirements now explicitly include a clarification step before final KRs: the app asks the user which high-impact metrics are most influenceable and where the biggest perceived gaps are.
 - The causal/metrics graph is treated as a first-class intermediate artefact: serializable structured data with nodes, edges, rankings, user influenceability/gap assessments, and links to final KRs.
-- GitHub issue `#4` is closed with `Agent Status: Done`. The GitHub CLI Project path was used to set follow-up issues `#6` and `#7` `Agent Status: Ready`.
+- GitHub issue `#4` is reopened with `Agent Status: Blocked` because PR #5 did not implement actual AI-driven generation. The GitHub CLI Project path was used to set follow-up issues `#6` and `#7` `Agent Status: Ready`.
 
 ## Open Questions
 
 - What hosted deployment target should be used for a future increment?
-- Which AI provider/model and credential path should be used for the first real AI-backed generation increment?
+- Which AI provider/model and credential path should be used to complete issue `#4` with real AI-backed generation?
 - Should the next increment address browser-level clarification-flow tests (`#6`), GitHub Project status tooling (`#7`), durable persistence for clarified graph data, or real AI provider integration?
