@@ -18,7 +18,7 @@ Last updated: 2026-08-15
 - Added increment report template.
 - Added testing workflow and wired it into increment delivery.
 - Added intake/specification workflow and issue spec template.
-- Added role specs for Lead, Builder, Tester, Reviewer, and Release Agent.
+- Added role specs for Lead, Architect, Builder, Tester, Reviewer, and Release Agent.
 - Added branch/PR policy.
 - Added web app local-first project profile.
 - Added retrospective workflow and report template.

@@ -36,6 +36,8 @@ The default delivery unit is an increment: a small, coherent slice of progress r
 
 The initial project profile is `ai-team/project-profiles/web-app-local-first.md`.
 
+Core role specs live in `ai-team/roles/`.
+
 ## Initial Project Profile
 
 The first target is a web-based software project that can be built, tested, and demonstrated locally. Later, the same team should support hosted deployment.

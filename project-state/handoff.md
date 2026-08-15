@@ -24,6 +24,8 @@ Intake rule: use `ai-team/workflows/intake-and-specification.md` and `ai-team/te
 
 Continuous improvement rule: after each increment, run `ai-team/workflows/retrospective.md`. Any constitutional or workflow improvement must be approved by the user before being applied, and approved changes should be committed before the next increment.
 
+Role specs now include Project Lead, Architect, Builder, Tester, Reviewer, and Release Agent.
+
 ## Next Best Actions
 
 1. Draft detailed role specs only for the roles needed in the first build.
