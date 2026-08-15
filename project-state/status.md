@@ -20,6 +20,10 @@ Role specs, branch/PR policy, web local-first project profile, and retrospective
 
 Documentation standards are defined in `ai-team/workflows/documentation.md`, with a Documentarian role spec in `ai-team/roles/documentarian.md`.
 
+Reusable baseline: `robinhyman/ai-team-operating-system` at tag `v0.1`.
+
+This repository is tagged at `ai-team-os-v0.1` before product-specific work begins.
+
 GitHub repository: `robinhyman/key-results-generator`
 
 GitHub Project: `Key Results Generator` at `https://github.com/users/robinhyman/projects/4`
@@ -43,6 +47,7 @@ Design a reusable AI software delivery team that can run first in Codex and late
 - Each completed, blocked, or paused increment must have a retrospective before the next increment starts.
 - Retrospective improvement proposals require user approval before operating files are changed.
 - Documentation impact must be assessed for every increment, and required docs are part of `Done`.
+- Future reusable operating-system improvements should be considered for `robinhyman/ai-team-operating-system`.
 
 ## Open Questions
 

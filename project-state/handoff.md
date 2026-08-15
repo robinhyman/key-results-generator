@@ -28,6 +28,10 @@ Role specs now include Project Lead, Architect, Builder, Tester, Reviewer, Relea
 
 Documentation rule: use `ai-team/workflows/documentation.md` to assess docs on every increment. Required documentation updates are part of `Done`.
 
+Reusable baseline repo: `robinhyman/ai-team-operating-system`, tagged `v0.1`.
+
+This project is tagged at `ai-team-os-v0.1` as the pre-product baseline.
+
 ## Next Best Actions
 
 1. Define the first product goal and create the first software-build GitHub issue.

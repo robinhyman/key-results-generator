@@ -23,6 +23,9 @@ Last updated: 2026-08-15
 - Role specs for Lead, Architect, Builder, Tester, Reviewer, and Release Agent created.
 - Branch/PR policy, web local-first profile, and retrospective workflow created.
 - Documentarian role and documentation workflow created.
+- Original repository tagged at `ai-team-os-v0.1`.
+- Reusable private repository created and pushed: `robinhyman/ai-team-operating-system`.
+- Reusable repository tagged at `v0.1`.
 
 ## Not Yet Verified
 

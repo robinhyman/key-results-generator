@@ -83,3 +83,9 @@ Reason: The team should improve continuously while preserving user control over 
 Decision: Assess documentation impact on every increment and require needed documentation updates before `Done`.
 
 Reason: Fresh sessions, users, and future maintainers need durable repository truth rather than hidden chat context or stale instructions.
+
+## 2026-08-15: Extract Reusable AI Team Operating System
+
+Decision: Tag this repository at `ai-team-os-v0.1` and create a separate private reusable repository, `robinhyman/ai-team-operating-system`, tagged `v0.1`.
+
+Reason: The operating system is reusable across future projects and should be preserved before this repository accumulates product-specific code and decisions.

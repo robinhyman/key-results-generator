@@ -23,6 +23,9 @@ Last updated: 2026-08-15
 - Added web app local-first project profile.
 - Added retrospective workflow and report template.
 - Added Documentarian role and documentation workflow.
+- Tagged this repository at `ai-team-os-v0.1`.
+- Created reusable private repository `robinhyman/ai-team-operating-system`.
+- Tagged reusable repository at `v0.1`.
 
 ## Active
 
