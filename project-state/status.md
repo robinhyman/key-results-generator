@@ -8,7 +8,7 @@ This repository contains the initial AI team operating artefacts plus the first 
 
 The MVP is a dependency-free Node/local browser app. It can be started with `npm start` and opened at `http://127.0.0.1:5173/`.
 
-The app lets a user enter an objective, generates an inspectable causal metrics graph, ranks influenceable variables, and produces four graph-backed key results with rationales.
+The app lets a user enter an objective, generates an inspectable causal metrics graph, ranks influenceable variables, and produces graph-backed key results with rationales.
 
 The first generator is deterministic and local. It does not use external AI APIs, persistence, accounts, or hosting.
 
@@ -56,9 +56,13 @@ Closed duplicate issue: `#11 Add browser-level tests for the clarification workf
 
 Closed architecture hardening closeout issue: `#12 Document architecture hardening decisions and close the review iteration`, completed by PR #13 and set to `Agent Status: Done`.
 
+Closed specification issue: `#14 Specify AI instructions for graph-first OKR generation`, approved by the user and set to `Agent Status: Done`.
+
+Active issue: `#15 Implement approved AI instruction structure in the generation service`, implemented locally on branch `feature/15-ai-instructions` and ready for PR review.
+
 ## Active Goal
 
-No active product increment. Architecture hardening issues `#9`, `#10`, `#6`, `#7`, and `#12` are complete.
+Active product increment: issue `#15 Implement approved AI instruction structure in the generation service`.
 
 Local implementation separates graph generation from final KR generation. `src/generator.js` exports the deterministic structured graph and fallback KR path. `src/ai-service.js` now adds a server-side OpenAI Responses API boundary for AI-backed graph generation and AI-synthesized final KRs, validates structured output, applies user influenceability/gap assessments, and falls back to the deterministic generator when the provider is unavailable.
 
@@ -66,9 +70,11 @@ The browser UI calls local server endpoints instead of importing generator logic
 
 Current implementation includes server/API contract tests, robust public-file containment, structured JSON validation errors, safe AI fallback `reasonCode` metadata, a native ES module split for browser code, Playwright browser workflow coverage, and a documented GitHub CLI Project-status fallback.
 
-Verification so far: `npm run build` passes with 20/20 unit/API tests, `npm run test:browser` passes with 1/1 Playwright workflow test after installing Chromium, and the local app link `http://127.0.0.1:5175/` returns HTTP `200`.
+Verification so far: for issue `#15`, `npm run build` passes with 24/24 unit/API tests, `npm run test:browser` passes with 1/1 Playwright workflow test, and the local app link `http://127.0.0.1:5176/` returns HTTP `200`.
 
 The configured OpenAI API credential now has sufficient quota for the issue `#4` smoke checks. Real AI graph generation and final KR synthesis have been verified with `gpt-5-mini`; live local endpoints returned AI-mode graph and KR responses.
+
+Issue `#15` updates the OpenAI Responses API request construction to use the user-approved shared system instruction, graph-generation prompt, and KR-synthesis prompt from issue `#14`. AI KR schema and normalization now accept 3 to 5 final KRs; deterministic fallback still returns 4 KRs, which remains valid. The leading/lagging KR mix is instruction-only until a future explicit `indicatorType` or classification rule is approved.
 
 ## Current Runtime Assumption
 
