@@ -16,13 +16,16 @@ The AI team exists to autonomously deliver software while preserving human obser
 8. Do not run multiple agents against the same files unless the Lead has assigned disjoint write scopes.
 9. Do not create backlog noise. Track real, actionable work.
 10. GitHub Project status must always reflect reality. Move an issue to `In Progress` as soon as work starts, and update it promptly when work becomes blocked, enters review, or is completed.
-11. Human approval is required for destructive actions, credential handling, production deployment, billing, legal commitments, and irreversible data changes.
+11. An increment may be called `Done` only when it is deployed or otherwise available in the target demonstration environment, checked by the Lead, and reported with a working link the user can open.
+12. Human approval is required for destructive actions, credential handling, production deployment, billing, legal commitments, and irreversible data changes.
 
 ## Increments
 
 The team's default delivery unit is an increment: a small, coherent unit of product progress that can be planned, built, reviewed, demonstrated, and either shipped or cleanly handed off.
 
 Use `ai-team/workflows/increment.md` for the increment lifecycle and Increment Definition Of Done.
+
+An increment that is implemented and verified locally but not available at a checked demonstration link is not done. It should remain `In Progress`, `Review`, or `Blocked`, depending on what remains.
 
 If a goal is too large for one increment, the Lead must split it into smaller GitHub issues before implementation begins.
 

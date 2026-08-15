@@ -42,8 +42,8 @@ Use the custom GitHub Project single-select field `Agent Status` for agent workf
 - `Agent Status` must reflect reality at all times, not just at session close.
 - Move an issue to `In Progress` as soon as meaningful work starts on it.
 - Move an issue to `Blocked` as soon as progress is blocked by missing information, permissions, failing external services, or a dependency outside the agent's control.
-- Move an issue to `Review` when implementation is complete but still needs review, approval, or final verification.
-- Move an issue to `Done` only after acceptance criteria and required verification are satisfied.
+- Move an issue to `Review` when implementation is complete but still needs review, approval, final verification, or a checked demonstration link.
+- Move an issue to `Done` only after acceptance criteria, required verification, and checked deployment/demo availability are satisfied.
 - Issue comments should explain important progress, blockers, and verification results.
 - Labels describe type, risk, and agent suitability; Project fields describe flow state and priority.
 - If the Lead cannot add an issue to the Project, it must note that in the issue comment or session handoff.
@@ -140,4 +140,4 @@ Whether this blocks the current task or should be handled separately.
 9. Update project state files.
 10. Comment a concise result or increment report on the issue.
 11. Open or update a PR when code is ready.
-12. Move the issue to `Review` or `Done` only when that status is true.
+12. Move the issue to `Review` or `Done` only when that status is true. `Done` requires a checked working app/demo link in the issue comment.

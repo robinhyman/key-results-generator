@@ -23,6 +23,16 @@ Evidence:
 
 Skipped checks and reasons:
 
+## Demonstration
+
+Target environment:
+
+Checked app/demo link:
+
+What was checked:
+
+Result:
+
 ## Review
 
 Reviewer:
@@ -44,4 +54,3 @@ Follow-up issues:
 Files updated:
 
 Next increment:
-

@@ -8,6 +8,8 @@ This repository contains the initial AI team operating artefacts. No application
 
 The team now has an explicit increment workflow and Increment Definition Of Done in `ai-team/workflows/increment.md`.
 
+An increment is not `Done` unless it is available in the target demonstration environment and reported with a checked working link.
+
 GitHub repository: `robinhyman/key-results-generator`
 
 GitHub Project: `Key Results Generator` at `https://github.com/users/robinhyman/projects/4`
@@ -25,6 +27,7 @@ Design a reusable AI software delivery team that can run first in Codex and late
 - GitHub issues inside the `Key Results Generator` GitHub Project provide work tracking and observability.
 - Repo state files provide compact continuation memory.
 - Product work should be delivered in increments, each tied to one primary GitHub issue.
+- Any `Done` notification for product work must include a checked app/demo link the user can open.
 
 ## Open Questions
 

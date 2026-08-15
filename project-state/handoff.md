@@ -14,12 +14,15 @@ The constitution and GitHub workflow now explicitly require `Agent Status` to re
 
 The team now has an explicit increment workflow and Increment Definition Of Done in `ai-team/workflows/increment.md`, plus an increment report template at `ai-team/templates/increment-report.md`.
 
+Important rule: an increment is not `Done` unless it is available in the target demonstration environment and the completion notice includes a checked working link the user can open.
+
 ## Next Best Actions
 
 1. Draft detailed role specs only for the roles needed in the first build.
 2. Define the first product goal and create the first software-build GitHub issue.
 3. Add every agent-managed issue to the GitHub Project.
 4. Use the increment workflow for the first software-build issue.
+5. Define the target demonstration environment for the first build increment.
 
 ## Resume Instructions
 

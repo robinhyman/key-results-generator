@@ -41,3 +41,9 @@ Reason: The Project is the user's live observability surface, so stale statuses 
 Decision: Use increments as the team's default delivery unit, with an explicit Increment Definition Of Done in `ai-team/workflows/increment.md`.
 
 Reason: Increment boundaries prevent open-ended agent work, make verification clearer, and ensure each unit of progress can survive a fresh session.
+
+## 2026-08-15: Done Requires A Checked Demonstration Link
+
+Decision: An increment may be called `Done` only when it is deployed to, or running in, the target demonstration environment and the user receives a checked working app/demo link.
+
+Reason: The user must be able to verify every completed increment directly. Implemented but unavailable work should remain `In Progress`, `Review`, or `Blocked`.

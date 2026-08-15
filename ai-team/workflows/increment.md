@@ -13,9 +13,11 @@ The increment is the team's default unit of delivery. Avoid open-ended work. If 
 5. Plan the smallest coherent change that satisfies the acceptance criteria.
 6. Delegate bounded worker tasks only when the work can be split safely.
 7. Build, test, and review the change.
-8. Capture follow-up work as separate GitHub issues when it is real, actionable, and out of scope.
-9. Update project state files and the GitHub issue.
-10. Move `Agent Status` to `Review`, `Blocked`, or `Done` according to the real current state.
+8. Deploy or start the target demonstration environment.
+9. Check the linked app or demo and confirm the increment works there.
+10. Capture follow-up work as separate GitHub issues when it is real, actionable, and out of scope.
+11. Update project state files and the GitHub issue.
+12. Move `Agent Status` to `Review`, `Blocked`, or `Done` according to the real current state.
 
 ## Increment Definition Of Done
 
@@ -41,6 +43,13 @@ An increment is done only when all applicable checks below are true.
 - For web work, the app has been run locally and the affected user flow has been checked.
 - Skipped checks are documented with a reason.
 
+### Demo Or Deployment Is Available
+
+- The increment is deployed to, or running in, the target demonstration environment for the current project stage.
+- The Lead has opened the app/demo link and confirmed the affected behavior works there.
+- The completion report includes a working link the user can open.
+- If the target environment is unavailable, the increment is not `Done`; it is `Blocked` or `Review` with the missing deployment/demo step documented.
+
 ### Review Has Happened
 
 - The Lead or Reviewer has inspected the changed files.
@@ -65,7 +74,7 @@ An increment is done only when all applicable checks below are true.
 
 ### Evidence Exists
 
-- User-facing work has a local demo, screenshot, test result, or written evidence showing the increment works.
+- User-facing work has a verified app/demo link plus supporting evidence such as a screenshot, test result, or written verification note.
 - Non-visual work has test output, logs, or another concrete verification artifact.
 
 ### Next Increment Is Clear
@@ -80,11 +89,10 @@ An increment is done only when all applicable checks below are true.
 - Use `In Progress` from the moment meaningful work begins.
 - Use `Blocked` when progress cannot continue without external input or a dependency.
 - Use `Review` when implementation is complete but review, approval, or final verification remains.
-- Use `Done` only when the Increment Definition Of Done is satisfied.
+- Use `Done` only when the Increment Definition Of Done is satisfied and the user has a checked working link to verify the result.
 
 ## Increment Report
 
-At the end of each increment, add a concise report to the GitHub issue and update `project-state/handoff.md`.
+At the end of each increment, add a concise report to the GitHub issue and update `project-state/handoff.md`. A `Done` report must include the checked app/demo link.
 
 Use `ai-team/templates/increment-report.md` when the work is substantial or when another session will continue from the result.
-

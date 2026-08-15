@@ -16,6 +16,7 @@ Last updated: 2026-08-15
 - Recommended labels created and applied to issue `#1`.
 - Increment workflow and report template created.
 - Core operating docs updated to reference increment delivery.
+- Increment Definition Of Done updated to require a checked app/demo link before `Done`.
 
 ## Not Yet Verified
 
