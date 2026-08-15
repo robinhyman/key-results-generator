@@ -90,6 +90,7 @@ Last updated: 2026-08-15
 - Completed issue `#7` with the documented GitHub CLI Project-status fallback in PR #13.
 - Completed issue `#12` with README and project-state closeout in PR #13.
 - Merged PR `#13 Harden architecture and browser workflow coverage`.
+- Posted the architecture-hardening retrospective to issue `#12`; no new operating-rule changes proposed.
 
 ## Active
 
@@ -101,5 +102,4 @@ Last updated: 2026-08-15
 
 ## Next
 
-- Run the architecture-hardening retrospective.
 - Consider durable persistence or graph editing as the next product increment.
