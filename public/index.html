@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Key Results Generator</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="workspace" aria-labelledby="app-title">
+        <div class="intro-panel">
+          <p class="eyebrow">Local MVP</p>
+          <h1 id="app-title">Key Results Generator</h1>
+          <p class="intro-copy">
+            Enter an objective and generate an inspectable causal metrics model before choosing key results.
+          </p>
+          <form class="objective-form" id="objective-form">
+            <label for="objective">Objective</label>
+            <div class="input-row">
+              <input
+                id="objective"
+                name="objective"
+                type="text"
+                value="Improve dependable rail service"
+                autocomplete="off"
+                required
+              />
+              <button type="submit" title="Generate model and key results">
+                <span aria-hidden="true">&gt;</span>
+                Generate
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <div class="results-panel" aria-live="polite">
+          <section class="objective-output" aria-labelledby="objective-heading">
+            <p class="section-label">Objective</p>
+            <h2 id="objective-heading"></h2>
+            <p id="model-summary"></p>
+          </section>
+
+          <section class="kr-section" aria-labelledby="kr-heading">
+            <div class="section-heading">
+              <div>
+                <p class="section-label">Generated key results</p>
+                <h2 id="kr-heading">Recommended set</h2>
+              </div>
+            </div>
+            <ol class="kr-list" id="kr-list"></ol>
+          </section>
+
+          <section class="model-section" aria-labelledby="model-heading">
+            <div class="section-heading">
+              <div>
+                <p class="section-label">Model</p>
+                <h2 id="model-heading">Causal metrics graph</h2>
+              </div>
+              <div class="legend" aria-label="Graph legend">
+                <span><i class="legend-swatch upstream"></i>Upstream</span>
+                <span><i class="legend-swatch driver"></i>Driver</span>
+                <span><i class="legend-swatch evidence"></i>Evidence</span>
+                <span><i class="legend-swatch outcome"></i>Outcome</span>
+              </div>
+            </div>
+            <div class="graph-grid" id="graph-grid"></div>
+          </section>
+
+          <section class="ranked-section" aria-labelledby="ranked-heading">
+            <p class="section-label">Ranking</p>
+            <h2 id="ranked-heading">Why these variables rose to the top</h2>
+            <div class="ranked-list" id="ranked-list"></div>
+          </section>
+        </div>
+      </section>
+    </main>
+    <script type="module" src="/app.js"></script>
+  </body>
+</html>

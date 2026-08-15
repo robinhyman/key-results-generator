@@ -10,7 +10,7 @@ GitHub Project: `Key Results Generator` at `https://github.com/users/robinhyman/
 
 GitHub issue `#1 Set up AI agent team operating system` is complete, closed, and has `Agent Status: Done`.
 
-GitHub issue `#2 Build first local MVP for objective-to-key-results generation` is the first product increment. It has been implemented in draft PR #3 and is in the Project with `Agent Status: Review`.
+GitHub issue `#2 Build first local MVP for objective-to-key-results generation` is the first product increment. It has been moved from `Ready` to `In Progress`, implemented locally on branch `feature/2-local-mvp`, opened as draft PR `#3`, and is in the Project with `Agent Status: Review`.
 
 GitHub issue `#4 Add AI-guided clarification step before key result generation` captures the clarified target product flow and is in the Project with `Agent Status: Ready`.
 
@@ -69,4 +69,18 @@ A fresh Lead should read:
 - `project-state/status.md`
 - `project-state/handoff.md`
 
-Then work on issue `#4` unless the user redirects.
+Then continue issue `#2` closeout unless the user redirects. After issue `#2` is merged and closed, work on issue `#4` unless the user redirects.
+
+## Issue #2 Local Verification
+
+- Local app URL checked: `http://127.0.0.1:5173/`
+- Example objective submitted: `Expand enterprise customer retention`
+- Browser check confirmed objective output, graph/model view, generated key results, ranking view, and no console errors.
+- Automated checks passed with `npm run build`.
+
+## Issue #2 Retrospective
+
+- What went well: the issue spec was strong enough to build without human clarification; test-first worked well for the deterministic graph/ranking logic; the no-dependency stack kept the local demo reliable.
+- What was harder than expected: browser screenshot capture needed adjustment because full-page capture duplicated sticky content, and the sandbox required approvals for local server and Git metadata operations.
+- Gaps discovered: future increments need a clearer product decision on external AI versus graph editing priority.
+- Suggested operating changes: none applied. No constitution, workflow, template, role, model-policy, or profile change is proposed from this increment.

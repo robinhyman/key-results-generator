@@ -1,0 +1,15 @@
+{
+  "name": "key-results-generator",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --test",
+    "lint": "node --check server.js && node --check src/generator.js && node --check public/app.js",
+    "build": "npm run lint && npm test"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

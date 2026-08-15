@@ -28,6 +28,14 @@ Last updated: 2026-08-15
 - Tagged reusable repository at `v0.1`.
 - Created first product issue `#2 Build first local MVP for objective-to-key-results generation`.
 - Added issue `#2` to the GitHub Project and set `Agent Status: Ready`.
+- Moved issue `#2` to `Agent Status: In Progress`.
+- Built first dependency-free local MVP for objective-to-key-results generation.
+- Added deterministic graph-backed KR generator and unit tests.
+- Added local Node server and browser UI for objective input, graph inspection, variable ranking, and KR output.
+- Added app README with run and check instructions.
+- Verified the local app at `http://127.0.0.1:5173/`.
+- Opened draft PR `#3` for issue `#2`.
+- Ran and recorded the issue `#2` retrospective.
 - Issue `#2` was implemented in draft PR #3 and moved to `Agent Status: Review`.
 - Created issue `#4 Add AI-guided clarification step before key result generation`.
 - Added issue `#4` to the GitHub Project and set `Agent Status: Ready`.
@@ -45,6 +53,8 @@ Last updated: 2026-08-15
 
 ## Next
 
+- Review the issue `#2` branch and PR.
+- Decide the next increment after issue `#2`: hosted deployment, external AI-backed generation, or richer graph editing.
 - Decide whether PR #3 should be merged before the next increment.
 - Run issue `#4` as the next bounded product increment.
 - Preserve the clarified flow: objective input -> AI-generated causal/metrics tree -> user clarification on influenceability and perceived gaps -> final KRs.

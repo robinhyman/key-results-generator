@@ -96,6 +96,12 @@ Decision: Create issue `#2 Build first local MVP for objective-to-key-results ge
 
 Reason: It exercises the core product loop: objective input, graph-backed metrics model generation, KR selection, local demo, testing, documentation, and retrospective.
 
+## 2026-08-15: Use Deterministic Local Generation For The First MVP
+
+Decision: Implement the first objective-to-key-results generator as deterministic local logic in `src/generator.js`, without external AI APIs or credentials.
+
+Reason: Issue `#2` requires a demonstrable local MVP and explicitly allows a local/mock generation path when API keys are unavailable. A deterministic generator makes the core graph-backed flow testable, reliable, and runnable without setup friction.
+
 ## 2026-08-15: Treat Metrics Graph As A First-Class Artefact
 
 Decision: Represent the causal/metrics graph as serializable structured data, with nodes, edges, rankings, user influenceability/gap assessments, and traceable links to final KRs.

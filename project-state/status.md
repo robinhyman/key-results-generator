@@ -4,7 +4,13 @@ Last updated: 2026-08-15
 
 ## Current State
 
-This repository contains the initial AI team operating artefacts. The first application prototype exists on PR #3, not yet merged into main.
+This repository contains the initial AI team operating artefacts plus the first local web-app MVP for objective-to-key-results generation, currently on PR #3.
+
+The MVP is a dependency-free Node/local browser app. It can be started with `npm start` and opened at `http://127.0.0.1:5173/`.
+
+The app lets a user enter an objective, generates an inspectable causal metrics graph, ranks influenceable variables, and produces four graph-backed key results with rationales.
+
+The first generator is deterministic and local. It does not use external AI APIs, persistence, accounts, or hosting.
 
 The team now has an explicit increment workflow and Increment Definition Of Done in `ai-team/workflows/increment.md`.
 
@@ -34,9 +40,11 @@ Active GitHub issue: `#2 Build first local MVP for objective-to-key-results gene
 
 Next product requirement: `#4 Add AI-guided clarification step before key result generation`, currently Ready in the GitHub Project.
 
+Active pull request: `#3 Build local objective-to-KR MVP`
+
 ## Active Goal
 
-Review the first local MVP, then implement the clarified AI-guided flow: objective input, AI-generated causal/metrics tree, user clarification on influenceability and perceived gaps, then final KR generation.
+Review and merge the first local MVP, then implement the clarified AI-guided flow: objective input, AI-generated causal/metrics tree, user clarification on influenceability and perceived gaps, then final KR generation.
 
 ## Current Runtime Assumption
 
@@ -58,5 +66,6 @@ Review the first local MVP, then implement the clarified AI-guided flow: objecti
 
 ## Open Questions
 
+- What hosted deployment target should be used for a future increment?
 - Which AI provider/model and credential path should be used for the first real AI-backed generation increment?
 - For the next local-first increment, should graph data be persisted only in browser/session state, or saved to a local durable store as preparation for hosted use?
