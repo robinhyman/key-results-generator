@@ -95,3 +95,9 @@ Reason: The operating system is reusable across future projects and should be pr
 Decision: Create issue `#2 Build first local MVP for objective-to-key-results generation` as the first product increment.
 
 Reason: It exercises the core product loop: objective input, graph-backed metrics model generation, KR selection, local demo, testing, documentation, and retrospective.
+
+## 2026-08-15: Treat Metrics Graph As A First-Class Artefact
+
+Decision: Represent the causal/metrics graph as serializable structured data, with nodes, edges, rankings, user influenceability/gap assessments, and traceable links to final KRs.
+
+Reason: The product workflow requires an intermediate clarification step between objective input and final KR generation. The AI-generated graph must survive that step so final recommendations can be explained, refined, persisted later, and audited against the objective and user answers.

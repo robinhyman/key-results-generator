@@ -8,11 +8,15 @@ The initial team operating model has been drafted and pushed to a private GitHub
 
 GitHub Project: `Key Results Generator` at `https://github.com/users/robinhyman/projects/4`
 
+GitHub issue `#1 Set up AI agent team operating system` is complete, closed, and has `Agent Status: Done`.
+
 GitHub issue `#2 Build first local MVP for objective-to-key-results generation` is the first product increment. It has been implemented in draft PR #3 and is in the Project with `Agent Status: Review`.
 
 GitHub issue `#4 Add AI-guided clarification step before key result generation` captures the clarified target product flow and is in the Project with `Agent Status: Ready`.
 
 Clarified product flow: the app should not jump directly from objective input to final key results. It should first use AI to generate a causal/metrics tree, then ask the user which high-impact metrics are most influenceable and where the user perceives the biggest gaps, then use those answers to generate final KRs.
+
+Architecture clarification: the causal/metrics graph should be treated as a first-class intermediate artefact, not disposable render state. It should be represented as serializable structured data with nodes, edges, rankings, user influenceability/gap assessments, and traceable links to the final KRs. For the next local-first increment, database persistence is optional, but the model should be ready to persist later without redesign.
 
 The constitution and GitHub workflow now explicitly require `Agent Status` to reflect reality, including moving an issue to `In Progress` as soon as meaningful work starts.
 
@@ -39,10 +43,11 @@ This project is tagged at `ai-team-os-v0.1` as the pre-product baseline.
 ## Next Best Actions
 
 1. Review PR #3 and issue `#2`.
-2. Start the next implementation increment from issue `#4` after deciding whether PR #3 should be merged first.
-3. Move issue `#4` to `Agent Status: In Progress` as soon as work begins.
-4. Use the increment workflow, testing workflow, documentation workflow, branch/PR policy, and web app local-first profile.
-5. Deliver a checked local app link before marking the increment `Done`.
+2. Keep issue `#2` in Review until PR #3 is accepted/merged or explicitly superseded.
+3. Start the next implementation increment from issue `#4` after deciding whether PR #3 should be merged first.
+4. Move issue `#4` to `Agent Status: In Progress` as soon as work begins.
+5. Use the increment workflow, testing workflow, documentation workflow, branch/PR policy, and web app local-first profile.
+6. Deliver a checked local app link before marking the increment `Done`.
 
 ## Resume Instructions
 

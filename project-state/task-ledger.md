@@ -31,6 +31,8 @@ Last updated: 2026-08-15
 - Issue `#2` was implemented in draft PR #3 and moved to `Agent Status: Review`.
 - Created issue `#4 Add AI-guided clarification step before key result generation`.
 - Added issue `#4` to the GitHub Project and set `Agent Status: Ready`.
+- Captured graph persistence clarification on issue `#4`: the causal/metrics graph is a first-class serializable intermediate artefact that should survive through clarification and KR generation.
+- Closed issue `#1 Set up AI agent team operating system` and set `Agent Status: Done`.
 
 ## Active
 
@@ -45,3 +47,4 @@ Last updated: 2026-08-15
 - Decide whether PR #3 should be merged before the next increment.
 - Run issue `#4` as the next bounded product increment.
 - Preserve the clarified flow: objective input -> AI-generated causal/metrics tree -> user clarification on influenceability and perceived gaps -> final KRs.
+- Preserve traceability from objective to graph, user assessments, and final KRs.

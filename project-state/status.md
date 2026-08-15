@@ -28,6 +28,8 @@ GitHub repository: `robinhyman/key-results-generator`
 
 GitHub Project: `Key Results Generator` at `https://github.com/users/robinhyman/projects/4`
 
+Closed GitHub issue: `#1 Set up AI agent team operating system`, `Agent Status: Done`.
+
 Active GitHub issue: `#2 Build first local MVP for objective-to-key-results generation`, currently in Review via PR #3.
 
 Next product requirement: `#4 Add AI-guided clarification step before key result generation`, currently Ready in the GitHub Project.
@@ -51,7 +53,9 @@ Review the first local MVP, then implement the clarified AI-guided flow: objecti
 - Documentation impact must be assessed for every increment, and required docs are part of `Done`.
 - Future reusable operating-system improvements should be considered for `robinhyman/ai-team-operating-system`.
 - Product requirements now explicitly include a clarification step before final KRs: the app should ask the user which high-impact metrics are most influenceable and where the biggest perceived gaps are.
+- The causal/metrics graph should be treated as a first-class intermediate artefact: serializable structured data with nodes, edges, rankings, user influenceability/gap assessments, and links to final KRs.
 
 ## Open Questions
 
 - Which AI provider/model and credential path should be used for the first real AI-backed generation increment?
+- For the next local-first increment, should graph data be persisted only in browser/session state, or saved to a local durable store as preparation for hosted use?
