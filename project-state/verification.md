@@ -114,6 +114,9 @@ Last updated: 2026-08-15
 - Issue `#16` added focused tests for approved prompt principles without full prompt snapshots, serialized clarification assessments in provider requests, provider HTTP fallback diagnostics, invalid JSON fallback diagnostics, missing output fallback diagnostics, provider output capping at 5 KRs, and outcome graph reference rejection.
 - Issue `#16` `npm run build` passed with 30/30 tests.
 - Issue `#16` low-cost `gpt-5.6-luna` Tester/Reviewer worker inspected `src/ai-service.js`, `src/generator.js`, `test/generator.test.js`, and `test/server.test.js`; ran `npm run build`; found no blockers; and recommended additional tests for clarification serialization and provider fallback diagnostics, which were added.
+- PR `#18 Add AI instruction regression checks` was marked ready for review, then squash-merged to `main`.
+- Issue `#16` was closed and set to `Agent Status: Done`.
+- Final merged-main verification after PR #18: `npm run build` passed with 30/30 tests.
 
 ## Not Yet Verified
 

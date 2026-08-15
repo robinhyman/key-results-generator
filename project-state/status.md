@@ -60,11 +60,11 @@ Closed specification issue: `#14 Specify AI instructions for graph-first OKR gen
 
 Closed issue: `#15 Implement approved AI instruction structure in the generation service`, completed by PR #17 and set to `Agent Status: Done`.
 
-Active issue: `#16 Add regression checks for AI instruction and output quality`, in progress on branch `chore/16-ai-instruction-regression-checks`.
+Closed issue: `#16 Add regression checks for AI instruction and output quality`, completed by PR #18 and set to `Agent Status: Done`.
 
 ## Active Goal
 
-Active quality/regression increment: issue `#16 Add regression checks for AI instruction and output quality`.
+No active product increment. Issue `#16` is complete.
 
 Local implementation separates graph generation from final KR generation. `src/generator.js` exports the deterministic structured graph and fallback KR path. `src/ai-service.js` now adds a server-side OpenAI Responses API boundary for AI-backed graph generation and AI-synthesized final KRs, validates structured output, applies user influenceability/gap assessments, and falls back to the deterministic generator when the provider is unavailable.
 
@@ -72,7 +72,7 @@ The browser UI calls local server endpoints instead of importing generator logic
 
 Current implementation includes server/API contract tests, robust public-file containment, structured JSON validation errors, safe AI fallback `reasonCode` metadata, a native ES module split for browser code, Playwright browser workflow coverage, and a documented GitHub CLI Project-status fallback.
 
-Verification so far: for issue `#16`, `npm run build` passes with 30/30 unit/API tests after adding AI-instruction regression checks.
+Verification so far: after issue `#16`, `npm run build` passes with 30/30 unit/API tests.
 
 The configured OpenAI API credential now has sufficient quota for the issue `#4` smoke checks. Real AI graph generation and final KR synthesis have been verified with `gpt-5-mini`; live local endpoints returned AI-mode graph and KR responses.
 

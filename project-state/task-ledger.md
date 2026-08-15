@@ -105,10 +105,12 @@ Last updated: 2026-08-15
 - Created branch `chore/16-ai-instruction-regression-checks`.
 - Added focused regression tests for approved prompt anti-pattern guidance, serialized clarification assessments, provider fallback diagnostics, output capping at 5 KRs, and outcome-node rejection.
 - Delegated read-only regression gap review to low-cost `gpt-5.6-luna` Tester/Reviewer worker.
+- Opened and merged PR `#18 Add AI instruction regression checks`.
+- Closed issue `#16 Add regression checks for AI instruction and output quality` and set `Agent Status: Done`.
 
 ## Active
 
-- Issue `#16 Add regression checks for AI instruction and output quality`.
+- None.
 
 ## Blocked
 
@@ -116,5 +118,5 @@ Last updated: 2026-08-15
 
 ## Next
 
-- Finish issue `#16`: final checks, commit/push, PR, Project status update.
-- Decide later whether to add explicit leading/lagging classification; current #15 implementation treats the mix as prompt guidance only.
+- Decide whether to add explicit leading/lagging classification; current implementation treats the mix as prompt guidance only.
+- Consider durable persistence or graph editing as the next product increment.
