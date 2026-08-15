@@ -10,7 +10,7 @@ GitHub Project: `Key Results Generator` at `https://github.com/users/robinhyman/
 
 GitHub issue `#1 Set up AI agent team operating system` is complete, closed, and has `Agent Status: Done`.
 
-GitHub issue `#2 Build first local MVP for objective-to-key-results generation` is the first product increment. It has been moved from `Ready` to `In Progress`, implemented locally on branch `feature/2-local-mvp`, opened as draft PR `#3`, and is in the Project with `Agent Status: Review`.
+GitHub issue `#2 Build first local MVP for objective-to-key-results generation` is complete. It was merged via PR `#3`, closed, and set to `Agent Status: Done`.
 
 GitHub issue `#4 Add AI-guided clarification step before key result generation` captures the clarified target product flow and is in the Project with `Agent Status: Ready`.
 
@@ -44,12 +44,11 @@ This project is tagged at `ai-team-os-v0.1` as the pre-product baseline.
 
 ## Next Best Actions
 
-1. Review PR #3 and issue `#2`.
-2. Keep issue `#2` in Review until PR #3 is accepted/merged or explicitly superseded.
-3. Start the next implementation increment from issue `#4` after deciding whether PR #3 should be merged first.
-4. Move issue `#4` to `Agent Status: In Progress` as soon as work begins.
-5. Use the increment workflow, model policy, testing workflow, documentation workflow, branch/PR policy, and web app local-first profile.
-6. Deliver a checked local app link before marking the increment `Done`.
+1. Start the next implementation increment from issue `#4`.
+2. Move issue `#4` to `Agent Status: In Progress` as soon as work begins.
+3. Make a model-use plan before implementation and delegate cheaper/faster worker tasks where practical.
+4. Use the increment workflow, model policy, testing workflow, documentation workflow, branch/PR policy, and web app local-first profile.
+5. Deliver a checked local app link before marking the increment `Done`.
 
 ## Resume Instructions
 
@@ -69,7 +68,7 @@ A fresh Lead should read:
 - `project-state/status.md`
 - `project-state/handoff.md`
 
-Then continue issue `#2` closeout unless the user redirects. After issue `#2` is merged and closed, work on issue `#4` unless the user redirects.
+Then work on issue `#4` unless the user redirects.
 
 ## Issue #2 Local Verification
 
@@ -77,6 +76,10 @@ Then continue issue `#2` closeout unless the user redirects. After issue `#2` is
 - Example objective submitted: `Expand enterprise customer retention`
 - Browser check confirmed objective output, graph/model view, generated key results, ranking view, and no console errors.
 - Automated checks passed with `npm run build`.
+- PR `#3` merged into `main`.
+- Final main-branch checks passed with `npm run build`.
+- Final main-branch local app URL checked: `http://127.0.0.1:5173/`.
+- Final HTML order confirmed: Objective, Generated key results, then Causal metrics graph.
 
 ## Issue #2 Retrospective
 

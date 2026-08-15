@@ -42,10 +42,12 @@ Last updated: 2026-08-15
 - Captured graph persistence clarification on issue `#4`: the causal/metrics graph is a first-class serializable intermediate artefact that should survive through clarification and KR generation.
 - Closed issue `#1 Set up AI agent team operating system` and set `Agent Status: Done`.
 - Tightened model-use policy so future increments must plan and report cost-conscious use of cheaper/faster worker models.
+- Merged PR `#3 Build local objective-to-KR MVP` into `main`.
+- Closed issue `#2 Build first local MVP for objective-to-key-results generation` and set `Agent Status: Done`.
 
 ## Active
 
-- Review the first product increment from issue `#2` / PR #3.
+- Prepare to run issue `#4 Add AI-guided clarification step before key result generation`.
 
 ## Blocked
 
@@ -53,9 +55,6 @@ Last updated: 2026-08-15
 
 ## Next
 
-- Review the issue `#2` branch and PR.
-- Decide the next increment after issue `#2`: hosted deployment, external AI-backed generation, or richer graph editing.
-- Decide whether PR #3 should be merged before the next increment.
 - Run issue `#4` as the next bounded product increment.
 - Preserve the clarified flow: objective input -> AI-generated causal/metrics tree -> user clarification on influenceability and perceived gaps -> final KRs.
 - Preserve traceability from objective to graph, user assessments, and final KRs.

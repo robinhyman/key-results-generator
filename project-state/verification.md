@@ -38,6 +38,12 @@ Last updated: 2026-08-15
 - Visual screenshot check performed for the local app flow.
 - Draft PR `#3` opened for review.
 - Retrospective completed for issue `#2`.
+- Low-cost tester worker verified `npm run build`, section order, and no obvious merge-blocking issue before PR merge.
+- PR `#3` merged into `main`.
+- Issue `#2` closed and set to `Agent Status: Done`.
+- Final `main` verification: `npm run build` passed.
+- Final `main` local URL checked: `http://127.0.0.1:5173/` returned HTTP 200.
+- Final HTML order checked: Generated key results appear before the Causal metrics graph.
 
 ## Not Yet Verified
 

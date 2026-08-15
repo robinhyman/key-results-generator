@@ -4,7 +4,7 @@ Last updated: 2026-08-15
 
 ## Current State
 
-This repository contains the initial AI team operating artefacts plus the first local web-app MVP for objective-to-key-results generation, currently on PR #3.
+This repository contains the initial AI team operating artefacts plus the first local web-app MVP for objective-to-key-results generation, now merged into `main`.
 
 The MVP is a dependency-free Node/local browser app. It can be started with `npm start` and opened at `http://127.0.0.1:5173/`.
 
@@ -36,15 +36,15 @@ GitHub Project: `Key Results Generator` at `https://github.com/users/robinhyman/
 
 Closed GitHub issue: `#1 Set up AI agent team operating system`, `Agent Status: Done`.
 
-Active GitHub issue: `#2 Build first local MVP for objective-to-key-results generation`, currently in Review via PR #3.
+Closed GitHub issue: `#2 Build first local MVP for objective-to-key-results generation`, merged via PR #3 and set to `Agent Status: Done`.
 
 Next product requirement: `#4 Add AI-guided clarification step before key result generation`, currently Ready in the GitHub Project.
 
-Active pull request: `#3 Build local objective-to-KR MVP`
+Merged pull request: `#3 Build local objective-to-KR MVP`
 
 ## Active Goal
 
-Review and merge the first local MVP, then implement the clarified AI-guided flow: objective input, AI-generated causal/metrics tree, user clarification on influenceability and perceived gaps, then final KR generation.
+Implement the clarified AI-guided flow from issue `#4`: objective input, AI-generated causal/metrics tree, user clarification on influenceability and perceived gaps, then final KR generation.
 
 ## Current Runtime Assumption
 
