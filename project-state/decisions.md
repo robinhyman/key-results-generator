@@ -89,3 +89,9 @@ Reason: Fresh sessions, users, and future maintainers need durable repository tr
 Decision: Tag this repository at `ai-team-os-v0.1` and create a separate private reusable repository, `robinhyman/ai-team-operating-system`, tagged `v0.1`.
 
 Reason: The operating system is reusable across future projects and should be preserved before this repository accumulates product-specific code and decisions.
+
+## 2026-08-15: First Product Increment Is Objective-To-KR MVP
+
+Decision: Create issue `#2 Build first local MVP for objective-to-key-results generation` as the first product increment.
+
+Reason: It exercises the core product loop: objective input, graph-backed metrics model generation, KR selection, local demo, testing, documentation, and retrospective.

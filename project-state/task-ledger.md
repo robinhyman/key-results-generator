@@ -26,10 +26,12 @@ Last updated: 2026-08-15
 - Tagged this repository at `ai-team-os-v0.1`.
 - Created reusable private repository `robinhyman/ai-team-operating-system`.
 - Tagged reusable repository at `v0.1`.
+- Created first product issue `#2 Build first local MVP for objective-to-key-results generation`.
+- Added issue `#2` to the GitHub Project and set `Agent Status: Ready`.
 
 ## Active
 
-- Define the first product goal.
+- Run the first product increment from issue `#2`.
 
 ## Blocked
 
@@ -37,8 +39,6 @@ Last updated: 2026-08-15
 
 ## Next
 
-- Define the first product goal.
-- Create the first software-build GitHub issue and add it to the Project.
 - Run the first build as a bounded increment.
 - Define the verification plan before implementing the first build increment.
 - Use Ready Criteria before marking the first software-build issue `Ready`.

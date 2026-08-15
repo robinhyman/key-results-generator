@@ -28,11 +28,11 @@ GitHub repository: `robinhyman/key-results-generator`
 
 GitHub Project: `Key Results Generator` at `https://github.com/users/robinhyman/projects/4`
 
-Active GitHub issue: `#1 Set up AI agent team operating system`
+Active GitHub issue: `#2 Build first local MVP for objective-to-key-results generation`
 
 ## Active Goal
 
-Design a reusable AI software delivery team that can run first in Codex and later migrate to OpenClaw or another always-on agent runtime.
+Build the first local MVP for objective-to-key-results generation using the AI team operating system.
 
 ## Current Runtime Assumption
 
@@ -51,4 +51,4 @@ Design a reusable AI software delivery team that can run first in Codex and late
 
 ## Open Questions
 
-- What is the first software product goal for the team to build?
+- Should the first MVP use an external AI API if credentials are available, or keep the first increment deterministic/local?

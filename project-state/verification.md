@@ -26,6 +26,7 @@ Last updated: 2026-08-15
 - Original repository tagged at `ai-team-os-v0.1`.
 - Reusable private repository created and pushed: `robinhyman/ai-team-operating-system`.
 - Reusable repository tagged at `v0.1`.
+- First product issue `#2` created, added to GitHub Project, and marked `Ready`.
 
 ## Not Yet Verified
 

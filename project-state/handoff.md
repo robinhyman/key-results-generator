@@ -8,7 +8,7 @@ The initial team operating model has been drafted and pushed to a private GitHub
 
 GitHub Project: `Key Results Generator` at `https://github.com/users/robinhyman/projects/4`
 
-GitHub issue `#1 Set up AI agent team operating system` tracks the remaining setup work and is in the Project with `Agent Status: In Progress`.
+GitHub issue `#2 Build first local MVP for objective-to-key-results generation` is the first product increment and is in the Project with `Agent Status: Ready`.
 
 The constitution and GitHub workflow now explicitly require `Agent Status` to reflect reality, including moving an issue to `In Progress` as soon as meaningful work starts.
 
@@ -34,10 +34,10 @@ This project is tagged at `ai-team-os-v0.1` as the pre-product baseline.
 
 ## Next Best Actions
 
-1. Define the first product goal and create the first software-build GitHub issue.
-2. Add every agent-managed issue to the GitHub Project.
-3. Use the increment workflow for the first software-build issue.
-4. Define the target demonstration environment for the first build increment.
+1. Start a fresh Codex task for issue `#2`.
+2. Move issue `#2` to `Agent Status: In Progress` as soon as work begins.
+3. Use the increment workflow, testing workflow, documentation workflow, branch/PR policy, and web app local-first profile.
+4. Deliver a checked local app link before marking the increment `Done`.
 
 ## Resume Instructions
 
@@ -57,4 +57,4 @@ A fresh Lead should read:
 - `project-state/status.md`
 - `project-state/handoff.md`
 
-Then ask for or select the active GitHub issue.
+Then work on issue `#2` unless the user redirects.
