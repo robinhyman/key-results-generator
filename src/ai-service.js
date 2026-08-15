@@ -24,10 +24,10 @@ const graphTypes = new Set([
 
 export async function generateAiCausalMetricsGraph(rawObjective, options = {}) {
   const objective = normalizeObjective(rawObjective);
-  const fallback = () => withGenerationInfo(generateCausalMetricsGraph(objective), {
+  const fallback = (error) => withGenerationInfo(generateCausalMetricsGraph(objective), {
     mode: "fallback",
     model: "deterministic-local",
-    reason: "AI provider unavailable; used the local deterministic generator.",
+    ...fallbackDiagnostic(error, "AI provider unavailable; used the local deterministic generator."),
   });
 
   return withFallback(async () => {
@@ -48,7 +48,7 @@ export async function generateAiCausalMetricsGraph(rawObjective, options = {}) {
 
 export async function generateAiKeyResultsModel(graph, clarifications = {}, options = {}) {
   const clarifiedGraph = applyClarifications(normalizeGraphInput(graph), clarifications);
-  const fallback = () => {
+  const fallback = (error) => {
     const keyResults = clarifiedGraph.rankings.slice(0, 4).map((variable, index) =>
       toFallbackKeyResult(variable, clarifiedGraph.edges, clarifiedGraph.nodes, index, clarifiedGraph.assessments[variable.id]),
     );
@@ -56,7 +56,7 @@ export async function generateAiKeyResultsModel(graph, clarifications = {}, opti
     return withModelGenerationInfo(toModel(clarifiedGraph, keyResults), {
       mode: "fallback",
       model: "deterministic-local",
-      reason: "AI provider unavailable; used the local deterministic KR synthesizer.",
+      ...fallbackDiagnostic(error, "AI provider unavailable; used the local deterministic KR synthesizer."),
     });
   };
 
@@ -148,7 +148,7 @@ export function normalizeAiKeyResults(graph, response) {
 async function createOpenAiClient(options) {
   const apiKey = options.apiKey ?? (await readApiKey(options));
   if (!apiKey) {
-    throw new Error("No OpenAI API key configured.");
+    throw providerError("missing_api_key", "No OpenAI API key configured.");
   }
 
   const model = options.model ?? process.env.OPENAI_MODEL ?? process.env.AI_MODEL ?? defaultModel;
@@ -156,46 +156,55 @@ async function createOpenAiClient(options) {
   const fetchImpl = options.fetch ?? globalThis.fetch;
 
   if (typeof fetchImpl !== "function") {
-    throw new Error("No fetch implementation is available.");
+    throw providerError("provider_unavailable", "No fetch implementation is available.");
   }
 
   return {
     model,
     async createJsonResponse({ schemaName, schema, prompt }) {
-      const response = await fetchImpl(endpoint, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${apiKey}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          model,
-          input: [
-            {
-              role: "system",
-              content: "You produce concise, realistic OKR planning data as valid JSON only.",
-            },
-            {
-              role: "user",
-              content: prompt,
-            },
-          ],
-          text: {
-            format: {
-              type: "json_schema",
-              name: schemaName,
-              strict: true,
-              schema,
-            },
+      let response;
+      try {
+        response = await fetchImpl(endpoint, {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${apiKey}`,
+            "Content-Type": "application/json",
           },
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error(`OpenAI request failed with status ${response.status}.`);
+          body: JSON.stringify({
+            model,
+            input: [
+              {
+                role: "system",
+                content: "You produce concise, realistic OKR planning data as valid JSON only.",
+              },
+              {
+                role: "user",
+                content: prompt,
+              },
+            ],
+            text: {
+              format: {
+                type: "json_schema",
+                name: schemaName,
+                strict: true,
+                schema,
+              },
+            },
+          }),
+        });
+      } catch (error) {
+        throw providerError("provider_unavailable", "AI provider request failed before a response was received.", error);
       }
 
-      return parseResponseText(await response.json());
+      if (!response.ok) {
+        throw providerError("provider_http_error", `AI provider returned HTTP ${response.status}.`);
+      }
+
+      try {
+        return parseResponseText(await response.json());
+      } catch (error) {
+        throw providerError("invalid_provider_output", "AI provider returned output that could not be parsed.", error);
+      }
     },
   };
 }
@@ -217,8 +226,8 @@ async function readApiKey(options) {
 async function withFallback(action, fallback) {
   try {
     return await action();
-  } catch {
-    return fallback();
+  } catch (error) {
+    return fallback(error);
   }
 }
 
@@ -235,6 +244,32 @@ function parseResponseText(body) {
   }
 
   return JSON.parse(outputText);
+}
+
+function fallbackDiagnostic(error, defaultReason) {
+  const reasonCode = error?.reasonCode ?? "provider_unavailable";
+  return {
+    reasonCode,
+    reason: fallbackReason(reasonCode, defaultReason),
+  };
+}
+
+function fallbackReason(reasonCode, defaultReason) {
+  return {
+    missing_api_key: "No AI API key is configured; used the local deterministic generator.",
+    provider_unavailable: defaultReason,
+    provider_http_error: "AI provider returned an unsuccessful response; used the local deterministic generator.",
+    invalid_provider_output: "AI provider returned invalid structured output; used the local deterministic generator.",
+  }[reasonCode] ?? defaultReason;
+}
+
+function providerError(reasonCode, message, cause) {
+  const error = new Error(message);
+  error.reasonCode = reasonCode;
+  if (cause) {
+    error.cause = cause;
+  }
+  return error;
 }
 
 function buildGraphPrompt(objective) {

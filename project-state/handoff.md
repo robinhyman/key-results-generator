@@ -8,6 +8,38 @@ The initial team operating model has been drafted and pushed to a private GitHub
 
 GitHub Project: `Key Results Generator` at `https://github.com/users/robinhyman/projects/4`
 
+Architecture hardening iteration is active on branch `codex/architecture-hardening`.
+
+Current issue map:
+
+- `#9 Harden server routing, validation, and AI fallback diagnostics`: in the GitHub Project with `Agent Status: In Progress`.
+- `#10 Split frontend workflow into focused browser modules`: in the GitHub Project with `Agent Status: In Progress`.
+- `#6 Add browser-level tests for clarification flow`: in the GitHub Project with `Agent Status: In Progress`.
+- `#7 Improve GitHub Project status update tooling`: in the GitHub Project with `Agent Status: In Progress`.
+- `#12 Document architecture hardening decisions and close the review iteration`: in the GitHub Project with `Agent Status: Ready`.
+- `#11 Add browser-level tests for the clarification workflow`: closed as duplicate of `#6`, with `Agent Status: Done`.
+
+Current implementation summary:
+
+- `server.js` exports `handleRequest` for sandbox-friendly API tests, validates API request bodies, serves only public files, removes `/src/*` static serving, and returns structured JSON errors.
+- `src/ai-service.js` preserves deterministic fallback while adding safe `generation.reasonCode` values for missing key, provider unavailability, provider HTTP errors, and invalid provider output.
+- Browser code is split into native ES modules: `public/api.js`, `public/app.js`, `public/format.js`, and `public/render.js`.
+- Playwright browser coverage now lives in `e2e/clarification-flow.spec.js` and runs with `npm run test:browser`.
+- GitHub Project update fallback is documented in `ai-team/github-workflow.md`; authenticated CLI outside the sandbox can set `Agent Status`.
+
+Verification so far:
+
+- `npm run build` passes with 20/20 unit/API tests.
+- `npm run test:browser` passes with 1/1 Playwright test after `npx playwright install chromium`.
+- Local app link checked: `http://127.0.0.1:5175/` returned HTTP `200`; `/src/generator.js` returned HTTP `404`; `/api/graph` returned HTTP `200` with AI mode using `gpt-5-mini`.
+- Low-cost `gpt-5.6-luna` Tester/Reviewer worker provided read-only test/risk/docs checklist for this iteration.
+
+Remaining before marking the iteration done:
+
+- Comment completion reports on issues `#9`, `#10`, `#6`, `#7`, and `#12`.
+- Set completed issue `Agent Status` values to `Done`.
+- Run the retrospective workflow after completion.
+
 GitHub issue `#1 Set up AI agent team operating system` is complete, closed, and has `Agent Status: Done`.
 
 GitHub issue `#2 Build first local MVP for objective-to-key-results generation` is complete. It was merged via PR `#3`, closed, and set to `Agent Status: Done`.

@@ -133,3 +133,21 @@ Decision: AI-backed graph generation and final KR synthesis run through server-s
 Reason: Issue `#4` requires real AI-backed generation, but local-first development still needs a reliable demo and safe credential handling. Server-side validation treats AI output as untrusted while keeping the existing graph model serializable and ready for later persistence.
 
 Current default: `OPENAI_MODEL` / `AI_MODEL` can override the model; otherwise the service uses `gpt-5-mini`. Credentials are read from `OPENAI_API_KEY`, configured key path env vars, or ignored local `keys/key.txt`.
+
+## 2026-08-15: Harden Local MVP Before Product Expansion
+
+Decision: Before adding larger product features, harden the local MVP by validating server API request shapes, serving only files under `public/`, removing static `/src/*` exposure, and returning safe structured fallback diagnostics from the AI boundary.
+
+Reason: The architecture review found that the MVP had a good core shape but overly forgiving boundaries. Explicit validation and diagnostics make failures easier to test and debug without exposing credentials or provider payloads.
+
+## 2026-08-15: Use Native Browser Modules Until Framework Pressure Is Real
+
+Decision: Keep the browser dependency-free at runtime and split `public/app.js` into native ES modules for API access, rendering, formatting, and workflow orchestration.
+
+Reason: The UI had grown enough to need clearer file boundaries, but not enough to justify a frontend framework or build step.
+
+## 2026-08-15: Add Playwright For Browser Workflow Verification
+
+Decision: Add Playwright as a dev dependency and keep browser workflow tests in a separate `npm run test:browser` command rather than the default unit/build loop.
+
+Reason: The clarification flow needs real browser coverage for DOM events, module loading, repeated submissions, and console/page/request failures. Keeping it separate preserves a fast sandbox-friendly `npm run build` while enabling stronger local verification before marking web increments done.

@@ -44,17 +44,29 @@ Merged pull request: `#3 Build local objective-to-KR MVP`
 
 Merged pull request: `#5 Add clarification step before final KRs` as partial groundwork for issue `#4`.
 
-Open follow-up issue: `#6 Add browser-level tests for clarification flow`, in the GitHub Project with `Agent Status: Ready`.
+Open follow-up issue: `#6 Add browser-level tests for clarification flow`, in the GitHub Project with `Agent Status: In Progress`.
 
-Open follow-up issue: `#7 Improve GitHub Project status update tooling`, in the GitHub Project with `Agent Status: Ready`.
+Open follow-up issue: `#7 Improve GitHub Project status update tooling`, in the GitHub Project with `Agent Status: In Progress`.
+
+Open architecture hardening issue: `#9 Harden server routing, validation, and AI fallback diagnostics`, in the GitHub Project with `Agent Status: In Progress`.
+
+Open architecture hardening issue: `#10 Split frontend workflow into focused browser modules`, in the GitHub Project with `Agent Status: In Progress`.
+
+Closed duplicate issue: `#11 Add browser-level tests for the clarification workflow`, duplicate of `#6`, with `Agent Status: Done`.
+
+Open architecture hardening closeout issue: `#12 Document architecture hardening decisions and close the review iteration`, in the GitHub Project with `Agent Status: Ready`.
 
 ## Active Goal
 
-No active product increment. Issue `#4` is complete.
+Active architecture-hardening iteration covers issues `#9`, `#10`, `#6`, `#7`, and `#12` on branch `codex/architecture-hardening`.
 
 Local implementation separates graph generation from final KR generation. `src/generator.js` exports the deterministic structured graph and fallback KR path. `src/ai-service.js` now adds a server-side OpenAI Responses API boundary for AI-backed graph generation and AI-synthesized final KRs, validates structured output, applies user influenceability/gap assessments, and falls back to the deterministic generator when the provider is unavailable.
 
-The browser UI now calls local server endpoints instead of importing generator logic directly. It shows whether output came from AI or the local fallback. The API key remains server-only and is read from `OPENAI_API_KEY`, configured key path env vars, or ignored local `keys/key.txt`.
+The browser UI calls local server endpoints instead of importing generator logic directly. It shows whether output came from AI or the local fallback. The API key remains server-only and is read from `OPENAI_API_KEY`, configured key path env vars, or ignored local `keys/key.txt`.
+
+Current branch implementation adds server/API contract tests, robust public-file containment, structured JSON validation errors, safe AI fallback `reasonCode` metadata, a native ES module split for browser code, Playwright browser workflow coverage, and a documented GitHub CLI Project-status fallback.
+
+Verification so far: `npm run build` passes with 20/20 unit/API tests, `npm run test:browser` passes with 1/1 Playwright workflow test after installing Chromium, and the local app link `http://127.0.0.1:5175/` returns HTTP `200`.
 
 The configured OpenAI API credential now has sufficient quota for the issue `#4` smoke checks. Real AI graph generation and final KR synthesis have been verified with `gpt-5-mini`; live local endpoints returned AI-mode graph and KR responses.
 
@@ -80,4 +92,4 @@ The configured OpenAI API credential now has sufficient quota for the issue `#4`
 ## Open Questions
 
 - What hosted deployment target should be used for a future increment?
-- Should the next increment address browser-level clarification-flow tests (`#6`), GitHub Project status tooling (`#7`), or durable persistence for clarified graph data?
+- Should durable persistence or graph editing be the next product increment after architecture hardening?
