@@ -12,7 +12,7 @@ GitHub issue `#1 Set up AI agent team operating system` is complete, closed, and
 
 GitHub issue `#2 Build first local MVP for objective-to-key-results generation` is complete. It was merged via PR `#3`, closed, and set to `Agent Status: Done`.
 
-GitHub issue `#4 Add AI-guided clarification step before key result generation` captures the clarified target product flow. A progress comment was added when this increment started. Draft PR `#5 Add clarification step before final KRs` is open. The current connector exposed issue comments and PR creation but not the GitHub Project `Agent Status` field update, so the Project field may still need manual or later-tool update to `Review`.
+GitHub issue `#4 Add AI-guided clarification step before key result generation` captures the clarified target product flow. A progress comment was added when this increment started. Draft PR `#5 Add clarification step before final KRs` is open. The GitHub CLI Project path was used to set issue `#4` to `Agent Status: Review`.
 
 Clarified product flow: the app should not jump directly from objective input to final key results. It should first use AI to generate a causal/metrics tree, then ask the user which high-impact metrics are most influenceable and where the user perceives the biggest gaps, then use those answers to generate final KRs.
 
@@ -47,11 +47,10 @@ This project is tagged at `ai-team-os-v0.1` as the pre-product baseline.
 ## Next Best Actions
 
 1. Review draft PR `#5`.
-2. If tooling becomes available, move issue `#4` Project `Agent Status` to `Review`.
-3. Run or manually perform a full browser interaction check for the clarification controls and final KR generation.
-4. Include or confirm the checked local app link `http://127.0.0.1:5173/` before marking the increment `Done`.
-5. Consider follow-up issue `#6 Add browser-level tests for clarification flow`.
-6. Consider follow-up issue `#7 Improve GitHub Project status update tooling`.
+2. Run or manually perform a full browser interaction check for the clarification controls and final KR generation.
+3. Include or confirm the checked local app link `http://127.0.0.1:5173/` before marking the increment `Done`.
+4. Consider follow-up issue `#6 Add browser-level tests for clarification flow`, now in the Project with `Agent Status: Ready`.
+5. Consider follow-up issue `#7 Improve GitHub Project status update tooling`, now in the Project with `Agent Status: Ready`.
 
 ## Resume Instructions
 
@@ -88,10 +87,10 @@ Current verification for issue `#4`:
 - Role inputs: Lead/Architect/Builder/Documentarian/Release perspectives were provided by the Lead; Tester/Reviewer input came from a low-cost `gpt-5.6-luna` worker.
 - What went well: the clarified graph-first product requirement translated cleanly into test-first generator contracts; the local deterministic generator stayed dependency-free and serializable; the user feedback loop exposed two operating gaps while there was still time to fix them.
 - What went wrong or was harder than expected: the final local URL was initially reported after the server had been stopped; cheaper-worker delegation happened only after the user challenged the lack of evidence; GitHub Project status updates were not available through the exposed connector.
-- Process gaps discovered: local demo links must be treated as live-process commitments, not historical verification notes; cheaper-worker delegation needed to be a hard gate; Project status update tooling needs either automation or a clear manual fallback.
+- Process gaps discovered: local demo links must be treated as live-process commitments, not historical verification notes; cheaper-worker delegation needed to be a hard gate; Project status update tooling needs documentation for the GitHub CLI fallback.
 - Documentation gaps: the local-first profile, session-close workflow, model policy, increment workflow, branch/PR workflow, increment report template, and decisions log were updated after user approval.
 - Improvements applied: local demo servers must remain running when sharing local URLs; product increments and PRs now require cheaper/faster worker delegation evidence or a documented exception.
-- Follow-up issues created: `#6 Add browser-level tests for clarification flow`; `#7 Improve GitHub Project status update tooling`.
+- Follow-up issues created and added to the GitHub Project with `Agent Status: Ready`: `#6 Add browser-level tests for clarification flow`; `#7 Improve GitHub Project status update tooling`.
 - Suggested further operating changes: none pending approval from this retrospective.
 
 ## Issue #2 Local Verification
