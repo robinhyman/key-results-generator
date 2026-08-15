@@ -104,6 +104,11 @@ Last updated: 2026-08-15
 - Issue `#15` local URL checked: `http://127.0.0.1:5176/` returned HTTP `200`.
 - Issue `#15` live local endpoint check passed: `/api/graph` and `/api/key-results` returned HTTP `200`, AI mode for both, and final KR count `4`, which is valid within the new 3-5 requirement.
 - Issue `#15` low-cost `gpt-5.6-luna` Tester/Reviewer worker inspected `src/ai-service.js` and `test/generator.test.js`, ran `npm run build` and `git diff --check`, and found no blocking exact-4 assumption in `src/ai-service.js`.
+- PR `#17 Implement approved AI instruction structure` was marked ready for review, then squash-merged to `main`.
+- Issue `#15` was closed and set to `Agent Status: Done`.
+- Issue `#16` was unblocked and set to `Agent Status: Ready`.
+- Final merged-main verification after PR #17: `npm run build` passed with 24/24 tests.
+- Final merged-main local URL check: `http://127.0.0.1:5176/` returned HTTP `200`.
 
 ## Not Yet Verified
 

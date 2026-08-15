@@ -12,13 +12,13 @@ Architecture hardening iteration completed and merged to `main` via PR #13.
 
 Issue `#14 Specify AI instructions for graph-first OKR generation` is complete. The user approved the shared system instruction, graph-generation prompt, KR-synthesis prompt, 3-5 final KR count, 1-2 lagging / 2-3 leading target mix, quality principles, and anti-patterns.
 
-Issue `#15 Implement approved AI instruction structure in the generation service` is implemented locally on branch `feature/15-ai-instructions` and ready for PR review. GitHub Project status is `In Progress`.
+Issue `#15 Implement approved AI instruction structure in the generation service` is complete. PR #17 was squash-merged to `main`, the issue was closed, and GitHub Project `Agent Status` is `Done`.
 
 Current issue map:
 
 - `#14 Specify AI instructions for graph-first OKR generation`: completed with `Agent Status: Done`.
-- `#15 Implement approved AI instruction structure in the generation service`: implemented locally, pending PR/review.
-- `#16 Add regression checks for AI instruction and output quality`: still blocked until the prompt implementation shape is merged or explicitly handed to a tester.
+- `#15 Implement approved AI instruction structure in the generation service`: completed by PR #17 with `Agent Status: Done`.
+- `#16 Add regression checks for AI instruction and output quality`: unblocked and set to `Agent Status: Ready`.
 - `#9 Harden server routing, validation, and AI fallback diagnostics`: completed by PR #13 with `Agent Status: Done`.
 - `#10 Split frontend workflow into focused browser modules`: completed by PR #13 with `Agent Status: Done`.
 - `#6 Add browser-level tests for clarification flow`: completed by PR #13 with `Agent Status: Done`.
@@ -30,8 +30,8 @@ Current implementation summary:
 
 - `server.js` exports `handleRequest` for sandbox-friendly API tests, validates API request bodies, serves only public files, removes `/src/*` static serving, and returns structured JSON errors.
 - `src/ai-service.js` preserves deterministic fallback while adding safe `generation.reasonCode` values for missing key, provider unavailability, provider HTTP errors, and invalid provider output.
-- Branch `feature/15-ai-instructions` updates `src/ai-service.js` to use the approved shared system instruction and task-specific graph/KR prompts from issue `#14`.
-- Branch `feature/15-ai-instructions` updates AI KR schema and normalization to accept 3 to 5 KRs. Deterministic fallback still emits 4 KRs, which is valid within the approved range.
+- PR #17 updated `src/ai-service.js` to use the approved shared system instruction and task-specific graph/KR prompts from issue `#14`.
+- PR #17 updated AI KR schema and normalization to accept 3 to 5 KRs. Deterministic fallback still emits 4 KRs, which is valid within the approved range.
 - Browser code is split into native ES modules: `public/api.js`, `public/app.js`, `public/format.js`, and `public/render.js`.
 - Playwright browser coverage now lives in `e2e/clarification-flow.spec.js` and runs with `npm run test:browser`.
 - GitHub Project update fallback is documented in `ai-team/github-workflow.md`; authenticated CLI outside the sandbox can set `Agent Status`.
@@ -42,7 +42,7 @@ Verification so far:
 - `npm run test:browser` passes with 1/1 Playwright test after `npx playwright install chromium`.
 - Local app link checked: `http://127.0.0.1:5175/` returned HTTP `200`; `/src/generator.js` returned HTTP `404`; `/api/graph` returned HTTP `200` with AI mode using `gpt-5-mini`.
 - Low-cost `gpt-5.6-luna` Tester/Reviewer worker provided read-only test/risk/docs checklist for this iteration.
-- Issue `#15` verification on branch `feature/15-ai-instructions`: `npm run build` passed with 24/24 tests; `npm run test:browser` passed with 1/1 Playwright test; local app link `http://127.0.0.1:5176/` returned HTTP `200`; live local `/api/graph` and `/api/key-results` endpoint smoke check returned HTTP `200`, AI mode for both, and 4 KRs.
+- Issue `#15` verification after PR #17 merge to `main`: `npm run build` passed with 24/24 tests; `npm run test:browser` passed with 1/1 Playwright test before merge; local app link `http://127.0.0.1:5176/` returned HTTP `200`; live local `/api/graph` and `/api/key-results` endpoint smoke check returned HTTP `200`, AI mode for both, and 4 KRs.
 - Low-cost `gpt-5.6-luna` Tester/Reviewer worker for issue `#15` inspected `src/ai-service.js` and `test/generator.test.js`, ran `npm run build` and `git diff --check`, and found no blocking exact-4 assumption in `src/ai-service.js`.
 
 Issue `#15` residual gap: the requested leading/lagging mix is currently instruction-only. The schema/model has no explicit `indicatorType`, so the app cannot enforce 1-2 lagging and 2-3 leading KRs until a later classification decision/change.
@@ -93,8 +93,8 @@ This project is tagged at `ai-team-os-v0.1` as the pre-product baseline.
 
 ## Next Best Actions
 
-1. Open a PR for branch `feature/15-ai-instructions` against issue `#15`.
-2. Move issue `#15` to `Review` once the PR is open.
+1. Consider issue `#16 Add regression checks for AI instruction and output quality` as the next quality/regression increment.
+2. Decide later whether to add explicit leading/lagging classification; current #15 implementation treats the mix as prompt guidance only.
 3. Keep the local demo server at `http://127.0.0.1:5176/` running only while the user still needs the local app link.
 
 ## Resume Instructions
@@ -115,7 +115,7 @@ A fresh Lead should read:
 - `project-state/status.md`
 - `project-state/handoff.md`
 
-Then continue issue `#15` unless the user redirects.
+Then continue issue `#16` unless the user redirects.
 
 Current verification for issue `#4`:
 

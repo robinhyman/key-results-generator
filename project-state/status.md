@@ -58,11 +58,13 @@ Closed architecture hardening closeout issue: `#12 Document architecture hardeni
 
 Closed specification issue: `#14 Specify AI instructions for graph-first OKR generation`, approved by the user and set to `Agent Status: Done`.
 
-Active issue: `#15 Implement approved AI instruction structure in the generation service`, implemented locally on branch `feature/15-ai-instructions` and ready for PR review.
+Closed issue: `#15 Implement approved AI instruction structure in the generation service`, completed by PR #17 and set to `Agent Status: Done`.
+
+Ready issue: `#16 Add regression checks for AI instruction and output quality`, unblocked after PR #17 and set to `Agent Status: Ready`.
 
 ## Active Goal
 
-Active product increment: issue `#15 Implement approved AI instruction structure in the generation service`.
+No active product increment. Issue `#15` is complete; issue `#16` is ready as the next quality/regression increment.
 
 Local implementation separates graph generation from final KR generation. `src/generator.js` exports the deterministic structured graph and fallback KR path. `src/ai-service.js` now adds a server-side OpenAI Responses API boundary for AI-backed graph generation and AI-synthesized final KRs, validates structured output, applies user influenceability/gap assessments, and falls back to the deterministic generator when the provider is unavailable.
 
