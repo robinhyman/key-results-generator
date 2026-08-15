@@ -16,6 +16,8 @@ Start each serious session by reading:
 
 Use only the extra workflow or template files that match the current task.
 
+For product work, use `ai-team/workflows/increment.md` as the default delivery loop.
+
 ## Runtime Model
 
 - The main Codex chat acts as Project Lead.
@@ -24,7 +26,10 @@ Use only the extra workflow or template files that match the current task.
 - GitHub issues and projects provide the visible work queue.
 - Project state files provide compact continuation context for fresh sessions.
 
+## Delivery Unit
+
+The default delivery unit is an increment: a small, coherent slice of progress represented by one primary GitHub issue, tracked in the GitHub Project, verified locally, and closed with durable state updates.
+
 ## Initial Project Profile
 
 The first target is a web-based software project that can be built, tested, and demonstrated locally. Later, the same team should support hosted deployment.
-

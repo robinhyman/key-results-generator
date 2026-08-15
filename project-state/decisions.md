@@ -35,3 +35,9 @@ Reason: Issues hold detailed context, while the Project gives a visible queue an
 Decision: Move issues to `In Progress` as soon as meaningful work starts and keep `Agent Status` aligned with reality throughout the run.
 
 Reason: The Project is the user's live observability surface, so stale statuses undermine trust in the agent team.
+
+## 2026-08-15: Deliver Work In Increments
+
+Decision: Use increments as the team's default delivery unit, with an explicit Increment Definition Of Done in `ai-team/workflows/increment.md`.
+
+Reason: Increment boundaries prevent open-ended agent work, make verification clearer, and ensure each unit of progress can survive a fresh session.

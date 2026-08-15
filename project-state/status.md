@@ -1,10 +1,12 @@
 # Project Status
 
-Last updated: 2026-08-14
+Last updated: 2026-08-15
 
 ## Current State
 
 This repository contains the initial AI team operating artefacts. No application code has been created yet.
+
+The team now has an explicit increment workflow and Increment Definition Of Done in `ai-team/workflows/increment.md`.
 
 GitHub repository: `robinhyman/key-results-generator`
 
@@ -22,6 +24,7 @@ Design a reusable AI software delivery team that can run first in Codex and late
 - Short-lived subagents handle bounded worker tasks.
 - GitHub issues inside the `Key Results Generator` GitHub Project provide work tracking and observability.
 - Repo state files provide compact continuation memory.
+- Product work should be delivered in increments, each tied to one primary GitHub issue.
 
 ## Open Questions
 

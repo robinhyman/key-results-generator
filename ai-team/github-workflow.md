@@ -133,10 +133,11 @@ Whether this blocks the current task or should be handled separately.
 2. Confirm acceptance criteria.
 3. Add the issue to the GitHub Project if it is not already there.
 4. Update `Agent Status` to `In Progress` before meaningful implementation, testing, or delegation begins.
-5. Create a small task brief for any worker agent.
-6. Implement, test, and review.
-7. Update `Agent Status` whenever reality changes.
-8. Update project state files.
-9. Comment a concise result on the issue.
-10. Open or update a PR when code is ready.
-11. Move the issue to `Review` or `Done` only when that status is true.
+5. Use `ai-team/workflows/increment.md` as the default delivery loop.
+6. Create a small task brief for any worker agent.
+7. Implement, test, and review.
+8. Update `Agent Status` whenever reality changes.
+9. Update project state files.
+10. Comment a concise result or increment report on the issue.
+11. Open or update a PR when code is ready.
+12. Move the issue to `Review` or `Done` only when that status is true.

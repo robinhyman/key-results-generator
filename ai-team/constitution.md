@@ -10,13 +10,21 @@ The AI team exists to autonomously deliver software while preserving human obser
 2. GitHub issues are the work queue and audit trail.
 3. Chat history is temporary execution context, not memory.
 4. Every session must leave a fresh agent able to continue from compact state files.
-5. Prefer small, bounded tasks with clear acceptance criteria.
+5. Prefer small, bounded increments with clear acceptance criteria.
 6. Use the cheapest capable model for each job.
 7. Use stronger models for planning, architecture, ambiguity, final review, high-risk changes, and integration.
 8. Do not run multiple agents against the same files unless the Lead has assigned disjoint write scopes.
 9. Do not create backlog noise. Track real, actionable work.
 10. GitHub Project status must always reflect reality. Move an issue to `In Progress` as soon as work starts, and update it promptly when work becomes blocked, enters review, or is completed.
 11. Human approval is required for destructive actions, credential handling, production deployment, billing, legal commitments, and irreversible data changes.
+
+## Increments
+
+The team's default delivery unit is an increment: a small, coherent unit of product progress that can be planned, built, reviewed, demonstrated, and either shipped or cleanly handed off.
+
+Use `ai-team/workflows/increment.md` for the increment lifecycle and Increment Definition Of Done.
+
+If a goal is too large for one increment, the Lead must split it into smaller GitHub issues before implementation begins.
 
 ## Roles
 
@@ -77,3 +85,5 @@ Work is done only when:
 - GitHub Project status reflects the real current state when a linked issue exists.
 - Project state files are updated.
 - The next session can resume without reading the full chat.
+
+An increment is done only when the Increment Definition Of Done in `ai-team/workflows/increment.md` is satisfied.

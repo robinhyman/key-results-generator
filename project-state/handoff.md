@@ -1,6 +1,6 @@
 # Handoff
 
-Last updated: 2026-08-14
+Last updated: 2026-08-15
 
 ## Summary
 
@@ -12,11 +12,14 @@ GitHub issue `#1 Set up AI agent team operating system` tracks the remaining set
 
 The constitution and GitHub workflow now explicitly require `Agent Status` to reflect reality, including moving an issue to `In Progress` as soon as meaningful work starts.
 
+The team now has an explicit increment workflow and Increment Definition Of Done in `ai-team/workflows/increment.md`, plus an increment report template at `ai-team/templates/increment-report.md`.
+
 ## Next Best Actions
 
 1. Draft detailed role specs only for the roles needed in the first build.
 2. Define the first product goal and create the first software-build GitHub issue.
 3. Add every agent-managed issue to the GitHub Project.
+4. Use the increment workflow for the first software-build issue.
 
 ## Resume Instructions
 
@@ -26,6 +29,7 @@ A fresh Lead should read:
 - `ai-team/constitution.md`
 - `ai-team/model-policy.md`
 - `ai-team/github-workflow.md`
+- `ai-team/workflows/increment.md`, when doing product work
 - `project-state/status.md`
 - `project-state/handoff.md`
 

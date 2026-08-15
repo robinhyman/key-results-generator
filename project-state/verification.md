@@ -1,6 +1,6 @@
 # Verification
 
-Last updated: 2026-08-14
+Last updated: 2026-08-15
 
 ## Checks Run
 
@@ -14,6 +14,8 @@ Last updated: 2026-08-14
 - Issue `#1` added to the GitHub Project.
 - Custom Project field `Agent Status` created with the agreed workflow states.
 - Recommended labels created and applied to issue `#1`.
+- Increment workflow and report template created.
+- Core operating docs updated to reference increment delivery.
 
 ## Not Yet Verified
 
