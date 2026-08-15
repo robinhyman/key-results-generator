@@ -38,7 +38,7 @@ Closed GitHub issue: `#1 Set up AI agent team operating system`, `Agent Status: 
 
 Closed GitHub issue: `#2 Build first local MVP for objective-to-key-results generation`, merged via PR #3 and set to `Agent Status: Done`.
 
-GitHub issue: `#4 Add AI-guided clarification step before key result generation`, completed by the current AI generation increment after PR #5 groundwork.
+Closed GitHub issue: `#4 Add AI-guided clarification step before key result generation`, completed by PR #8 and set to `Agent Status: Done`.
 
 Merged pull request: `#3 Build local objective-to-KR MVP`
 
@@ -50,7 +50,7 @@ Open follow-up issue: `#7 Improve GitHub Project status update tooling`, in the 
 
 ## Active Goal
 
-Complete the issue `#4` release flow by pushing, merging, closing the issue, and marking `Agent Status: Done`.
+No active product increment. Issue `#4` is complete.
 
 Local implementation separates graph generation from final KR generation. `src/generator.js` exports the deterministic structured graph and fallback KR path. `src/ai-service.js` now adds a server-side OpenAI Responses API boundary for AI-backed graph generation and AI-synthesized final KRs, validates structured output, applies user influenceability/gap assessments, and falls back to the deterministic generator when the provider is unavailable.
 
@@ -75,7 +75,7 @@ The configured OpenAI API credential now has sufficient quota for the issue `#4`
 - Cost control is now explicit: future increments should use cheaper/faster worker models whenever possible and reserve stronger models for Lead, Architect, ambiguity, integration, escalation, and final review.
 - Product requirements now explicitly include a clarification step before final KRs: the app asks the user which high-impact metrics are most influenceable and where the biggest perceived gaps are.
 - The causal/metrics graph is treated as a first-class intermediate artefact: serializable structured data with nodes, edges, rankings, user influenceability/gap assessments, and links to final KRs.
-- GitHub issue `#4` implementation is complete locally. The AI provider path is implemented and real-provider smoke checks pass. The API key path was provided in a GitHub issue comment and the local path exists; do not copy the key value into repo files, logs, issue comments, or chat.
+- GitHub issue `#4` is closed and has `Agent Status: Done`. The AI provider path is implemented and real-provider smoke checks pass. The API key path was provided in a GitHub issue comment and the local path exists; do not copy the key value into repo files, logs, issue comments, or chat.
 
 ## Open Questions
 

@@ -74,6 +74,11 @@ Last updated: 2026-08-15
 - Issue `#4` final lead-side live endpoint check before release passed in AI mode: `/api/graph` returned HTTP `200`, `gpt-5-mini`, 9 nodes, and 8 edges; `/api/key-results` returned HTTP `200`, AI mode, 4 KRs, and preserved clarification assessment traceability.
 - Issue `#4` final low-cost `gpt-5.6-luna` Tester/Reviewer worker verified clean branch state and `npm run build` with 12/12 tests passing. Its isolated context could not reach the running local server, so it reported live AI endpoint verification unavailable from that worker context.
 - Issue `#4` user confirmed the in-browser app at `http://127.0.0.1:5174/` is functional.
+- PR `#8 Add AI-backed generation service` was merged into `main`.
+- Final `main` verification after PR `#8` merge: `npm run build` passed with 12/12 tests.
+- Final `main` local URL checked: `http://127.0.0.1:5174/` returned HTTP `200`.
+- Final merged-main live AI endpoint check passed: `/api/graph` returned HTTP `200`, AI mode, `gpt-5-mini`, 9 nodes, and 9 edges; `/api/key-results` returned HTTP `200`, AI mode, 4 KRs, and preserved clarification assessment traceability.
+- Issue `#4` was closed and set to `Agent Status: Done`.
 
 ## Not Yet Verified
 

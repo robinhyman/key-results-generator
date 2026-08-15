@@ -76,10 +76,15 @@ Last updated: 2026-08-15
 - Ran final lead-side `npm run build`, local URL check, and live AI endpoint check.
 - Delegated final routine verification to low-cost `gpt-5.6-luna` Tester/Reviewer worker; worker confirmed clean branch and `npm run build` passed with 12/12 tests.
 - User confirmed the local app is functional in the in-app browser.
+- Pushed branch `feature/4-ai-generation`.
+- Opened PR `#8 Add AI-backed generation service`.
+- Merged PR `#8` into `main`.
+- Ran final merged-main verification: `npm run build` passed with 12/12 tests, local URL returned HTTP `200`, and live AI endpoint check passed.
+- Closed issue `#4` and set `Agent Status: Done`.
 
 ## Active
 
-- Complete issue `#4` release mechanics: push branch, open/merge PR, close issue, and set `Agent Status: Done`.
+- None.
 
 ## Blocked
 
@@ -87,6 +92,5 @@ Last updated: 2026-08-15
 
 ## Next
 
-- Complete issue `#4` GitHub release flow and final issue report.
 - Consider issue `#6` for browser-level tests of slider submission, repeated objective generation, and malformed assessment inputs.
 - Consider issue `#7` for documenting the GitHub CLI Project status update fallback.

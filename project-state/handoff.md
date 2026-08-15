@@ -12,13 +12,13 @@ GitHub issue `#1 Set up AI agent team operating system` is complete, closed, and
 
 GitHub issue `#2 Build first local MVP for objective-to-key-results generation` is complete. It was merged via PR `#3`, closed, and set to `Agent Status: Done`.
 
-GitHub issue `#4 Add AI-guided clarification step before key result generation` is complete pending release mechanics. PR `#5 Add clarification step before final KRs` merged useful groundwork; the current branch adds the real server-side AI provider path, and real-provider smoke checks pass after API credits were added.
+GitHub issue `#4 Add AI-guided clarification step before key result generation` is complete, closed, and has `Agent Status: Done`. PR `#5 Add clarification step before final KRs` merged useful groundwork; PR `#8 Add AI-backed generation service` completed the real server-side AI provider path and was merged into `main`.
 
 Clarified product flow: the app should not jump directly from objective input to final key results. It should first use AI to generate a causal/metrics tree, then ask the user which high-impact metrics are most influenceable and where the user perceives the biggest gaps, then use those answers to generate final KRs.
 
 Architecture clarification: the causal/metrics graph is now treated as a first-class intermediate artefact, not disposable render state. It is represented as serializable structured data with nodes, edges, rankings, user influenceability/gap assessments, and traceable links to the final KRs. For this local-first increment, database persistence remains out of scope, but the model is ready to persist later without redesign.
 
-Issue `#4` implementation status: complete locally. The generator exports `generateCausalMetricsGraph`, `applyClarifications`, and `generateKeyResultsModel` as the deterministic fallback. New server-side AI service code in `src/ai-service.js` calls the OpenAI Responses API with structured JSON output for causal graph generation and final KR synthesis, validates AI output, preserves graph/assessment traceability, and falls back to deterministic generation when the provider cannot complete.
+Issue `#4` implementation status: complete and merged. The generator exports `generateCausalMetricsGraph`, `applyClarifications`, and `generateKeyResultsModel` as the deterministic fallback. Server-side AI service code in `src/ai-service.js` calls the OpenAI Responses API with structured JSON output for causal graph generation and final KR synthesis, validates AI output, preserves graph/assessment traceability, and falls back to deterministic generation when the provider cannot complete.
 
 The browser no longer imports generator logic directly. It posts to `/api/graph` after objective submission and `/api/key-results` after clarification submission, then renders provider status as AI or local fallback.
 
@@ -52,10 +52,9 @@ This project is tagged at `ai-team-os-v0.1` as the pre-product baseline.
 
 ## Next Best Actions
 
-1. Push branch `feature/4-ai-generation`, open/merge PR, close issue `#4`, and set `Agent Status: Done`.
-2. Consider issue `#6 Add browser-level tests for clarification flow` as the next product/test increment.
-3. Consider issue `#7 Improve GitHub Project status update tooling` as an operating-system follow-up.
-4. Keep the local demo server running only while the user still needs the local app link.
+1. Consider issue `#6 Add browser-level tests for clarification flow` as the next product/test increment.
+2. Consider issue `#7 Improve GitHub Project status update tooling` as an operating-system follow-up.
+3. Keep the local demo server running only while the user still needs the local app link.
 
 ## Resume Instructions
 
@@ -103,6 +102,15 @@ Current issue `#4` verification after the AI-service implementation:
 - Final live endpoint check before release: `/api/graph` returned HTTP `200`, AI mode, `gpt-5-mini`, 9 nodes, and 8 edges; `/api/key-results` returned HTTP `200`, AI mode, 4 KRs, and preserved clarification assessment traceability.
 - Low-cost worker evidence: `gpt-5.6-luna` Tester/Reviewer worker ran `git status --short --branch` and `npm run build`; branch was clean and 12/12 tests passed. Its isolated context could not reach the running local server, so lead-side live endpoint checks are the live-server evidence.
 - Manual UI check: the user confirmed the app is functional in the in-app browser at `http://127.0.0.1:5174/`.
+- PR/release: PR `#8` merged into `main`; final `main` `npm run build` passed with 12/12 tests; final checked local link `http://127.0.0.1:5174/` returned HTTP `200`; final merged-main live AI endpoint check passed with AI mode graph and KR responses.
+
+## Issue #4 Final Retrospective
+
+- Role inputs: Lead handled architecture, integration, release, and final review. Low-cost `gpt-5.6-luna` workers handled bounded review/test checks before and after implementation.
+- What went well: the provider boundary stayed server-side, kept the app dependency-free, preserved deterministic fallback, and made AI output validation testable.
+- What was harder than expected: OpenAI quota initially blocked real-provider verification, and isolated worker contexts could not reach the lead's running local server.
+- Verification lesson: lead-side live endpoint checks should be recorded separately from worker checks when the worker cannot access the same local process.
+- Suggested operating changes: none. Existing workflow already covers the gaps through issue `#6` for browser tests and issue `#7` for Project tooling.
 
 ## Issue #4 Retrospective
 
