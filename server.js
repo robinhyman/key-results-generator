@@ -1,6 +1,6 @@
 import { createServer } from "node:http";
 import { readFile } from "node:fs/promises";
-import { extname, join, normalize } from "node:path";
+import { extname, join, normalize, relative, sep } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
 import {
@@ -22,7 +22,7 @@ const mimeTypes = {
 
 export const server = createServer(handleRequest);
 
-async function handleRequest(request, response) {
+export async function handleRequest(request, response) {
   const url = new URL(request.url ?? "/", `http://${request.headers.host}`);
 
   if (url.pathname === "/api/graph" && request.method === "POST") {
@@ -35,15 +35,20 @@ async function handleRequest(request, response) {
     return;
   }
 
-  const filePath = resolveFilePath(url.pathname);
-
   try {
+    const filePath = resolveFilePath(url.pathname);
     const body = await readFile(filePath);
     response.writeHead(200, {
       "Content-Type": mimeTypes[extname(filePath)] ?? "text/plain; charset=utf-8",
     });
     response.end(body);
   } catch (error) {
+    if (error.statusCode === 404) {
+      response.writeHead(404, { "Content-Type": "text/plain; charset=utf-8" });
+      response.end("Not found");
+      return;
+    }
+
     if (error.code === "ENOENT") {
       response.writeHead(404, { "Content-Type": "text/plain; charset=utf-8" });
       response.end("Not found");
@@ -64,20 +69,22 @@ if (import.meta.url === pathToFileURL(process.argv[1]).href) {
 async function handleGraphRequest(request, response) {
   try {
     const body = await readJsonBody(request);
+    validateGraphRequest(body);
     const graph = await generateAiCausalMetricsGraph(body.objective);
     sendJson(response, 200, { graph });
-  } catch {
-    sendJson(response, 400, { error: "Unable to generate a causal metrics graph." });
+  } catch (error) {
+    sendError(response, error, "Unable to generate a causal metrics graph.");
   }
 }
 
 async function handleKeyResultsRequest(request, response) {
   try {
     const body = await readJsonBody(request);
+    validateKeyResultsRequest(body);
     const model = await generateAiKeyResultsModel(body.graph, body.clarifications);
     sendJson(response, 200, { model });
-  } catch {
-    sendJson(response, 400, { error: "Unable to generate key results from the clarified graph." });
+  } catch (error) {
+    sendError(response, error, "Unable to generate key results from the clarified graph.");
   }
 }
 
@@ -86,17 +93,20 @@ function resolveFilePath(pathname) {
     return join(publicDir, "index.html");
   }
 
-  if (pathname.startsWith("/src/")) {
-    return safeJoin(root, pathname.slice(1));
-  }
-
   return safeJoin(publicDir, pathname.slice(1));
 }
 
 function safeJoin(baseDir, requestedPath) {
-  const filePath = normalize(join(baseDir, requestedPath));
-  if (!filePath.startsWith(baseDir)) {
-    return join(publicDir, "index.html");
+  let decodedPath;
+  try {
+    decodedPath = decodeURIComponent(requestedPath);
+  } catch {
+    throw httpError("Requested file path is invalid.", "NOT_FOUND", 404);
+  }
+  const filePath = normalize(join(baseDir, decodedPath));
+  const relativePath = relative(baseDir, filePath);
+  if (relativePath === "" || relativePath.startsWith("..") || relativePath.startsWith(sep)) {
+    throw httpError("Requested file is outside the public directory.", "NOT_FOUND", 404);
   }
   return filePath;
 }
@@ -106,14 +116,60 @@ async function readJsonBody(request) {
   for await (const chunk of request) {
     rawBody += chunk;
     if (rawBody.length > 100_000) {
-      throw new Error("Request body too large.");
+      throw httpError("Request body too large.", "REQUEST_TOO_LARGE", 413);
     }
   }
 
-  return rawBody ? JSON.parse(rawBody) : {};
+  try {
+    return rawBody ? JSON.parse(rawBody) : {};
+  } catch {
+    throw httpError("Request body must be valid JSON.", "INVALID_JSON", 400);
+  }
 }
 
 function sendJson(response, status, body) {
   response.writeHead(status, { "Content-Type": "application/json; charset=utf-8" });
   response.end(JSON.stringify(body));
+}
+
+function validateGraphRequest(body) {
+  if (!body || typeof body !== "object" || Array.isArray(body)) {
+    throw httpError("Request body must be a JSON object.", "INVALID_REQUEST", 400);
+  }
+
+  if (typeof body.objective !== "string" || body.objective.trim().length === 0) {
+    throw httpError("A non-empty objective string is required.", "INVALID_REQUEST", 400);
+  }
+}
+
+function validateKeyResultsRequest(body) {
+  if (!body || typeof body !== "object" || Array.isArray(body)) {
+    throw httpError("Request body must be a JSON object.", "INVALID_REQUEST", 400);
+  }
+
+  if (!body.graph || typeof body.graph !== "object" || Array.isArray(body.graph)) {
+    throw httpError("A graph object is required.", "INVALID_REQUEST", 400);
+  }
+
+  if (
+    body.clarifications !== undefined &&
+    (!body.clarifications || typeof body.clarifications !== "object" || Array.isArray(body.clarifications))
+  ) {
+    throw httpError("Clarifications must be an object when provided.", "INVALID_REQUEST", 400);
+  }
+}
+
+function sendError(response, error, fallbackMessage) {
+  const status = error.statusCode ?? 500;
+  const code = error.code ?? "SERVER_ERROR";
+  const message = error.expose ? error.message : fallbackMessage;
+  sendJson(response, status, { error: { code, message } });
+}
+
+function httpError(message, code, statusCode) {
+  const error = new Error(message);
+  error.code = code;
+  error.statusCode = statusCode;
+  error.expose = true;
+  return error;
 }

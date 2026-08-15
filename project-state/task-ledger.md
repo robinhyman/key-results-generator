@@ -81,10 +81,17 @@ Last updated: 2026-08-15
 - Merged PR `#8` into `main`.
 - Ran final merged-main verification: `npm run build` passed with 12/12 tests, local URL returned HTTP `200`, and live AI endpoint check passed.
 - Closed issue `#4` and set `Agent Status: Done`.
+- Created architecture hardening issues `#9`, `#10`, `#11`, and `#12`.
+- Added issues `#9`, `#10`, `#11`, and `#12` to the GitHub Project.
+- Closed issue `#11` as a duplicate of existing browser-test issue `#6` and set `Agent Status: Done`.
 
 ## Active
 
-- None.
+- Issue `#9` is in progress: server/API validation, static routing hardening, and AI fallback diagnostics implemented locally with tests passing.
+- Issue `#10` is in progress: browser workflow split into focused native ES modules with build passing.
+- Issue `#6` is in progress: Playwright browser workflow test added and passing locally.
+- Issue `#7` is in progress: GitHub CLI Project-status fallback documented in `ai-team/github-workflow.md`.
+- Issue `#12` is ready for final documentation/state closeout after final verification.
 
 ## Blocked
 
@@ -92,5 +99,6 @@ Last updated: 2026-08-15
 
 ## Next
 
-- Consider issue `#6` for browser-level tests of slider submission, repeated objective generation, and malformed assessment inputs.
-- Consider issue `#7` for documenting the GitHub CLI Project status update fallback.
+- Finish final verification for the architecture-hardening iteration.
+- Comment completion reports on issues `#9`, `#10`, `#6`, `#7`, and `#12`.
+- Move completed issues to `Agent Status: Done` only after local demo verification and state closeout.

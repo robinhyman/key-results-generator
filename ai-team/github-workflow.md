@@ -50,6 +50,54 @@ Use the custom GitHub Project single-select field `Agent Status` for agent workf
 - Labels describe type, risk, and agent suitability; Project fields describe flow state and priority.
 - If the Lead cannot add an issue to the Project, it must note that in the issue comment or session handoff.
 
+## Project Status Fallback With GitHub CLI
+
+When the GitHub connector can create or comment on issues but does not expose GitHub Project v2 mutations, use the GitHub CLI if it is authenticated with `project` scope.
+
+1. Confirm authentication and scope:
+
+```bash
+gh auth status
+```
+
+2. Read Project field and option ids:
+
+```bash
+gh project field-list 4 --owner robinhyman --format json
+```
+
+3. Add an issue to the Project:
+
+```bash
+gh project item-add 4 --owner robinhyman --url https://github.com/robinhyman/key-results-generator/issues/NUMBER --format json
+```
+
+4. Read the Project id and item ids:
+
+```bash
+gh project view 4 --owner robinhyman --format json
+gh project item-list 4 --owner robinhyman --format json --limit 100
+```
+
+5. Set the `Agent Status` field:
+
+```bash
+gh project item-edit --id ITEM_ID --project-id PROJECT_ID --field-id AGENT_STATUS_FIELD_ID --single-select-option-id OPTION_ID
+```
+
+Current Project constants:
+
+- Project id: `PVT_kwHOACPlI84BgYKU`
+- `Agent Status` field id: `PVTSSF_lAHOACPlI84BgYKUzhakixk`
+- `Inbox`: `465e83e4`
+- `Ready`: `b2f84160`
+- `In Progress`: `35dfefe5`
+- `Review`: `fc90e124`
+- `Blocked`: `cebb2f4c`
+- `Done`: `743a4795`
+
+If CLI authentication is unavailable or lacks `project` scope, comment on the issue and update `project-state/handoff.md` with the exact Project update that remains blocked.
+
 ## Recommended Labels
 
 - `agent:ready`

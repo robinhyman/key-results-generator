@@ -79,6 +79,16 @@ Last updated: 2026-08-15
 - Final `main` local URL checked: `http://127.0.0.1:5174/` returned HTTP `200`.
 - Final merged-main live AI endpoint check passed: `/api/graph` returned HTTP `200`, AI mode, `gpt-5-mini`, 9 nodes, and 9 edges; `/api/key-results` returned HTTP `200`, AI mode, 4 KRs, and preserved clarification assessment traceability.
 - Issue `#4` was closed and set to `Agent Status: Done`.
+- Architecture hardening issue `#9`: test-first server/API contract tests were added for app-shell serving, no `/src/*` exposure, path traversal rejection, malformed JSON, invalid graph request shape, invalid key-results request shape, and missing-key fallback diagnostics.
+- Architecture hardening issue `#9`: initial server tests failed in sandbox when attempting to bind `127.0.0.1`; tests were adjusted to call the exported request handler directly so normal unit/API verification does not require opening a local port.
+- Architecture hardening issue `#9`: `npm test` passed with 20/20 tests after server validation/routing/fallback changes.
+- Architecture hardening issue `#10`: browser code split into `public/api.js`, `public/app.js`, `public/format.js`, and `public/render.js`; `npm run build` passed after lint coverage was expanded to all browser modules.
+- Architecture hardening issue `#6`: added Playwright browser workflow test in `e2e/clarification-flow.spec.js`.
+- Architecture hardening issue `#6`: first `npm run test:browser` failed because the Playwright Chromium binary was not installed.
+- Architecture hardening issue `#6`: ran `npx playwright install chromium`; reran `npm run test:browser`; 1/1 browser test passed.
+- Architecture hardening issue `#7`: used authenticated `gh project` commands outside the sandbox to add issues to the GitHub Project and update `Agent Status`; documented the fallback procedure in `ai-team/github-workflow.md`.
+- Low-cost worker evidence for architecture hardening: `gpt-5.6-luna` Tester/Reviewer inspected the repo read-only and returned missing test cases, implementation risks, docs/state update targets, and a verification checklist. Its findings informed the server tests, browser test, docs updates, and final checklist.
+- Architecture hardening final verification: `npm run build` passed with 20/20 unit/API tests; `npm run test:browser` passed with 1/1 Playwright test; local app link `http://127.0.0.1:5175/` returned HTTP `200`; `/src/generator.js` returned HTTP `404`; `/api/graph` returned HTTP `200` with AI mode using `gpt-5-mini`.
 
 ## Not Yet Verified
 
@@ -86,7 +96,7 @@ Last updated: 2026-08-15
 - External AI generation quality. The first MVP intentionally uses a deterministic local generator.
 - Full graph editor behavior. It is out of scope for issue `#2`.
 - Issue `#4` full in-browser interaction screenshot/console check. The in-app browser connector initialized but did not return usable visible diagnostics in this session; local HTTP and generator contract checks were used instead.
-- Issue `#4` browser-level tests for slider submission, repeated objective generation, and malformed assessment inputs are absent. The low-cost worker flagged these as missing coverage but not merge-blocking for the current local-first PR.
+- Malformed assessment input is covered at the server request-shape boundary, but there is not yet a dedicated browser test for manually tampered slider payloads. Current browser coverage includes objective submission, slider adjustment, final-KR submission, repeated objective generation, and console/page/request failure checks.
 - Issue `#4` real AI-backed causal/metrics tree generation and AI-synthesized final KR generation are implemented behind the server-side provider boundary and have passed smoke checks after API credits were added.
-- Issue `#4` full automated browser console/network inspection remains unverified; issue `#6` tracks browser-level clarification-flow coverage. Live HTTP page checks, live AI endpoint checks, and user in-browser functional confirmation passed.
+- Full automated browser console/network inspection for the core clarification flow is now covered by the Playwright test added for issue `#6`.
 - Hosted deployment. It remains out of scope for issue `#4`.

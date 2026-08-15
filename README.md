@@ -40,7 +40,7 @@ Optional model configuration:
 OPENAI_MODEL=gpt-5-mini npm start
 ```
 
-The default model is `gpt-5-mini`, called through the OpenAI Responses API with structured JSON output. The server validates AI output before rendering it. If credentials are missing, the provider is unavailable, quota is exhausted, or the response is malformed, the app falls back to the local deterministic generator and shows that status in the UI.
+The default model is `gpt-5-mini`, called through the OpenAI Responses API with structured JSON output. The server validates API request bodies and AI output before rendering it. If credentials are missing, the provider is unavailable, quota is exhausted, or the response is malformed, the app falls back to the local deterministic generator and returns safe fallback metadata such as `generation.reasonCode`. The server does not return API keys or raw provider payloads to the browser.
 
 ## Checks
 
@@ -48,7 +48,31 @@ The default model is `gpt-5-mini`, called through the OpenAI Responses API with 
 npm run build
 ```
 
-The build script runs syntax checks and unit tests for the generation, AI provider boundary, fallback, and ranking logic.
+The build script runs syntax checks and unit tests for the generation, AI provider boundary, server request validation, static routing, fallback diagnostics, and ranking logic.
+
+Browser workflow coverage is available separately:
+
+```bash
+npm run test:browser
+```
+
+The browser test starts the local server, opens the app in Chromium, submits objectives, changes clarification sliders, generates final KRs, checks for console/page/request failures, and does not require real OpenAI credentials. After a fresh checkout or dependency update, install the Playwright browser binary if needed:
+
+```bash
+npx playwright install chromium
+```
+
+## Structure
+
+- `server.js`: local HTTP server, static public file serving, API request validation, and JSON endpoints.
+- `src/generator.js`: deterministic graph and KR fallback logic.
+- `src/ai-service.js`: server-side OpenAI Responses API boundary, AI output normalization, and fallback diagnostics.
+- `public/app.js`: browser workflow entrypoint.
+- `public/api.js`: browser API calls.
+- `public/render.js`: DOM rendering helpers.
+- `public/format.js`: browser view-model and formatting helpers.
+- `test/`: unit and API contract tests.
+- `e2e/`: Playwright browser workflow tests.
 
 ## Current Product Behavior
 
