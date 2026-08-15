@@ -17,7 +17,9 @@ Last updated: 2026-08-15
 - Increment workflow and report template created.
 - Core operating docs updated to reference increment delivery.
 - Increment Definition Of Done updated to require a checked app/demo link before `Done`.
+- Testing workflow created and linked from increment/session workflows.
 
 ## Not Yet Verified
 
 - First agent-run workflow against a real issue.
+- Testing workflow against a real software increment.

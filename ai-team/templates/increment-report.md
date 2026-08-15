@@ -17,11 +17,21 @@ What changed and why.
 
 ## Verification
 
-Checks run:
+Test plan:
+
+Automated checks:
+
+Manual checks:
+
+Demo link checked:
+
+Known failures:
+
+Skipped checks and reasons:
 
 Evidence:
 
-Skipped checks and reasons:
+Follow-up bugs or testing gaps:
 
 ## Demonstration
 

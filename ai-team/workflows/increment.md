@@ -11,13 +11,14 @@ The increment is the team's default unit of delivery. Avoid open-ended work. If 
 3. Add the issue to the GitHub Project.
 4. Set `Agent Status` to `In Progress` as soon as meaningful work starts.
 5. Plan the smallest coherent change that satisfies the acceptance criteria.
-6. Delegate bounded worker tasks only when the work can be split safely.
-7. Build, test, and review the change.
-8. Deploy or start the target demonstration environment.
-9. Check the linked app or demo and confirm the increment works there.
-10. Capture follow-up work as separate GitHub issues when it is real, actionable, and out of scope.
-11. Update project state files and the GitHub issue.
-12. Move `Agent Status` to `Review`, `Blocked`, or `Done` according to the real current state.
+6. Define the verification plan using `ai-team/workflows/testing.md`.
+7. Delegate bounded worker tasks only when the work can be split safely.
+8. Build, test, and review the change.
+9. Deploy or start the target demonstration environment.
+10. Check the linked app or demo and confirm the increment works there.
+11. Capture follow-up work as separate GitHub issues when it is real, actionable, and out of scope.
+12. Update project state files and the GitHub issue.
+13. Move `Agent Status` to `Review`, `Blocked`, or `Done` according to the real current state.
 
 ## Increment Definition Of Done
 
@@ -38,9 +39,12 @@ An increment is done only when all applicable checks below are true.
 
 ### Verification Has Run
 
+- The verification plan from `ai-team/workflows/testing.md` has been followed or explicitly revised.
 - Relevant tests pass.
+- Behavior changes include automated test coverage unless the increment report explains why not.
 - Build, lint, typecheck, or equivalent checks have run when applicable.
 - For web work, the app has been run locally and the affected user flow has been checked.
+- Known failures are classified as blocking, unrelated, or follow-up work.
 - Skipped checks are documented with a reason.
 
 ### Demo Or Deployment Is Available

@@ -17,13 +17,16 @@ The AI team exists to autonomously deliver software while preserving human obser
 9. Do not create backlog noise. Track real, actionable work.
 10. GitHub Project status must always reflect reality. Move an issue to `In Progress` as soon as work starts, and update it promptly when work becomes blocked, enters review, or is completed.
 11. An increment may be called `Done` only when it is deployed or otherwise available in the target demonstration environment, checked by the Lead, and reported with a working link the user can open.
-12. Human approval is required for destructive actions, credential handling, production deployment, billing, legal commitments, and irreversible data changes.
+12. Testing is required for every increment. Relevant failing, skipped, or unrun checks must be documented and may block `Done`.
+13. Human approval is required for destructive actions, credential handling, production deployment, billing, legal commitments, and irreversible data changes.
 
 ## Increments
 
 The team's default delivery unit is an increment: a small, coherent unit of product progress that can be planned, built, reviewed, demonstrated, and either shipped or cleanly handed off.
 
 Use `ai-team/workflows/increment.md` for the increment lifecycle and Increment Definition Of Done.
+
+Use `ai-team/workflows/testing.md` for verification planning, tester responsibilities, skipped checks, and failure handling.
 
 An increment that is implemented and verified locally but not available at a checked demonstration link is not done. It should remain `In Progress`, `Review`, or `Blocked`, depending on what remains.
 
@@ -84,7 +87,7 @@ At session close, the Lead updates:
 Work is done only when:
 
 - Acceptance criteria are satisfied or explicitly revised.
-- Relevant checks have run, or skipped checks are explained.
+- Relevant checks have run, and failing, skipped, or unrun checks are explained.
 - GitHub Project status reflects the real current state when a linked issue exists.
 - Project state files are updated.
 - The next session can resume without reading the full chat.

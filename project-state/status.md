@@ -10,6 +10,8 @@ The team now has an explicit increment workflow and Increment Definition Of Done
 
 An increment is not `Done` unless it is available in the target demonstration environment and reported with a checked working link.
 
+Testing is a first-class increment gate. Use `ai-team/workflows/testing.md` for verification planning and failure handling.
+
 GitHub repository: `robinhyman/key-results-generator`
 
 GitHub Project: `Key Results Generator` at `https://github.com/users/robinhyman/projects/4`
@@ -28,6 +30,7 @@ Design a reusable AI software delivery team that can run first in Codex and late
 - Repo state files provide compact continuation memory.
 - Product work should be delivered in increments, each tied to one primary GitHub issue.
 - Any `Done` notification for product work must include a checked app/demo link the user can open.
+- Each increment must define and report its verification plan.
 
 ## Open Questions
 

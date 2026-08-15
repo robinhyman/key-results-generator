@@ -16,6 +16,8 @@ The team now has an explicit increment workflow and Increment Definition Of Done
 
 Important rule: an increment is not `Done` unless it is available in the target demonstration environment and the completion notice includes a checked working link the user can open.
 
+Testing rule: each increment must define a verification plan, follow `ai-team/workflows/testing.md`, and report automated checks, manual checks, skipped checks, known failures, and follow-up bugs.
+
 ## Next Best Actions
 
 1. Draft detailed role specs only for the roles needed in the first build.
@@ -33,6 +35,7 @@ A fresh Lead should read:
 - `ai-team/model-policy.md`
 - `ai-team/github-workflow.md`
 - `ai-team/workflows/increment.md`, when doing product work
+- `ai-team/workflows/testing.md`, when doing product work
 - `project-state/status.md`
 - `project-state/handoff.md`
 

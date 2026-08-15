@@ -16,6 +16,7 @@ Last updated: 2026-08-15
 - Applied starter labels to issue `#1`.
 - Added increment workflow and Increment Definition Of Done.
 - Added increment report template.
+- Added testing workflow and wired it into increment delivery.
 
 ## Active
 
@@ -31,3 +32,4 @@ Last updated: 2026-08-15
 - Define the first product goal.
 - Create the first software-build GitHub issue and add it to the Project.
 - Run the first build as a bounded increment.
+- Define the verification plan before implementing the first build increment.

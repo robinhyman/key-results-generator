@@ -47,3 +47,9 @@ Reason: Increment boundaries prevent open-ended agent work, make verification cl
 Decision: An increment may be called `Done` only when it is deployed to, or running in, the target demonstration environment and the user receives a checked working app/demo link.
 
 Reason: The user must be able to verify every completed increment directly. Implemented but unavailable work should remain `In Progress`, `Review`, or `Blocked`.
+
+## 2026-08-15: Make Testing A First-Class Increment Gate
+
+Decision: Every increment must define a verification plan and follow `ai-team/workflows/testing.md`.
+
+Reason: General "relevant tests pass" language is too easy for agents to interpret loosely. Testing needs explicit ownership, reporting, skipped-check rules, and failure handling.

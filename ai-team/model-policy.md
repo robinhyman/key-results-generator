@@ -31,6 +31,7 @@ Use for:
 Use for:
 
 - Test writing from clear acceptance criteria
+- Running routine test, lint, build, and smoke checks
 - Lint and formatting fixes
 - Documentation drafts
 - Simple UI copy or layout adjustments
@@ -45,6 +46,7 @@ Escalate to a stronger model when:
 - The task touches architecture, data models, authentication, payments, permissions, deployment, or destructive operations.
 - The worker reports uncertainty.
 - Tests fail for unclear reasons.
+- The verification plan is ambiguous or the risk of missing coverage is high.
 - Multiple issues appear coupled.
 - A change would affect many files or shared behavior.
 
@@ -55,4 +57,3 @@ Escalate to a stronger model when:
 - Agents summarize findings into durable files rather than relying on chat.
 - Completed or obsolete detail should be archived or replaced by concise current state.
 - Do not ask every agent to read every team document.
-
