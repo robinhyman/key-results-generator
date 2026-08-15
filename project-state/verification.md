@@ -18,6 +18,7 @@ Last updated: 2026-08-15
 - Core operating docs updated to reference increment delivery.
 - Increment Definition Of Done updated to require a checked app/demo link before `Done`.
 - Testing workflow created and linked from increment/session workflows.
+- Test-first preference added to the testing workflow and increment report.
 
 ## Not Yet Verified
 

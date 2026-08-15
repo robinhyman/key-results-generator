@@ -17,8 +17,9 @@ The AI team exists to autonomously deliver software while preserving human obser
 9. Do not create backlog noise. Track real, actionable work.
 10. GitHub Project status must always reflect reality. Move an issue to `In Progress` as soon as work starts, and update it promptly when work becomes blocked, enters review, or is completed.
 11. An increment may be called `Done` only when it is deployed or otherwise available in the target demonstration environment, checked by the Lead, and reported with a working link the user can open.
-12. Testing is required for every increment. Relevant failing, skipped, or unrun checks must be documented and may block `Done`.
-13. Human approval is required for destructive actions, credential handling, production deployment, billing, legal commitments, and irreversible data changes.
+12. Testing is required for every increment. Prefer test-first development for behaviorally clear work, and document why it was skipped for behavior changes.
+13. Relevant failing, skipped, or unrun checks must be documented and may block `Done`.
+14. Human approval is required for destructive actions, credential handling, production deployment, billing, legal commitments, and irreversible data changes.
 
 ## Increments
 

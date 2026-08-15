@@ -18,6 +18,8 @@ Important rule: an increment is not `Done` unless it is available in the target 
 
 Testing rule: each increment must define a verification plan, follow `ai-team/workflows/testing.md`, and report automated checks, manual checks, skipped checks, known failures, and follow-up bugs.
 
+TDD rule: prefer test-first development for behaviorally clear work. If skipped for a behavior change, explain why in the increment report.
+
 ## Next Best Actions
 
 1. Draft detailed role specs only for the roles needed in the first build.

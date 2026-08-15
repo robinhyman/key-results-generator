@@ -19,6 +19,10 @@ What changed and why.
 
 Test plan:
 
+Test-first status:
+
+If skipped, why:
+
 Automated checks:
 
 Manual checks:

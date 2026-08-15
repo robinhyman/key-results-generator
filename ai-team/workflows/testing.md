@@ -5,6 +5,7 @@ Testing is a first-class part of every increment. The Lead owns verification, ev
 ## Core Rules
 
 - Every increment must have a verification plan before implementation begins.
+- Prefer test-first development when the desired behavior is clear enough to specify.
 - Behavior changes should add or update automated tests unless there is a clear reason not to.
 - Passing automated tests are necessary but not sufficient for user-facing work.
 - User-facing work also requires a checked app/demo link and evidence that the relevant flow works there.
@@ -12,6 +13,46 @@ Testing is a first-class part of every increment. The Lead owns verification, ev
 - Bugs found during testing should be fixed inside the increment when in scope.
 - Bugs outside the increment scope should be filed as GitHub issues and added to the Project.
 - Known failing tests must be classified as blocking, unrelated, or follow-up work.
+
+## Test-First Preference
+
+Use test-first development as the default for behaviorally clear work. A failing test gives worker agents a concrete target, reduces drift, and makes handoffs easier for fresh sessions.
+
+Prefer test-first for:
+
+- Business logic.
+- Data transforms.
+- Validation rules.
+- API behavior.
+- Bug fixes with reproducible behavior.
+- Permission and edge-case behavior.
+- Regressions.
+- State machines and workflows.
+- Utility functions.
+- Parser or generator behavior.
+
+For bug fixes, reproduce the bug with a failing test before changing implementation when practical.
+
+The test-first loop is:
+
+1. Confirm acceptance criteria.
+2. Write or update a test that captures the desired behavior.
+3. Run the test and confirm it fails for the expected reason.
+4. Implement the smallest change that makes the test pass.
+5. Run the full relevant verification set.
+6. Check the target app/demo link when user-facing behavior is affected.
+
+The Lead or Reviewer should check that test-first tests express user, business, or contract behavior rather than implementation trivia.
+
+Test-first may be skipped when:
+
+- The work is exploratory UI or product discovery.
+- Visual design is being shaped before behavior is stable.
+- The task is deployment plumbing or third-party setup.
+- A useful test would mostly duplicate implementation details.
+- The increment is documentation-only or otherwise non-behavioral.
+
+If test-first is skipped for a behavior change, the increment report must explain why and still include appropriate test-after or manual verification.
 
 ## Verification Plan
 
@@ -84,10 +125,10 @@ When a check fails:
 Every increment report must include:
 
 - Test plan.
+- Test-first status, or why test-first was skipped.
 - Automated checks run.
 - Manual checks run.
 - Demo link checked.
 - Known failures.
 - Skipped checks and reasons.
 - Follow-up bugs or testing gaps.
-

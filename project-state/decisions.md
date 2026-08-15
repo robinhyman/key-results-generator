@@ -53,3 +53,9 @@ Reason: The user must be able to verify every completed increment directly. Impl
 Decision: Every increment must define a verification plan and follow `ai-team/workflows/testing.md`.
 
 Reason: General "relevant tests pass" language is too easy for agents to interpret loosely. Testing needs explicit ownership, reporting, skipped-check rules, and failure handling.
+
+## 2026-08-15: Prefer Test-First For Clear Behavior
+
+Decision: Prefer test-first development for behaviorally clear work, especially bugs, business logic, validation, APIs, regressions, and workflows.
+
+Reason: Failing tests give worker agents concrete targets, reduce requirement drift, improve handoffs, and let cheaper agents implement against executable acceptance criteria.

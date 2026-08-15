@@ -12,6 +12,8 @@ An increment is not `Done` unless it is available in the target demonstration en
 
 Testing is a first-class increment gate. Use `ai-team/workflows/testing.md` for verification planning and failure handling.
 
+Test-first development is preferred for behaviorally clear work and should be reported per increment.
+
 GitHub repository: `robinhyman/key-results-generator`
 
 GitHub Project: `Key Results Generator` at `https://github.com/users/robinhyman/projects/4`
