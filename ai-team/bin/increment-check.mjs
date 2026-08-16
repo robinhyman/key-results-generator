@@ -28,15 +28,18 @@ const CONFIG = {
     branchName: 'fail',
     lint: 'fail',
     build: 'fail',
-    // `warn` until the state compaction step lands, then flip to `fail`.
-    stateBudget: 'warn',
-    reportSections: 'warn',
+    // Enforced as failures since issue #24 compacted the state files.
+    stateBudget: 'fail',
+    reportSections: 'fail',
   },
 
   // Line budgets. decisions.md is legitimately append-only durable truth, so it
   // gets a high ceiling; the rest are continuation state and must stay compact.
   budgets: {
-    'project-state/index.md': 60,
+    // The index carries orientation, run commands, a routing table, and the
+    // hard gates. ~50 lines is its working size; 75 leaves headroom for the
+    // active-work section to change within an increment without churn.
+    'project-state/index.md': 75,
     'project-state/status.md': 80,
     'project-state/handoff.md': 80,
     'project-state/task-ledger.md': 80,
@@ -45,6 +48,7 @@ const CONFIG = {
   },
 
   stateFiles: [
+    'project-state/index.md',
     'project-state/status.md',
     'project-state/handoff.md',
     'project-state/task-ledger.md',
@@ -330,13 +334,20 @@ function checkReportSections() {
   }
 
   // A "Demonstration" heading with no link is the failure mode that let issue
-  // #4 be marked Done without a working demo.
+  // #4 be marked Done without a working demo. The rule applies to user-facing
+  // work only, so an explicit written opt-out is accepted — but silence is
+  // not, which keeps the exemption auditable rather than assumed.
   const hasLink = /https?:\/\/\S+/.test(body);
-  if (!hasLink) {
+  const declaredNotUserFacing =
+    /\bno (app\/demo|demo|app) link applies\b/i.test(body) ||
+    /\bnot user-facing\b/i.test(body) ||
+    /\bno user-facing (product )?behavior(al)? change/i.test(body);
+
+  if (!hasLink && !declaredNotUserFacing) {
     problem('reportSections', {
-      message: 'PR body has no link; a checked app/demo link is required for user-facing work.',
+      message: 'PR body has no link and no explicit non-user-facing declaration.',
       offender: '(pull request body)',
-      fix: 'Add the checked demo link, or state explicitly why this increment is not user-facing.',
+      fix: 'Add the checked demo link, or state explicitly that no app/demo link applies and why.',
       rule: 'ai-team/workflows/increment.md (Demo Or Deployment Is Available)',
     });
     return;

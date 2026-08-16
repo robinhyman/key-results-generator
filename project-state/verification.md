@@ -2,154 +2,30 @@
 
 Last updated: 2026-08-16
 
-## Checks Run
+Current verification posture and known gaps. Per-increment verification history is in `archive/`.
 
-- Repository inspected before setup.
-- Initial documentation files created.
-- Local Git repository initialized.
-- Initial commit created.
-- Private GitHub repository created and pushed: `robinhyman/key-results-generator`.
-- Initial GitHub issue created: `#1 Set up AI agent team operating system`.
-- GitHub Project created: `Key Results Generator`.
-- Issue `#1` added to the GitHub Project.
-- Custom Project field `Agent Status` created with the agreed workflow states.
-- Recommended labels created and applied to issue `#1`.
-- Increment workflow and report template created.
-- Core operating docs updated to reference increment delivery.
-- Increment Definition Of Done updated to require a checked app/demo link before `Done`.
-- Testing workflow created and linked from increment/session workflows.
-- Test-first preference added to the testing workflow and increment report.
-- Intake/specification workflow and issue spec template created.
-- Role specs for Lead, Architect, Builder, Tester, Reviewer, and Release Agent created.
-- Branch/PR policy, web local-first profile, and retrospective workflow created.
-- Documentarian role and documentation workflow created.
-- Original repository tagged at `ai-team-os-v0.1`.
-- Reusable private repository created and pushed: `robinhyman/ai-team-operating-system`.
-- Reusable repository tagged at `v0.1`.
-- First product issue `#2` created, added to GitHub Project, and marked `Ready`.
-- Issue `#2` moved to `Agent Status: In Progress`.
-- Verification plan for issue `#2` posted before implementation.
-- Test-first generator tests were added and confirmed failing for the expected `Not implemented yet` reason before implementation.
-- `npm run build` passed after implementation. It ran syntax checks for `server.js`, `src/generator.js`, and `public/app.js`, plus unit tests.
-- Unit tests passed for graph creation, high-impact influenceable KR selection, and variable ranking.
-- Local app started at `http://127.0.0.1:5173/`.
-- Browser flow checked with objective `Expand enterprise customer retention`.
-- Browser check confirmed submitted objective, graph/model view, generated key results, ranking view, and no console errors.
-- Visual screenshot check performed for the local app flow.
-- Draft PR `#3` opened for review.
-- Retrospective completed for issue `#2`.
-- Low-cost tester worker verified `npm run build`, section order, and no obvious merge-blocking issue before PR merge.
-- PR `#3` merged into `main`.
-- Issue `#2` closed and set to `Agent Status: Done`.
-- Final `main` verification: `npm run build` passed.
-- Final `main` local URL checked: `http://127.0.0.1:5173/` returned HTTP 200.
-- Final HTML order checked: Generated key results appear before the Causal metrics graph.
-- Issue `#4` test-first generator tests were added and confirmed failing for the expected missing `applyClarifications` export before implementation.
-- Issue `#4` `npm test` passed after implementing serializable graph generation, clarification capture, and clarified KR ranking.
-- Issue `#4` `npm run build` passed after implementation. It ran syntax checks for `server.js`, `src/generator.js`, and `public/app.js`, plus unit tests.
-- Issue `#4` local app started at `http://127.0.0.1:5173/`.
-- Issue `#4` local URL checked: `http://127.0.0.1:5173/` returned HTTP 200 and served markup containing the clarification form and final key results section.
-- Issue `#4` generator contract smoke check confirmed a clarified `cycle-time` metric with influenceability/gap `5/5` becomes the first final KR variable and graph assessments are present on the final model.
-- Issue `#4` branch `feature/4-clarification-flow` pushed and draft PR `#5` opened.
-- Issue `#4` low-cost Tester/Reviewer worker ran on `gpt-5.6-luna` with low reasoning. Worker verified clean branch state, compared PR commit against `origin/main`, ran `npm run build` successfully, confirmed 6/6 unit tests passed, inspected the clarification flow and local-demo-server operating-system rule, and found no merge-blocking bugs.
-- Issue `#4` retrospective completed and posted to GitHub issue `#4`; compact note posted to PR `#5`.
-- Follow-up GitHub issues created: `#6 Add browser-level tests for clarification flow`; `#7 Improve GitHub Project status update tooling`.
-- GitHub Project initially updated with `gh project`: issue `#4` set to `Agent Status: Done`; follow-up issues `#6` and `#7` added to the Project and set to `Agent Status: Ready`.
-- PR `#5` merged to `main`; final state updates were cherry-picked to `main` after merge and pushed.
-- Correction after user review: issue `#4` was reopened and moved to Project `Status: Todo` / `Agent Status: Blocked` because no actual AI-backed generation was implemented. PR `#5` is partial groundwork only.
-- Issue `#4` API key path was provided in a GitHub comment. The local key file exists, `keys/` is untracked and ignored by Git, and issue `#4` was moved to `Agent Status: Ready`.
-- Issue `#4` Agent Status was moved to `In Progress` before current implementation work.
-- Issue `#4` low-cost `gpt-5.6-luna` Reviewer/Tester worker inspected the current code read-only, ran `npm test` and `npm run lint`, confirmed existing checks passed, and recommended a server-side AI boundary, mocked AI tests, validation, fallback coverage, and README/state updates.
-- Issue `#4` AI-service tests were added for mocked AI graph output, missing-key fallback, malformed graph rejection, mocked AI final KR traceability, invalid KR-reference fallback, and explicit unknown-reference rejection.
-- Issue `#4` `npm test` passed with 12/12 tests.
-- Issue `#4` `npm run build` passed after adding `src/ai-service.js` to lint coverage. It ran syntax checks for `server.js`, `src/generator.js`, `src/ai-service.js`, and `public/app.js`, plus unit tests.
-- Issue `#4` minimal OpenAI diagnostic reached the provider but returned HTTP `429`, `insufficient_quota`, `credit_balance_exhausted`; no key value was printed.
-- Issue `#4` minimal OpenAI diagnostic was rerun after credits were added and returned HTTP `200`; no key value was printed.
-- Issue `#4` real app-level AI smoke check passed: `generateAiCausalMetricsGraph` returned AI mode using `gpt-5-mini` with 8 nodes and 8 edges; `generateAiKeyResultsModel` returned AI mode with 4 KRs and preserved clarification assessment traceability.
-- Issue `#4` local app server started at `http://127.0.0.1:5174/` because port `5173` was already in use.
-- Issue `#4` local URL checked: `http://127.0.0.1:5174/` returned HTTP `200`.
-- Issue `#4` live `/api/graph` endpoint checked with objective `Improve onboarding activation`; returned fallback graph metadata with 10 nodes and 11 edges.
-- Issue `#4` live `/api/key-results` endpoint checked with clarified `cycle-time` influenceability/gap `5/5`; returned fallback model with 4 KRs, first KR variable `cycle-time`, and assessment gap preserved as `5`.
-- Issue `#4` live endpoint recheck after credits passed in AI mode: `/api/graph` returned HTTP `200`, `gpt-5-mini`, 9 nodes, and 9 edges; `/api/key-results` returned HTTP `200`, AI mode, and 4 KRs.
-- Issue `#4` final lead-side live endpoint check before release passed in AI mode: `/api/graph` returned HTTP `200`, `gpt-5-mini`, 9 nodes, and 8 edges; `/api/key-results` returned HTTP `200`, AI mode, 4 KRs, and preserved clarification assessment traceability.
-- Issue `#4` final low-cost `gpt-5.6-luna` Tester/Reviewer worker verified clean branch state and `npm run build` with 12/12 tests passing. Its isolated context could not reach the running local server, so it reported live AI endpoint verification unavailable from that worker context.
-- Issue `#4` user confirmed the in-browser app at `http://127.0.0.1:5174/` is functional.
-- PR `#8 Add AI-backed generation service` was merged into `main`.
-- Final `main` verification after PR `#8` merge: `npm run build` passed with 12/12 tests.
-- Final `main` local URL checked: `http://127.0.0.1:5174/` returned HTTP `200`.
-- Final merged-main live AI endpoint check passed: `/api/graph` returned HTTP `200`, AI mode, `gpt-5-mini`, 9 nodes, and 9 edges; `/api/key-results` returned HTTP `200`, AI mode, 4 KRs, and preserved clarification assessment traceability.
-- Issue `#4` was closed and set to `Agent Status: Done`.
-- Architecture hardening issue `#9`: test-first server/API contract tests were added for app-shell serving, no `/src/*` exposure, path traversal rejection, malformed JSON, invalid graph request shape, invalid key-results request shape, and missing-key fallback diagnostics.
-- Architecture hardening issue `#9`: initial server tests failed in sandbox when attempting to bind `127.0.0.1`; tests were adjusted to call the exported request handler directly so normal unit/API verification does not require opening a local port.
-- Architecture hardening issue `#9`: `npm test` passed with 20/20 tests after server validation/routing/fallback changes.
-- Architecture hardening issue `#10`: browser code split into `public/api.js`, `public/app.js`, `public/format.js`, and `public/render.js`; `npm run build` passed after lint coverage was expanded to all browser modules.
-- Architecture hardening issue `#6`: added Playwright browser workflow test in `e2e/clarification-flow.spec.js`.
-- Architecture hardening issue `#6`: first `npm run test:browser` failed because the Playwright Chromium binary was not installed.
-- Architecture hardening issue `#6`: ran `npx playwright install chromium`; reran `npm run test:browser`; 1/1 browser test passed.
-- Architecture hardening issue `#7`: used authenticated `gh project` commands outside the sandbox to add issues to the GitHub Project and update `Agent Status`; documented the fallback procedure in `ai-team/github-workflow.md`.
-- Low-cost worker evidence for architecture hardening: `gpt-5.6-luna` Tester/Reviewer inspected the repo read-only and returned missing test cases, implementation risks, docs/state update targets, and a verification checklist. Its findings informed the server tests, browser test, docs updates, and final checklist.
-- Architecture hardening final verification: `npm run build` passed with 20/20 unit/API tests; `npm run test:browser` passed with 1/1 Playwright test; local app link `http://127.0.0.1:5175/` returned HTTP `200`; `/src/generator.js` returned HTTP `404`; `/api/graph` returned HTTP `200` with AI mode using `gpt-5-mini`.
-- PR `#13 Harden architecture and browser workflow coverage` merged to `main`. Post-merge state cleanup updated project-state files to mark issues `#9`, `#10`, `#6`, `#7`, and `#12` complete.
-- Architecture hardening retrospective posted to issue `#12`; no new operating-rule changes were proposed.
-- User approved retrospective follow-up changes. Updated intake workflow, GitHub workflow, testing workflow, local-first project profile, handoff, task ledger, and decisions log to record the rationale and prevent recurrence of the observed process failures.
-- Issue `#14` AI instruction specification was approved by the user and closed with `Agent Status: Done`.
-- Issue `#15` was moved to `In Progress` before implementation.
-- Issue `#15` implementation branch created: `feature/15-ai-instructions`.
-- Issue `#15` added approved shared system instruction plus graph-generation and KR-synthesis task instructions to `src/ai-service.js`.
-- Issue `#15` AI KR schema and normalization now accept 3 to 5 KRs; fewer than 3 is rejected and more than 5 is capped by normalization/schema.
-- Issue `#15` tests added for approved instruction composition, 3-5 KR schema construction, three/five KR normalization, and fewer-than-three rejection.
-- Issue `#15` `npm run build` passed with 24/24 tests.
-- Issue `#15` first `npm run test:browser` failed because the sandbox blocked binding `127.0.0.1`; approved unsandboxed rerun passed with 1/1 Playwright test.
-- Issue `#15` local app started at `http://127.0.0.1:5176/`.
-- Issue `#15` local URL checked: `http://127.0.0.1:5176/` returned HTTP `200`.
-- Issue `#15` live local endpoint check passed: `/api/graph` and `/api/key-results` returned HTTP `200`, AI mode for both, and final KR count `4`, which is valid within the new 3-5 requirement.
-- Issue `#15` low-cost `gpt-5.6-luna` Tester/Reviewer worker inspected `src/ai-service.js` and `test/generator.test.js`, ran `npm run build` and `git diff --check`, and found no blocking exact-4 assumption in `src/ai-service.js`.
-- PR `#17 Implement approved AI instruction structure` was marked ready for review, then squash-merged to `main`.
-- Issue `#15` was closed and set to `Agent Status: Done`.
-- Issue `#16` was unblocked and set to `Agent Status: Ready`.
-- Final merged-main verification after PR #17: `npm run build` passed with 24/24 tests.
-- Final merged-main local URL check: `http://127.0.0.1:5176/` returned HTTP `200`.
-- Issue `#16` was moved to `In Progress` before implementation.
-- Issue `#16` branch created: `chore/16-ai-instruction-regression-checks`.
-- Issue `#16` added focused tests for approved prompt principles without full prompt snapshots, serialized clarification assessments in provider requests, provider HTTP fallback diagnostics, invalid JSON fallback diagnostics, missing output fallback diagnostics, provider output capping at 5 KRs, and outcome graph reference rejection.
-- Issue `#16` `npm run build` passed with 30/30 tests.
-- Issue `#16` low-cost `gpt-5.6-luna` Tester/Reviewer worker inspected `src/ai-service.js`, `src/generator.js`, `test/generator.test.js`, and `test/server.test.js`; ran `npm run build`; found no blockers; and recommended additional tests for clarification serialization and provider fallback diagnostics, which were added.
-- PR `#18 Add AI instruction regression checks` was marked ready for review, then squash-merged to `main`.
-- Issue `#16` was closed and set to `Agent Status: Done`.
-- Final merged-main verification after PR #18: `npm run build` passed with 30/30 tests.
+## Current posture on `main`
 
-## Issue #22 Process Enforcement Verification
+- `npm run build` passes 39/39 unit and API tests. Covers the deterministic generator, graph and KR contracts, server routing and validation, path-traversal rejection, AI instruction composition, 3-5 KR normalization, provider fallback diagnostics, indicator-type validation, and trace redaction.
+- `npm run test:browser` passes 1/1 Playwright test covering objective submission, slider adjustment, final-KR submission, repeated generation, the rendered Leading/Lagging label, and console/page/request failures. Requires `npx playwright install chromium` first; a missing binary is a setup failure, not a product failure.
+- `npm run check` enforces the process gates. Failing gates: credential material, state stamp presence and freshness, branch naming, lint/build. Budget and PR-report gates are enforced as failures as of issue #24.
+- Live provider smoke checks pass with `gpt-5-mini`: `/api/graph` and `/api/key-results` return HTTP 200 in AI mode, 4 KRs, indicator types `lagging, lagging, leading, leading`, with clarification traceability preserved.
+- Trace logging verified: JSONL records carry operation, model, schema, request, response, parsed output, and endpoint host, with no `Authorization` or Bearer material.
 
-- `increment-check --mode=push` run against `main` before any change: correctly failed on `project-state/decisions.md` having no `Last updated` stamp, and warned that `status.md` (114/80), `handoff.md` (201/80), `task-ledger.md` (128/80), and `verification.md` (144/120) were over budget.
-- Freshness gate proven in a throwaway clone: editing a state file while its stamp still read `2026-08-15` failed with exit 1. This is the exact drift that previously reached `main` undetected.
-- Secrets gate proven in the same clone: a force-added `keys/key.txt` and an `sk-` value pasted into `README.md` both failed; forbidden-path and content patterns each fired.
-- Branch gate proven: `my-random-branch` failed; `chore/22-process-enforcement` passed.
-- Hook proven live on this branch: a real `git commit` of the state-file edit was blocked with exit 1 and `git log` confirmed nothing was committed; the commit succeeded only after the stamp was corrected.
-- Regex self-match checked: the credential patterns do not match their own source text in `increment-check.mjs`.
-- `npm run build` passes with 39/39 unit/API tests after the change; no runtime dependencies added.
-- First CI run (PR #23) passed but exposed two gaps in the binding layer: `branchName` was skipped because Actions checks out a detached HEAD, and `secrets` ran only at commit time. Both were therefore enforced solely by the bypassable hook. Fixed by passing `github.head_ref` as `PR_HEAD_REF` and by making the secrets scan cover files changed against the merge-base in push/ci modes. Reverified locally: a simulated `PR_HEAD_REF=my-random-branch` fails the branch gate, and ci mode now scans 10 changed files for credential material.
-- Not yet verified: branch protection on `main` is a repository setting owned by the user. Until that setting is applied, CI is advisory and hooks remain bypassable with `--no-verify`.
+## Known gaps
 
-## Not Yet Verified
+- **Branch protection is not enabled on `main`.** Until the `Process / increment-check` status check is required, CI is advisory and hooks are bypassable with `--no-verify`. This is the single largest hole in process enforcement.
+- The process gates cannot verify truthfulness. An agent can write "Demo link checked" above a URL it never opened. Only an independent process-review step closes this, and only partially.
+- No browser test for manually tampered slider payloads. Malformed input is covered at the server request-shape boundary only.
+- AI output *quality* is not automatically evaluated. Schema, instruction composition, and indicator mix are tested; whether the KRs are good is not.
+- Hosted deployment is unverified and out of scope.
+- No test covers `increment-check` itself. Its gates were verified manually against known-bad inputs during issue #22.
+- The PR-report gate accepts an explicit written declaration that an increment is not user-facing, in place of a demo link. Silence still fails, but a false declaration would pass — this is one of the truthfulness limits above.
 
-- Hosted deployment. It is out of scope for issue `#2`.
-- External AI generation quality. The first MVP intentionally uses a deterministic local generator.
-- Full graph editor behavior. It is out of scope for issue `#2`.
-- Issue `#4` full in-browser interaction screenshot/console check. The in-app browser connector initialized but did not return usable visible diagnostics in this session; local HTTP and generator contract checks were used instead.
-- Malformed assessment input is covered at the server request-shape boundary, but there is not yet a dedicated browser test for manually tampered slider payloads. Current browser coverage includes objective submission, slider adjustment, final-KR submission, repeated objective generation, and console/page/request failure checks.
-- Issue `#4` real AI-backed causal/metrics tree generation and AI-synthesized final KR generation are implemented behind the server-side provider boundary and have passed smoke checks after API credits were added.
-- Full automated browser console/network inspection for the core clarification flow is now covered by the Playwright test added for issue `#6`.
-- Hosted deployment. It remains out of scope for issue `#4`.
-- Issue `#15` leading/lagging KR mix is instruction-only. It is not enforceable by schema/tests until a later `indicatorType` or classification rule is approved.
-- Issue `#16` still cannot verify the returned leading/lagging mix because the schema/model has no explicit indicator classification. Prompt text is covered; output enforcement remains a future schema/model decision.
+## Verification rules
 
-## Issues #19/#20 Verification
-
-- Test-first status: added focused behavioral tests for explicit `indicatorType`, valid/invalid leading-lagging mixes, deterministic selection preservation, trace opt-in behavior, credential redaction, provider errors, and parsed-output validation failures before/with implementation.
-- Automated checks: `npm run build` passed with 39/39 unit/API tests.
-- Browser checks: `npm run test:browser` passed with 1/1 Playwright test after adding an assertion that rendered KRs expose a Leading/Lagging indicator label.
-- Live local demo: server started at `http://127.0.0.1:5176/` with `AI_TRACE_LOG=1` and `AI_TRACE_LOG_PATH=/tmp/key-results-generator-ai-traces.jsonl`.
-- Live endpoint smoke: `/api/graph` returned HTTP `200`, AI mode; `/api/key-results` returned HTTP `200`, AI mode, 4 KRs, and indicator types `lagging, lagging, leading, leading`.
-- Trace smoke: `/tmp/key-results-generator-ai-traces.jsonl` contained two JSONL records with operations `graph` and `key-results`, schema names `causal_metrics_graph` and `key_results`, provider `ok: true`, parsed output present for both, endpoint host `api.openai.com`, and no `Authorization`/Bearer material.
-- Low-cost worker evidence: `gpt-5.6-luna` Tester worker inspected relevant source/tests and proposed focused coverage for #19/#20; `gpt-5.6-luna` Reviewer worker ran `git diff --stat`, `git diff --name-only`, `git diff`, `git diff --check`, `npm test`, and `npm run lint`, identifying deterministic-selection drift and trace credential leak risks. Both findings were fixed and covered by additional tests.
-- Known skipped checks: none for local completion. Hosted deployment remains out of scope.
+- Every increment needs a verification plan before implementation, per `ai-team/workflows/testing.md`.
+- Prefer test-first for behaviorally clear work; explain any skip for a behavior change.
+- Passing automated tests are necessary but not sufficient for user-facing work — a checked demo link is also required.
+- Skipped checks must record the check, the reason, the risk, and whether `Done` is still possible.
+- Failures are blocking unless there is evidence they are unrelated. Real out-of-scope failures become GitHub issues.
