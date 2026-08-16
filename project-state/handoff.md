@@ -12,7 +12,7 @@ What the next session should do. For what the product is see `status.md`; for hi
 
 Issues #1-#22 are closed and merged. `main` is green: `npm run build` passes 39/39, `npm run test:browser` passes 1/1, and the `Process / increment-check` CI job passes.
 
-Issue #26 (obligation tiering) is in progress on `docs/26-obligation-tiering`.
+Issue #28 (delegate-by-default) is in progress on `chore/28-delegate-by-default`.
 
 ## Next best actions
 

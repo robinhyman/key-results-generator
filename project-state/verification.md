@@ -22,6 +22,8 @@ Current verification posture and known gaps. Per-increment verification history 
 - No test covers `increment-check` itself. Its gates were verified manually against known-bad inputs during issue #22.
 - The PR-report gate accepts an explicit written declaration that an increment is not user-facing, in place of a demo link. Silence still fails, but a false declaration would pass — this is one of the truthfulness limits above.
 - Hard gates are authoritative in `ai-team/README.md`, but workflow and role docs still restate them in context — the demo-link gate appears in nine files. Nothing enforces that those restatements stay consistent with the canonical text, so a gate change needs a manual sweep.
+- Issue #28 delegation-gate evidence: a low-cost `haiku` Tester worker checked policy consistency across `model-policy.md`, `increment.md`, and `README.md` (no contradictions found), then exercised the gate against sample PR bodies. It found five phrasings the first regex wrongly rejected, and after broadening, found two it wrongly accepted — "no delegation was needed" and "without delegation" were being read as evidence *of* delegation. A negation guard was added; 11 cases now behave correctly, including a mixed body that both delegates and declines to delegate.
+- The delegation gate verifies that a claim was made, not that it is true. A Model Use section can assert delegation that did not happen and will pass. It catches silence, which is how the gate previously failed three increments running.
 
 ## Verification rules
 

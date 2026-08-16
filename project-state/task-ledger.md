@@ -6,7 +6,7 @@ Active, blocked, and next work. Completed increments live in `archive/`.
 
 ## Active
 
-- Issue `#26 Tier operating-model obligations` on `docs/26-obligation-tiering`. Hard gates are canonical in `ai-team/README.md`; `constitution.md` no longer restates them; all 23 operating docs declare a tier; root `README.md` now points agents at the operating model.
+- Issue `#28 Make cheaper-worker delegation the default` on `chore/28-delegate-by-default`. Delegation is now automatic for named task types; exemptions are enumerated and must be recorded; the reporting requirement is enforced by `increment-check`.
 
 ## Blocked
 

@@ -174,6 +174,16 @@ Decision: Add `indicatorType` to each key result with allowed values `leading` a
 
 Reason: Prompt-only guidance could not be reliably validated or displayed. Making the classification part of the structured model lets the app enforce quality contracts, fall back on invalid provider output, and support future UI/evaluation work.
 
+## 2026-08-16: Delegate By Default Rather Than By Decision
+
+Decision: Cheaper-worker delegation is the default for a named set of task types — routine check runs, checklist verification, test-gap analysis, cross-file consistency checks, documentation drafts, summaries, and mechanical edits. The Lead no longer decides whether to delegate; it decides only whether one of four enumerated exemptions applies, and records which. `increment-check` fails a PR whose Model Use section shows neither delegation evidence nor an explicit exemption.
+
+Reason: The previous rule asked the Lead to "actively look for" delegation opportunities and permitted a documented exception. Across issues #22, #24, and #26 the exception was used three times running. A gate exempted every time is not a gate. The failure was structural, not lazy: the rule demanded a judgement call at the least convenient moment, and a harness that could not spawn workers turned into a standing exemption instead of a recorded limitation.
+
+"Cheaper" is defined as brief-plus-review costing less than doing the task, not model price, so the test is decidable without pricing knowledge.
+
+Tradeoff: the check verifies that a claim was made, not that it is true. A false claim passes. It catches silence, which is how the gate actually died.
+
 ## 2026-08-16: Enforce Process In Code, Not Prose
 
 Decision: Mechanically enforce the operating model with `ai-team/bin/increment-check.mjs`, invoked from `.githooks/pre-commit`, `.githooks/pre-push`, and `.github/workflows/process.yml`. No rule may live in a harness-specific instruction file; any such file may only point at `ai-team/README.md`.
