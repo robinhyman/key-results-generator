@@ -1,5 +1,7 @@
 # Documentation Workflow
 
+Tier: guidance. Hard gates are in `ai-team/README.md`.
+
 Documentation is part of delivery when an increment changes behavior, setup, architecture, deployment, user workflow, or operating rules.
 
 ## Core Rules

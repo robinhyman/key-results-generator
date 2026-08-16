@@ -21,6 +21,7 @@ Current verification posture and known gaps. Per-increment verification history 
 - Hosted deployment is unverified and out of scope.
 - No test covers `increment-check` itself. Its gates were verified manually against known-bad inputs during issue #22.
 - The PR-report gate accepts an explicit written declaration that an increment is not user-facing, in place of a demo link. Silence still fails, but a false declaration would pass — this is one of the truthfulness limits above.
+- Hard gates are authoritative in `ai-team/README.md`, but workflow and role docs still restate them in context — the demo-link gate appears in nine files. Nothing enforces that those restatements stay consistent with the canonical text, so a gate change needs a manual sweep.
 
 ## Verification rules
 

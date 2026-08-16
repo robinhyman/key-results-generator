@@ -1,5 +1,7 @@
 # Session Close Workflow
 
+Tier: guidance. Hard gates are in `ai-team/README.md`.
+
 Before ending a serious work session:
 
 1. Update `project-state/index.md` so the next session can orient from it alone.

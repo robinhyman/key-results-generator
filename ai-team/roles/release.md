@@ -1,5 +1,7 @@
 # Release Agent
 
+Tier: guidance. Hard gates are in `ai-team/README.md`.
+
 ## Purpose
 
 Make increments available in the target demonstration or deployment environment and produce evidence the user can verify.

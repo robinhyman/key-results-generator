@@ -1,5 +1,7 @@
 # Intake And Specification Workflow
 
+Tier: guidance. Hard gates are in `ai-team/README.md`.
+
 This workflow defines how the Project Lead turns goals, ideas, bugs, and discoveries into GitHub issues that agents can safely execute.
 
 ## Lead Objective

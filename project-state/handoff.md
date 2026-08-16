@@ -12,7 +12,7 @@ What the next session should do. For what the product is see `status.md`; for hi
 
 Issues #1-#22 are closed and merged. `main` is green: `npm run build` passes 39/39, `npm run test:browser` passes 1/1, and the `Process / increment-check` CI job passes.
 
-Issue #24 (state compaction) is in progress on `chore/24-state-compaction` — this file is part of that work.
+Issue #26 (obligation tiering) is in progress on `docs/26-obligation-tiering`.
 
 ## Next best actions
 
@@ -24,10 +24,8 @@ Issue #24 (state compaction) is in progress on `chore/24-state-compaction` — t
 
 From the 2026-08-16 audit, approved by the user but not yet done:
 
-- Tier the ~101 obligations across `ai-team/` into hard gates versus read-on-demand guidance, so context compaction has a principled drop order.
-- Add an Operating Model section to the root `README.md` pointing at `ai-team/README.md`. The root README currently has no reference to it, and it is the one file every harness and human reads first.
-- Restructure `ai-team/README.md` into a short hard-gates list plus a routing table.
-- Consider rewriting operating docs from prose to checklists; `constitution.md` is ~1,041 words for ~17 rules.
+- Consider rewriting operating docs from prose to checklists. Lower value now that tiering keeps most docs off the mandatory read path — reassess before spending on it.
+- Nothing keeps gate restatements in workflow and role docs consistent with the canonical text in `ai-team/README.md`. A gate change currently needs a manual sweep; consider a checker rule.
 - Add a process-review task to the increment workflow so a cheap worker checks the increment report against the DoD, breaking the Lead's self-grading loop.
 
 Port anything that proves out to `robinhyman/ai-team-operating-system`.

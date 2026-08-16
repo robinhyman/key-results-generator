@@ -1,5 +1,7 @@
 # Reviewer
 
+Tier: guidance. Hard gates are in `ai-team/README.md`.
+
 ## Purpose
 
 Protect correctness, maintainability, security, usability, and process integrity before an increment is considered complete.

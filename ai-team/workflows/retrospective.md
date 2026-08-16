@@ -1,5 +1,7 @@
 # Retrospective Workflow
 
+Tier: guidance. Hard gates are in `ai-team/README.md`.
+
 Run a retrospective after each completed, blocked, or paused increment before starting the next increment.
 
 The retrospective exists to improve the team's operating system without silently changing it.

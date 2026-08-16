@@ -1,5 +1,7 @@
 # Branch And PR Policy
 
+Tier: guidance. Hard gates are in `ai-team/README.md`.
+
 This policy defines how code increments move from local work to reviewable change.
 
 ## Default Policy

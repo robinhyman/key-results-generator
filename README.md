@@ -2,6 +2,12 @@
 
 Local-first MVP for generating key results from an objective through an inspectable causal metrics model.
 
+## Operating Model
+
+This repository is developed by an AI delivery team with an explicit operating model. **If you are an agent working here, read `project-state/index.md` and `ai-team/README.md` before doing anything else.** The hard gates — the non-negotiable rules — are listed in `ai-team/README.md`.
+
+Process is enforced mechanically, not by trust. `npm run check` runs from git hooks and CI and blocks credential material, stale state files, non-conforming branches, incomplete increment reports, and lint or build failures. `npm install` installs the hooks.
+
 ## Run Locally
 
 Requirements:

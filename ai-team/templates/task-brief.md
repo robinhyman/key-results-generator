@@ -1,5 +1,7 @@
 # Task Brief
 
+Tier: template. Fill in; do not treat as rules.
+
 ## Objective
 
 What this agent should accomplish.
