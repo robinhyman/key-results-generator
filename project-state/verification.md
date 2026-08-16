@@ -127,7 +127,8 @@ Last updated: 2026-08-16
 - Hook proven live on this branch: a real `git commit` of the state-file edit was blocked with exit 1 and `git log` confirmed nothing was committed; the commit succeeded only after the stamp was corrected.
 - Regex self-match checked: the credential patterns do not match their own source text in `increment-check.mjs`.
 - `npm run build` passes with 39/39 unit/API tests after the change; no runtime dependencies added.
-- Not yet verified: the GitHub Actions run (`Process / increment-check`) requires the PR to exist, and branch protection on `main` is a repository setting owned by the user. Until that setting is applied, CI is advisory and hooks remain bypassable with `--no-verify`.
+- First CI run (PR #23) passed but exposed two gaps in the binding layer: `branchName` was skipped because Actions checks out a detached HEAD, and `secrets` ran only at commit time. Both were therefore enforced solely by the bypassable hook. Fixed by passing `github.head_ref` as `PR_HEAD_REF` and by making the secrets scan cover files changed against the merge-base in push/ci modes. Reverified locally: a simulated `PR_HEAD_REF=my-random-branch` fails the branch gate, and ci mode now scans 10 changed files for credential material.
+- Not yet verified: branch protection on `main` is a repository setting owned by the user. Until that setting is applied, CI is advisory and hooks remain bypassable with `--no-verify`.
 
 ## Not Yet Verified
 

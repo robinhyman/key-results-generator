@@ -33,4 +33,7 @@ jobs:
           # Only set on pull_request events; the script skips the report
           # section check when absent.
           PR_BODY: ${{ github.event.pull_request.body }}
+          # Actions checks out a detached HEAD, so the branch name must come
+          # from the event payload for the branch gate to run in CI.
+          PR_HEAD_REF: ${{ github.head_ref }}
         run: node ai-team/bin/increment-check.mjs --mode=ci

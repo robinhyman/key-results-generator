@@ -137,14 +137,23 @@ function changedStateFiles(mode) {
 // Checks
 // ---------------------------------------------------------------------------
 
+// Files changed against the default branch, for modes where nothing is staged.
+function changedFiles() {
+  const base = git(['merge-base', 'HEAD', 'origin/main'], { allowFail: true });
+  if (!base) return [];
+  const out = git(['diff', '--name-only', '--diff-filter=ACM', `${base}...HEAD`], { allowFail: true });
+  return out ? out.split('\n').filter(Boolean) : [];
+}
+
 // Credential and artefact material must never enter history. The repo handles
 // live OpenAI keys and writes AI traces to disk, so this is a real path.
+//
+// Runs in every mode: pre-commit is bypassable with --no-verify, so CI must
+// re-check the whole branch rather than trusting the hook.
 function checkSecrets(mode) {
-  const files = mode === 'commit' ? stagedFiles() : [];
-  if (mode !== 'commit') {
-    pass('secrets', 'skipped outside commit mode (pre-commit is the effective gate)');
-    return;
-  }
+  const files = mode === 'commit' ? stagedFiles() : changedFiles();
+  const readFile = (f) =>
+    mode === 'commit' ? stagedContent(f) : existsSync(f) ? readFileSync(f, 'utf8') : '';
 
   let clean = true;
 
@@ -161,7 +170,7 @@ function checkSecrets(mode) {
       }
     }
 
-    const content = stagedContent(file);
+    const content = readFile(file);
     if (!content) continue;
     for (const { re, label } of CONFIG.secretPatterns) {
       if (re.test(content)) {
@@ -176,7 +185,7 @@ function checkSecrets(mode) {
     }
   }
 
-  if (clean) pass('secrets', `${files.length} staged file(s) clean`);
+  if (clean) pass('secrets', `${files.length} changed file(s) clean`);
 }
 
 // Every state file must carry the stamp at all. decisions.md currently has no
@@ -257,9 +266,13 @@ function checkStateBudget() {
 }
 
 function checkBranchName() {
-  const branch = git(['rev-parse', '--abbrev-ref', 'HEAD'], { allowFail: true });
+  // CI checks out a detached HEAD, so the real branch must come from the
+  // event payload. Without this, branch policy would be enforced only by the
+  // bypassable hook and never by the binding CI gate.
+  const branch =
+    process.env.PR_HEAD_REF || git(['rev-parse', '--abbrev-ref', 'HEAD'], { allowFail: true });
   if (!branch || branch === 'HEAD') {
-    pass('branchName', 'detached HEAD or unknown branch; skipped');
+    pass('branchName', 'detached HEAD and no PR_HEAD_REF; skipped');
     return;
   }
   if (CONFIG.exemptBranches.includes(branch)) {
