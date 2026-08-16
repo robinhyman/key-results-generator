@@ -86,3 +86,14 @@ Docs skipped and why:
 Files updated:
 
 Next increment:
+
+## Retrospective
+
+<!-- Delta retro: three fields, per ai-team/workflows/retrospective.md. Run the
+     full multi-role retrospective only when a trigger in that file fired. -->
+
+What slowed this down:
+
+What would change in the operating model:
+
+Carried forward:

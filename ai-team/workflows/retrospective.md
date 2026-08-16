@@ -2,11 +2,38 @@
 
 Tier: guidance. Hard gates are in `ai-team/README.md`.
 
-Run a retrospective after each completed, blocked, or paused increment before starting the next increment.
-
 The retrospective exists to improve the team's operating system without silently changing it.
 
+Retrospectives come in two sizes. The default is small enough to run every time; the full version is reserved for increments that earned it.
+
+## Delta Retrospective — the default
+
+Run after every completed, blocked, or paused increment, before the next one starts. Three fields, written into the increment report or the issue comment. It should take a minute.
+
+- **What slowed this down?** The specific friction, not a summary of the work.
+- **What would you change in the operating model?** A file and a change, or "nothing".
+- **Carried forward.** Any proposal worth acting on, or "none". Proposals still need user approval before anything is applied.
+
+That is the whole ceremony. Do not expand it by habit.
+
+## Full Retrospective — by trigger only
+
+Run the full multi-role retrospective below when any of these is true:
+
+- The increment failed, was blocked, or needed rework after review.
+- A defect escaped to `main`.
+- The work was high-risk: credentials, security, deployment, data loss, or architecture.
+- A hard gate was violated, or a gate was found not to be working.
+- Five increments have passed since the last full retrospective.
+- The user asks for one.
+
+Otherwise the delta retro is sufficient and the full one is waste.
+
+The rule was previously "a full retrospective after every increment". Four increments in a row — #22, #24, #26, #28 — owed one and none ran, which is the same failure #28 diagnosed for the delegation gate: an obligation whose cost exceeds its convenience gets skipped, and the skipping becomes the norm. Tiering is the fix that keeps the cheap version enforceable.
+
 ## Inputs
+
+The rest of this file describes the full retrospective. Skip it for a delta retro.
 
 Collect concise inputs from each role that materially participated:
 
@@ -59,6 +86,6 @@ If rejected or deferred, record the outcome in the retrospective report or issue
 
 ## Reporting
 
-Add the retrospective summary to the completed increment's GitHub issue.
+Add the retrospective summary to the completed increment's GitHub issue. A delta retro lives in the increment report; it does not need its own comment.
 
-Use `ai-team/templates/retrospective-report.md` when the increment involved code, multiple roles, unexpected issues, or suggested constitutional changes.
+Use `ai-team/templates/retrospective-report.md` for a full retrospective. A delta retro needs no template — it is three fields.

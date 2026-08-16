@@ -8,7 +8,7 @@ This file owns active, blocked, and next work. `index.md` points here rather tha
 
 ## Active
 
-- `#32` Give active work a single owner and enforce state coherence. Branch `chore/32-state-coherence`.
+- `#35` Tier retrospectives so the default one actually gets run. Branch `docs/35-tiered-retrospectives`.
 
 ## Blocked
 
@@ -41,5 +41,6 @@ Issues `#1`-`#22` are closed. Summary of what each delivered:
 - `#26` Obligation tiering into hard gates, mechanical rules, and guidance.
 - `#28` Cheaper-worker delegation made the default with recorded exemptions.
 - `#31` Section-scoped PR-report gate, push-range fix, and the checker's first test suite.
+- `#32` Single owner for active work, a state-coherence gate, PR template, and scoped role reads.
 
 Per-issue detail, verification runs, retrospectives, and worker evidence are in `archive/2026-08-pre-compaction.md`.

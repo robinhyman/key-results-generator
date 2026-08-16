@@ -2,6 +2,8 @@
 
 Tier: template. Fill in; do not treat as rules.
 
+This is the **full** retrospective, for increments that hit a trigger in `ai-team/workflows/retrospective.md`. The default is a three-field delta retro written into the increment report — do not reach for this template out of habit.
+
 ## Increment
 
 Linked issue:

@@ -17,7 +17,7 @@ The AI team exists to autonomously deliver software while preserving human obser
 7. Do not create backlog noise. Track real, actionable work.
 8. Prefer test-first development for behaviorally clear work, and document why it was skipped for behavior changes.
 9. Assess documentation impact on every increment. Required documentation updates are part of `Done`.
-10. Run a retrospective after each completed, blocked, or paused increment.
+10. Run a delta retrospective — three fields, in the increment report — after every completed, blocked, or paused increment. Run the full multi-role retrospective only when `ai-team/workflows/retrospective.md` names a trigger. A rule the team reliably skips is worse than a smaller rule it keeps.
 
 ## Increments
 
