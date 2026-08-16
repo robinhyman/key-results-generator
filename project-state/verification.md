@@ -20,6 +20,7 @@ Current verification posture and known gaps. Per-increment verification history 
 - AI output *quality* is not automatically evaluated. Schema, instruction composition, and indicator mix are tested; whether the KRs are good is not.
 - Hosted deployment is unverified and out of scope.
 - No test covers `increment-check` itself. Its gates were verified manually against known-bad inputs during issue #22.
+- The PR-report gate accepts an explicit written declaration that an increment is not user-facing, in place of a demo link. Silence still fails, but a false declaration would pass — this is one of the truthfulness limits above.
 
 ## Verification rules
 

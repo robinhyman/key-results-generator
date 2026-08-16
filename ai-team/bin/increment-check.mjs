@@ -334,13 +334,20 @@ function checkReportSections() {
   }
 
   // A "Demonstration" heading with no link is the failure mode that let issue
-  // #4 be marked Done without a working demo.
+  // #4 be marked Done without a working demo. The rule applies to user-facing
+  // work only, so an explicit written opt-out is accepted — but silence is
+  // not, which keeps the exemption auditable rather than assumed.
   const hasLink = /https?:\/\/\S+/.test(body);
-  if (!hasLink) {
+  const declaredNotUserFacing =
+    /\bno (app\/demo|demo|app) link applies\b/i.test(body) ||
+    /\bnot user-facing\b/i.test(body) ||
+    /\bno user-facing (product )?behavior(al)? change/i.test(body);
+
+  if (!hasLink && !declaredNotUserFacing) {
     problem('reportSections', {
-      message: 'PR body has no link; a checked app/demo link is required for user-facing work.',
+      message: 'PR body has no link and no explicit non-user-facing declaration.',
       offender: '(pull request body)',
-      fix: 'Add the checked demo link, or state explicitly why this increment is not user-facing.',
+      fix: 'Add the checked demo link, or state explicitly that no app/demo link applies and why.',
       rule: 'ai-team/workflows/increment.md (Demo Or Deployment Is Available)',
     });
     return;
