@@ -1,0 +1,8 @@
+#!/bin/sh
+# AI team process gate — fast local checks on staged content.
+# Installed via: git config core.hooksPath .githooks  (npm run setup)
+#
+# Bypassable with --no-verify. CI is the binding backstop; this hook exists to
+# fail fast and locally, before an agent builds on top of a violation.
+
+exec node ai-team/bin/increment-check.mjs --mode=commit

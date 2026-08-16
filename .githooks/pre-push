@@ -1,0 +1,5 @@
+#!/bin/sh
+# AI team process gate — full checks before work leaves the machine.
+# Installed via: git config core.hooksPath .githooks  (npm run setup)
+
+exec node ai-team/bin/increment-check.mjs --mode=push

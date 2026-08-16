@@ -1,5 +1,7 @@
 # Decisions
 
+Last updated: 2026-08-16
+
 ## 2026-08-14: Use Documented State Over Chat Memory
 
 Decision: Persist project state in repo files so fresh sessions can resume cheaply.
