@@ -31,7 +31,6 @@ From the 2026-08-16 audits, approved by the user but not yet done:
 - Nothing keeps gate restatements in workflow and role docs consistent with the canonical text in `ai-team/README.md`. A gate change currently needs a manual sweep; consider a checker rule.
 - Add a process-review task to the increment workflow so a cheap worker checks the increment report against the DoD, breaking the Lead's self-grading loop.
 - Make demo evidence durable — a committed screenshot or recording rather than a `127.0.0.1` link that dies with the server.
-- **Needs a decision:** `ai-team/roles/architect.md` and `ai-team/roles/documentarian.md` list `Reads` without saying they are on-demand, the same ambiguity that was fixed in `project-lead.md` under #32. A consistency sweep judged them framing ambiguities rather than contradictions, and they were left alone because operating-doc changes need user approval and only the Lead's list was approved. Apply the same framing, or decide the other roles do not need it.
 
 ### Deliberately deferred
 

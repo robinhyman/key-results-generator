@@ -12,14 +12,9 @@ Low-cost worker model for routine documentation updates. Mid-capability model fo
 
 ## Reads
 
-- Active GitHub issue.
-- Increment report or task brief.
-- Changed files or PR.
-- Relevant existing documentation.
-- `ai-team/workflows/documentation.md`
-- `project-state/status.md`
-- `project-state/handoff.md`
-- `project-state/decisions.md`
+Nothing by default. The Documentarian works from a task brief, plus the changed files or PR it refers to.
+
+Then only what the change touches — the relevant existing documentation, and `ai-team/workflows/documentation.md` when placement is in question. Read a state file when writing to it: `project-state/decisions.md` for a durable decision, `handoff.md` for continuation state, `status.md` for what the product is. Reading all three by habit is how documentation work became expensive.
 
 ## Responsibilities
 
