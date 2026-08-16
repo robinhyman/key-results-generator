@@ -6,7 +6,7 @@ Active, blocked, and next work. Completed increments live in `archive/`.
 
 ## Active
 
-- Issue `#28 Make cheaper-worker delegation the default` on `chore/28-delegate-by-default`. Delegation is now automatic for named task types; exemptions are enumerated and must be recorded; the reporting requirement is enforced by `increment-check`.
+- None. The operating-model audit is complete through #28.
 
 ## Blocked
 
@@ -37,5 +37,8 @@ Issues `#1`-`#22` are closed. Summary of what each delivered:
 - `#19` Explicit `leading`/`lagging` indicator types on key results.
 - `#20` Env-gated AI prompt and response trace logging.
 - `#22` Harness-agnostic process enforcement via `increment-check`, git hooks, and CI.
+- `#24` project-state compaction, archiving, and enforced state budgets.
+- `#26` Obligation tiering into hard gates, mechanical rules, and guidance.
+- `#28` Cheaper-worker delegation made the default with recorded exemptions.
 
 Per-issue detail, verification runs, retrospectives, and worker evidence are in `archive/2026-08-pre-compaction.md`.
