@@ -1,0 +1,39 @@
+name: Process
+
+# The binding gate. Git hooks can be bypassed with --no-verify; this cannot,
+# once "Process / increment-check" is a required status check on main.
+#
+# Harness-agnostic by construction: this runs the same script a Codex, Claude,
+# or OpenClaw session runs locally, and does not know or care which produced
+# the commit.
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, edited]
+  push:
+    branches: [main]
+
+jobs:
+  increment-check:
+    name: increment-check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # merge-base needs history for changed-state detection
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - run: npm ci
+
+      - name: Run process checks
+        env:
+          # Only set on pull_request events; the script skips the report
+          # section check when absent.
+          PR_BODY: ${{ github.event.pull_request.body }}
+          # Actions checks out a detached HEAD, so the branch name must come
+          # from the event payload for the branch gate to run in CI.
+          PR_HEAD_REF: ${{ github.head_ref }}
+        run: node ai-team/bin/increment-check.mjs --mode=ci

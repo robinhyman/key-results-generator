@@ -5,6 +5,9 @@
   "type": "module",
   "scripts": {
     "start": "node server.js",
+    "setup": "git config core.hooksPath .githooks",
+    "prepare": "git config core.hooksPath .githooks || true",
+    "check": "node ai-team/bin/increment-check.mjs --mode=push",
     "test": "node --test",
     "test:browser": "playwright test",
     "lint": "node --check server.js && node --check src/generator.js && node --check src/ai-service.js && node --check public/api.js && node --check public/app.js && node --check public/format.js && node --check public/render.js",

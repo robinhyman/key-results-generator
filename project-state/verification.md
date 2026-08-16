@@ -1,6 +1,6 @@
 # Verification
 
-Last updated: 2026-08-15
+Last updated: 2026-08-16
 
 ## Checks Run
 
@@ -117,6 +117,18 @@ Last updated: 2026-08-15
 - PR `#18 Add AI instruction regression checks` was marked ready for review, then squash-merged to `main`.
 - Issue `#16` was closed and set to `Agent Status: Done`.
 - Final merged-main verification after PR #18: `npm run build` passed with 30/30 tests.
+
+## Issue #22 Process Enforcement Verification
+
+- `increment-check --mode=push` run against `main` before any change: correctly failed on `project-state/decisions.md` having no `Last updated` stamp, and warned that `status.md` (114/80), `handoff.md` (201/80), `task-ledger.md` (128/80), and `verification.md` (144/120) were over budget.
+- Freshness gate proven in a throwaway clone: editing a state file while its stamp still read `2026-08-15` failed with exit 1. This is the exact drift that previously reached `main` undetected.
+- Secrets gate proven in the same clone: a force-added `keys/key.txt` and an `sk-` value pasted into `README.md` both failed; forbidden-path and content patterns each fired.
+- Branch gate proven: `my-random-branch` failed; `chore/22-process-enforcement` passed.
+- Hook proven live on this branch: a real `git commit` of the state-file edit was blocked with exit 1 and `git log` confirmed nothing was committed; the commit succeeded only after the stamp was corrected.
+- Regex self-match checked: the credential patterns do not match their own source text in `increment-check.mjs`.
+- `npm run build` passes with 39/39 unit/API tests after the change; no runtime dependencies added.
+- First CI run (PR #23) passed but exposed two gaps in the binding layer: `branchName` was skipped because Actions checks out a detached HEAD, and `secrets` ran only at commit time. Both were therefore enforced solely by the bypassable hook. Fixed by passing `github.head_ref` as `PR_HEAD_REF` and by making the secrets scan cover files changed against the merge-base in push/ci modes. Reverified locally: a simulated `PR_HEAD_REF=my-random-branch` fails the branch gate, and ci mode now scans 10 changed files for credential material.
+- Not yet verified: branch protection on `main` is a repository setting owned by the user. Until that setting is applied, CI is advisory and hooks remain bypassable with `--no-verify`.
 
 ## Not Yet Verified
 

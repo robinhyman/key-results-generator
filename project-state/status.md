@@ -1,6 +1,6 @@
 # Project Status
 
-Last updated: 2026-08-15
+Last updated: 2026-08-16
 
 ## Current State
 
@@ -63,6 +63,13 @@ Closed issue: `#15 Implement approved AI instruction structure in the generation
 Closed issue: `#16 Add regression checks for AI instruction and output quality`, completed by PR #18 and set to `Agent Status: Done`.
 
 ## Active Goal
+
+Active issue: `#22 Add harness-agnostic process enforcement via increment-check, git hooks, and CI` on branch `chore/22-process-enforcement`.
+
+Process gates are now mechanical. `npm run check` (or the pre-commit/pre-push hooks, or CI) runs `ai-team/bin/increment-check.mjs`, which blocks staged credential material, missing/stale state-file `Last updated` stamps, non-conforming branch names, and lint/build failures. State-file line budgets and PR increment-report sections currently warn; flip them to `fail` in the script's `CONFIG.severity` once state compaction lands. Hooks activate via `npm run setup` or automatically on `npm install`.
+
+Known follow-up: state compaction and `project-state/index.md` are not yet done, so four state files are over budget and reported as warnings.
+
 
 Active iteration: issues `#19 Represent leading and lagging key results explicitly` and `#20 Add env-gated AI prompt and response trace logging`.
 

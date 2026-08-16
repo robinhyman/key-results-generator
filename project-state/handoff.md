@@ -1,6 +1,6 @@
 # Handoff
 
-Last updated: 2026-08-15
+Last updated: 2026-08-16
 
 ## Summary
 
@@ -94,6 +94,15 @@ Documentation rule: use `ai-team/workflows/documentation.md` to assess docs on e
 Reusable baseline repo: `robinhyman/ai-team-operating-system`, tagged `v0.1`.
 
 This project is tagged at `ai-team-os-v0.1` as the pre-product baseline.
+
+## Issue #22 Process Enforcement
+
+- Branch: `chore/22-process-enforcement`. Adds `ai-team/bin/increment-check.mjs`, `.githooks/pre-commit`, `.githooks/pre-push`, `.github/workflows/process.yml`, and `setup`/`prepare`/`check` npm scripts.
+- Run `npm run check` locally; hooks install via `npm run setup` or automatically on `npm install` (`core.hooksPath=.githooks`).
+- Failing gates: staged credential material, missing/stale state `Last updated` stamps, bad branch names, lint/build. Warning gates: state-file line budgets, PR increment-report sections.
+- To tighten after state compaction: set `stateBudget` and `reportSections` to `fail` in `CONFIG.severity`.
+- Open user action: enable branch protection on `main` requiring the `Process / increment-check` status check. Without it, CI is advisory and hooks can be bypassed with `--no-verify`.
+- Deliberately out of scope: state compaction, `project-state/index.md`, obligation tiering, root-README pointer. These remain from the operating-model audit.
 
 ## Next Best Actions
 
