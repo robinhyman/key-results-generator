@@ -104,3 +104,13 @@ Follow-up issues:
 Files updated:
 
 Next increment:
+
+## Retrospective
+
+Delta retro, per `ai-team/workflows/retrospective.md`. Three fields unless a full-retrospective trigger fired.
+
+What slowed this down:
+
+What would change in the operating model:
+
+Carried forward:

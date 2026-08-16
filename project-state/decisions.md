@@ -219,3 +219,11 @@ Decision: `project-state/task-ledger.md` owns active, blocked, and next work. `i
 Reason: On 2026-08-16, `index.md` named issue #24 as active work with a live branch while the ledger said nothing was active and the handoff said #24 was merged — all three stamped that day, all three passing `npm run check`. Freshness proves a file was edited, not that it is true. The cause was duplicate ownership, so the fix is deletion rather than tooling; a generator would be a build step for six small files that a human still has to read.
 
 Tradeoff: the check is one-directional and shallow. It catches contradiction, not omission — a ledger that quietly drops an active issue still passes.
+
+## 2026-08-16: Tier Retrospectives Rather Than Carry Retrospective Debt
+
+Decision: Constitution principle 10 now requires a three-field delta retrospective — what slowed this down, what would change in the operating model, what is carried forward — in the increment report after every increment. The full multi-role retrospective in `ai-team/workflows/retrospective.md` runs only on a named trigger: failure, rework, an escaped defect, high-risk work, a violated or broken gate, five increments elapsed, or user request.
+
+Reason: Increments #22, #24, #26, and #28 each owed a retrospective and none ran. The prescribed ceremony asked up to seven roles for answers to nine questions regardless of increment size, so it was skipped, and the debt became visible and permanent. This is the same failure #28 diagnosed for the delegation gate — an obligation whose cost exceeds its convenience gets exempted until the exemption is the norm. A cheaper default is enforceable; an expensive one is aspirational.
+
+Tradeoff: delta retros will surface less than full ones. The triggers are the hedge, and they cover the cases where depth actually pays — failure, rework, and risk. The delta retro is also still a written claim; nothing verifies it happened.
