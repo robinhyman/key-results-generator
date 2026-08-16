@@ -36,4 +36,8 @@ jobs:
           # Actions checks out a detached HEAD, so the branch name must come
           # from the event payload for the branch gate to run in CI.
           PR_HEAD_REF: ${{ github.head_ref }}
+          # On a push to main, HEAD is main, so merge-base with origin/main is
+          # HEAD and the diff is empty — the secrets scan would examine nothing
+          # and report a pass. The pushed range has to come from the payload.
+          PUSH_BEFORE: ${{ github.event.before }}
         run: node ai-team/bin/increment-check.mjs --mode=ci

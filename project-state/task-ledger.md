@@ -4,9 +4,11 @@ Last updated: 2026-08-16
 
 Active, blocked, and next work. Completed increments live in `archive/`.
 
+This file owns active, blocked, and next work. `index.md` points here rather than restating it.
+
 ## Active
 
-- None. The operating-model audit is complete through #28.
+- `#31` Harden the `increment-check` PR-report gate and add regression tests. Branch `chore/31-report-gate-hardening`.
 
 ## Blocked
 
@@ -14,9 +16,9 @@ Active, blocked, and next work. Completed increments live in `archive/`.
 
 ## Next
 
-- Enable branch protection on `main` requiring `Process / increment-check`. User action; blocks the process gates from being binding rather than advisory.
+- `#32` Give active work a single owner and enforce state coherence. Depends on #31 for the test harness.
 - Choose the next product increment: durable persistence, graph editing, or hosted deployment.
-- Remaining operating-model work from the 2026-08-16 audit, listed in `handoff.md`.
+- Remaining operating-model work from the 2026-08-16 audits, listed in `handoff.md`.
 
 ## Completed
 

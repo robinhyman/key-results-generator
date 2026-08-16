@@ -197,3 +197,17 @@ Tradeoff: hooks are bypassable with `--no-verify`, so CI is the binding gate and
 Decision: Add opt-in server-side JSONL trace logging for AI provider calls, enabled with `AI_TRACE_LOG=1`, with request body, response body, parsed output, provider diagnostics, operation metadata, and endpoint host.
 
 Reason: Prompt tuning requires observing the exact runtime payloads and responses, not just source prompt builders. Traces are local-only, ignored by Git, and sanitized to avoid credential/header leakage while still making prompts and responses inspectable.
+
+## 2026-08-16: Validate Report Evidence In Its Own Section
+
+Decision: The PR-report gate parses the body into sections and requires each required section to carry substantive content, with the demo link validated inside `Demonstration` and delegation evidence inside `Model Use`. An empty PR body fails on `pull_request` events. Rejected the alternative of a structured YAML/JSON evidence manifest.
+
+Reason: An external audit demonstrated two passing bypasses — an entirely empty body, and four empty headings plus one stray URL and one stray sentence — because the gate matched presence of headings and then searched the whole body for evidence. A manifest would also fix this, but it adds a second format to keep in sync with `ai-team/templates/increment-report.md` for benefit that section scoping already delivers.
+
+Tradeoff: still a claim check, not a truth check. Scoping raises the cost of a false report from one stray sentence to a plausible sentence in the right place; it does not make the claim true.
+
+## 2026-08-16: Treat The Process Checker As Production Code
+
+Decision: `ai-team/bin/increment-check.mjs` carries automated tests (`test/increment-check.test.js`, 43 PR-body fixtures) and exports its report-gate logic as a pure function so tests can drive it without re-entering `npm run build`. Both demonstrated bypasses are pinned as named regression tests.
+
+Reason: The checker is the only mechanical enforcement of the hard gates, and its delegation regex needed several rounds of manual correction across #28 and #31. An untested gate that silently stops failing is worse than no gate, because it is trusted.
