@@ -18,7 +18,7 @@ Branch protection is enabled as of 2026-08-16: the `main: require increment-chec
 
 ## Next best actions
 
-1. **Finish the audit response.** #31 hardens the PR-report gate; #32 gives active work a single owner and adds a state-coherence gate. See `task-ledger.md`.
+1. **Merge the open audit-response PR** for issue #32 (state coherence). Issue #31 merged as #33. Note that merging is gated in the agent's current permission set and is the user's action.
 2. **Run the retrospectives owed.** Increments #22, #24, #26, and #28 each captured their lessons in the PR body, but none had a formal retrospective per `ai-team/workflows/retrospective.md`. Constitution principle 10 requires one per increment. The external audit read four owed retrospectives as evidence the ceremony exceeds what the team sustains. Either run them as one combined review, or amend principle 10 to tier retrospectives — a short delta retro by default, a full one for failures, rework, or high-risk work.
 
 3. **Choose the next product direction** with the user: durable persistence, graph editing, or hosted deployment.

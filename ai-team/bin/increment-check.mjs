@@ -32,6 +32,7 @@ const CONFIG = {
     // Enforced as failures since issue #24 compacted the state files.
     stateBudget: 'fail',
     reportSections: 'fail',
+    stateCoherence: 'fail',
   },
 
   // Line budgets. decisions.md is legitimately append-only durable truth, so it
@@ -283,6 +284,58 @@ function checkStateFreshness(mode) {
   if (clean) pass('stateFreshness', `${changed.length} changed state file(s) current`);
 }
 
+// State freshness proves a file was touched today, not that it is true. On
+// 2026-08-16 index.md named issue #24 as active work with a live branch while
+// the ledger said nothing was active and the handoff said #24 was merged — all
+// three stamped that day, all three passing. A fresh agent got three answers.
+//
+// task-ledger.md owns active work. This check does not ask index.md to repeat
+// it; it only forbids index.md from contradicting it.
+export function evaluateStateCoherence(indexText, ledgerText) {
+  if (indexText === null || ledgerText === null) return null;
+
+  const issueRefs = (text) => new Set([...text.matchAll(/#(\d+)/g)].map((m) => m[1]));
+
+  const indexActive = sectionBody(parseSections(indexText), 'Active work');
+  const ledgerActive = sectionBody(parseSections(ledgerText), 'Active');
+  if (indexActive === null || ledgerActive === null) return null;
+
+  const claimed = issueRefs(indexActive);
+  const owned = issueRefs(ledgerActive);
+  const contradicted = [...claimed].filter((n) => !owned.has(n));
+
+  if (contradicted.length > 0) {
+    return {
+      message: `index.md calls issue(s) ${contradicted.map((n) => `#${n}`).join(', ')} active, but task-ledger.md does not list them as active.`,
+      offender: `project-state/index.md (Active work) vs project-state/task-ledger.md (Active)`,
+      fix: 'task-ledger.md owns active work. Update it, or point index.md at it instead of restating the list.',
+      rule: 'ai-team/README.md hard gate 8 (a fresh agent can continue from project-state alone)',
+    };
+  }
+  return null;
+}
+
+function checkStateCoherence(mode) {
+  const read = (path) => {
+    if (mode === 'commit') {
+      const staged = stagedContent(path);
+      if (staged) return staged;
+    }
+    return existsSync(path) ? readFileSync(path, 'utf8') : null;
+  };
+
+  const failure = evaluateStateCoherence(
+    read('project-state/index.md'),
+    read('project-state/task-ledger.md')
+  );
+
+  if (failure) {
+    problem('stateCoherence', failure);
+    return;
+  }
+  pass('stateCoherence', 'index.md and task-ledger.md agree on active work');
+}
+
 // Continuation state must stay compact. Without a ceiling, the cleanup decays:
 // handoff.md grew 4.1x and verification.md 6.8x, monotonically, in 20 issues.
 function checkStateBudget() {
@@ -414,7 +467,12 @@ function hasUnnegated(text, re) {
 }
 
 // Returns null when the report passes, or the problem detail when it does not.
-export function evaluateReport(body, event) {
+export function evaluateReport(rawBody, event) {
+  // Template guidance is not evidence. Left in, an unfilled PR template would
+  // pass on its own instructions — the comment reminding the author to declare
+  // non-user-facing work reads as that declaration.
+  const body = rawBody.replace(/<!--[\s\S]*?-->/g, '');
+
   if (!body.trim()) {
     // An empty body used to skip the entire gate, which made submitting no
     // report at all the cheapest way to satisfy it.
@@ -535,6 +593,7 @@ if (!['commit', 'push', 'ci'].includes(mode)) {
 checkSecrets(mode);
 checkStateFields();
 checkStateFreshness(mode);
+checkStateCoherence(mode);
 checkBranchName();
 
 if (mode === 'commit') {

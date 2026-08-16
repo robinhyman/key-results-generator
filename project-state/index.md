@@ -30,7 +30,7 @@ See `project-state/task-ledger.md`, which owns active, blocked, and next work.
 
 ## Next action
 
-Close out the 2026-08-16 external process audit: #31 (report-gate hardening) then #32 (state coherence). Then choose the next product direction: durable persistence, graph editing, or hosted deployment.
+Merge the open audit-response PRs, then choose the next product direction: durable persistence, graph editing, or hosted deployment. The retrospectives owed for #22-#28 are still outstanding — see `handoff.md`.
 
 ## Where things live
 

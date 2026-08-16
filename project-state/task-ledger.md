@@ -8,15 +8,13 @@ This file owns active, blocked, and next work. `index.md` points here rather tha
 
 ## Active
 
-- `#31` Harden the `increment-check` PR-report gate and add regression tests. Branch `chore/31-report-gate-hardening`.
+- `#32` Give active work a single owner and enforce state coherence. Branch `chore/32-state-coherence`.
 
 ## Blocked
 
 - None.
 
 ## Next
-
-- `#32` Give active work a single owner and enforce state coherence. Depends on #31 for the test harness.
 - Choose the next product increment: durable persistence, graph editing, or hosted deployment.
 - Remaining operating-model work from the 2026-08-16 audits, listed in `handoff.md`.
 
@@ -42,5 +40,6 @@ Issues `#1`-`#22` are closed. Summary of what each delivered:
 - `#24` project-state compaction, archiving, and enforced state budgets.
 - `#26` Obligation tiering into hard gates, mechanical rules, and guidance.
 - `#28` Cheaper-worker delegation made the default with recorded exemptions.
+- `#31` Section-scoped PR-report gate, push-range fix, and the checker's first test suite.
 
 Per-issue detail, verification runs, retrospectives, and worker evidence are in `archive/2026-08-pre-compaction.md`.
