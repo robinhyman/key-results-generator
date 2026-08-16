@@ -53,6 +53,7 @@ test("objective clarification flow generates final graph-backed key results", as
   await page.getByRole("button", { name: "Generate final KRs" }).click();
   await expect(page.locator(".kr-item")).toHaveCount(4);
   await expect(page.locator(".kr-item").first()).toContainText(/Reduce|Increase|Improve/);
+  await expect(page.locator(".kr-item").first()).toContainText(/Leading indicator|Lagging indicator/);
   await expect(page.locator("#provider-status")).toContainText(/Local fallback|AI generated/);
 
   await page.locator("#objective").fill("Improve onboarding activation");

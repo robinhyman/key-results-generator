@@ -97,9 +97,22 @@ This project is tagged at `ai-team-os-v0.1` as the pre-product baseline.
 
 ## Next Best Actions
 
-1. Decide whether to add explicit leading/lagging classification; current implementation treats the mix as prompt guidance only.
+1. Finish PR/issue closeout for issues `#19` and `#20` if not already merged when this handoff is read.
 2. Consider durable persistence or graph editing as the next product increment.
 3. Keep the local demo server at `http://127.0.0.1:5176/` running only while the user still needs the local app link.
+
+## Issues #19/#20 Iteration
+
+- Branch: `feature/19-20-ai-observability`.
+- Scope: explicit KR `indicatorType` classification and env-gated AI prompt/response JSONL traces.
+- Current behavior: KRs include `leading` or `lagging`; AI schema requires `indicatorType`; invalid provider indicator types or mixes fall back with `invalid_provider_output`; deterministic generation preserves the prior top-ranked selection when it already has a valid mix.
+- Trace behavior: `AI_TRACE_LOG=1` appends local JSONL traces; default path is `logs/ai-traces.jsonl`; `AI_TRACE_LOG_PATH` overrides it; records include operation/model/schema/request/response/parsed-output/provider diagnostics and endpoint host only; credentials and authorization material are redacted.
+- Documentation: README has trace logging instructions and sensitivity warning; `.gitignore` ignores `logs/`.
+- Verification: `npm run build` passes with 39/39 tests; `npm run test:browser` passes with 1/1 Playwright test.
+- Live demo: `http://127.0.0.1:5176/` is running with `AI_TRACE_LOG=1` and `AI_TRACE_LOG_PATH=/tmp/key-results-generator-ai-traces.jsonl`.
+- Live endpoint smoke: `/api/graph` and `/api/key-results` returned HTTP `200`, AI mode, 4 KRs, indicator types `lagging, lagging, leading, leading`.
+- Trace smoke: `/tmp/key-results-generator-ai-traces.jsonl` had two records (`graph`, `key-results`), both provider `ok: true`, parsed outputs present, host `api.openai.com`, and no `Authorization`/Bearer material.
+- Low-cost worker evidence: `gpt-5.6-luna` Tester worker inspected source/tests and proposed missing tests; `gpt-5.6-luna` Reviewer worker ran diff/test/lint checks and found two P1 issues, both fixed and covered by regression tests.
 
 ## Resume Instructions
 

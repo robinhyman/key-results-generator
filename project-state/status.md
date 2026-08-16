@@ -64,7 +64,17 @@ Closed issue: `#16 Add regression checks for AI instruction and output quality`,
 
 ## Active Goal
 
-No active product increment. Issue `#16` is complete.
+Active iteration: issues `#19 Represent leading and lagging key results explicitly` and `#20 Add env-gated AI prompt and response trace logging`.
+
+Implementation branch: `feature/19-20-ai-observability`.
+
+Current implementation adds explicit `indicatorType` values (`leading` or `lagging`) to generated key results, updates the AI KR schema/prompt/normalization to require and validate the field, enforces a valid 1-2 lagging / 2-3 leading mix by falling back when provider output is invalid, and preserves the previous deterministic top-ranked KR selection when it already satisfies the mix.
+
+AI trace logging is now env-gated with `AI_TRACE_LOG=1`, appends JSONL records to `logs/ai-traces.jsonl` by default, includes request body, response body, parsed output, provider diagnostics, operation, model, schema name, and endpoint host, and redacts credential material. Trace logs remain server-side/local-only and are ignored by Git.
+
+Verification for issues `#19`/`#20`: `npm run build` passes with 39/39 unit/API tests; `npm run test:browser` passes with 1/1 Playwright test; live local endpoint smoke at `http://127.0.0.1:5176/` returned AI mode for graph and key-results, 4 KRs, and indicator types `lagging, lagging, leading, leading`; trace inspection found 2 JSONL records, no `Authorization`/Bearer material, endpoint host `api.openai.com`, and parsed output for both calls.
+
+Local demo server is running at `http://127.0.0.1:5176/` with tracing enabled and trace path `/tmp/key-results-generator-ai-traces.jsonl`.
 
 Local implementation separates graph generation from final KR generation. `src/generator.js` exports the deterministic structured graph and fallback KR path. `src/ai-service.js` now adds a server-side OpenAI Responses API boundary for AI-backed graph generation and AI-synthesized final KRs, validates structured output, applies user influenceability/gap assessments, and falls back to the deterministic generator when the provider is unavailable.
 

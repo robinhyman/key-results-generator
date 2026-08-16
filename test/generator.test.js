@@ -1,10 +1,14 @@
 import test from "node:test";
 import assert from "node:assert/strict";
+import { mkdtemp, readFile, rm, stat } from "node:fs/promises";
+import { dirname, join } from "node:path";
+import { tmpdir } from "node:os";
 
 import {
   applyClarifications,
   generateCausalMetricsGraph,
   generateKeyResultsModel,
+  indicatorTypeForVariable,
   rankVariables,
 } from "../src/generator.js";
 import {
@@ -33,9 +37,11 @@ test("generateKeyResultsModel creates an inspectable graph and key results", () 
   for (const keyResult of model.keyResults) {
     assert.match(keyResult.text, /^Increase|^Reduce|^Improve/);
     assert.ok(keyResult.variableId);
+    assert.match(keyResult.indicatorType, /^(leading|lagging)$/);
     assert.ok(keyResult.rationale.length > 20);
     assert.ok(keyResult.relatedDrivers.length >= 1);
   }
+  assertValidIndicatorMix(model.keyResults);
 });
 
 test("generateCausalMetricsGraph returns a serializable clarification-ready graph", () => {
@@ -87,6 +93,16 @@ test("generated key results prefer clarified influenceability and perceived gaps
   assert.equal(model.graph.assessments["cycle-time"].gap, 5);
 });
 
+test("generated key results preserve top ranked selection when it already has a valid indicator mix", () => {
+  const model = generateKeyResultsModel("Expand enterprise customer retention");
+
+  assert.deepEqual(
+    model.keyResults.map((keyResult) => keyResult.variableId),
+    ["primary-result", "failure-rate", "experience-quality", "throughput"],
+  );
+  assertValidIndicatorMix(model.keyResults);
+});
+
 test("generated key results come from high-impact, influenceable graph variables", () => {
   const model = generateKeyResultsModel("Expand enterprise customer retention");
   const variableById = new Map(
@@ -99,10 +115,19 @@ test("generated key results come from high-impact, influenceable graph variables
 
   assert.ok(selectedVariables.every((variable) => variable.influenceable));
   assert.ok(selectedVariables.every((variable) => variable.impact >= 70));
+  assertValidIndicatorMix(model.keyResults);
   assert.deepEqual(
     selectedVariables.map((variable) => variable.id),
     [...new Set(selectedVariables.map((variable) => variable.id))],
   );
+});
+
+test("indicatorTypeForVariable classifies evidence and experience as lagging", () => {
+  assert.equal(indicatorTypeForVariable({ type: "evidence" }), "lagging");
+  assert.equal(indicatorTypeForVariable({ type: "experience" }), "lagging");
+  assert.equal(indicatorTypeForVariable({ type: "driver" }), "leading");
+  assert.equal(indicatorTypeForVariable({ type: "failure-mode" }), "leading");
+  assert.equal(indicatorTypeForVariable({ type: "upstream-driver" }), "leading");
 });
 
 test("rankVariables sorts by KR suitability and excludes the top outcome", () => {
@@ -260,8 +285,10 @@ test("generateAiKeyResultsModel preserves clarification traceability from mocked
   assert.equal(model.generation.mode, "ai");
   assert.equal(model.keyResults.length, 4);
   assert.equal(model.keyResults[0].variableId, "time-to-value");
+  assert.equal(model.keyResults[0].indicatorType, "leading");
   assert.equal(model.keyResults[0].assessment.influenceability, 5);
   assert.equal(model.graph.assessments["time-to-value"].gap, 5);
+  assertValidIndicatorMix(model.keyResults);
 });
 
 test("generateAiKeyResultsModel falls back when AI key results reference unknown variables", async () => {
@@ -279,6 +306,7 @@ test("generateAiKeyResultsModel falls back when AI key results reference unknown
 
   assert.equal(model.generation.mode, "fallback");
   assert.equal(model.keyResults.length, 4);
+  assertValidIndicatorMix(model.keyResults);
   assert.ok(model.keyResults.every((keyResult) => graph.nodes.some((node) => node.id === keyResult.variableId)));
 });
 
@@ -304,7 +332,13 @@ test("generateAiKeyResultsModel sends approved KR count and indicator mix instru
 
   assert.equal(requestBody.text.format.schema.properties.keyResults.minItems, 3);
   assert.equal(requestBody.text.format.schema.properties.keyResults.maxItems, 5);
+  assert.ok(requestBody.text.format.schema.properties.keyResults.items.required.includes("indicatorType"));
+  assert.deepEqual(
+    requestBody.text.format.schema.properties.keyResults.items.properties.indicatorType.enum,
+    ["leading", "lagging"],
+  );
   assert.match(requestBody.input[1].content, /Generate 3 to 5 final key results/);
+  assert.match(requestBody.input[1].content, /Set indicatorType to either leading or lagging/);
   assert.match(requestBody.input[1].content, /1 or 2 lagging KRs/);
   assert.match(requestBody.input[1].content, /2 or 3 leading KRs/);
   assert.match(requestBody.input[1].content, /existing non-outcome graph variables/);
@@ -355,6 +389,7 @@ test("generateAiKeyResultsModel records provider HTTP fallback diagnostics", asy
   assert.equal(model.generation.mode, "fallback");
   assert.equal(model.generation.reasonCode, "provider_http_error");
   assert.equal(model.keyResults.length, 4);
+  assertValidIndicatorMix(model.keyResults);
 });
 
 test("generateAiKeyResultsModel records invalid JSON fallback diagnostics", async () => {
@@ -367,6 +402,7 @@ test("generateAiKeyResultsModel records invalid JSON fallback diagnostics", asyn
   assert.equal(model.generation.mode, "fallback");
   assert.equal(model.generation.reasonCode, "invalid_provider_output");
   assert.equal(model.keyResults.length, 4);
+  assertValidIndicatorMix(model.keyResults);
 });
 
 test("generateAiKeyResultsModel records missing output fallback diagnostics", async () => {
@@ -379,6 +415,7 @@ test("generateAiKeyResultsModel records missing output fallback diagnostics", as
   assert.equal(model.generation.mode, "fallback");
   assert.equal(model.generation.reasonCode, "invalid_provider_output");
   assert.equal(model.keyResults.length, 4);
+  assertValidIndicatorMix(model.keyResults);
 });
 
 test("normalizeAiKeyResults accepts three to five key results", () => {
@@ -465,6 +502,185 @@ test("normalizeAiKeyResults rejects unknown graph references", () => {
   );
 });
 
+test("normalizeAiKeyResults rejects invalid indicator types and mixes", () => {
+  const graph = generateCausalMetricsGraph("Improve onboarding activation");
+
+  assert.throws(
+    () => normalizeAiKeyResults(graph, {
+      keyResults: [
+        aiKeyResult("kr-1", "cycle-time", "near-term", "Reduce cycle time by 20%"),
+        aiKeyResult("kr-2", "failure-rate", "leading", "Reduce failure rate by 20%"),
+        aiKeyResult("kr-3", "primary-result", "lagging", "Increase success rate by 15%"),
+      ],
+    }),
+    /invalid indicatorType/,
+  );
+
+  assert.throws(
+    () => normalizeAiKeyResults(graph, {
+      keyResults: [
+        aiKeyResult("kr-1", "cycle-time", "leading", "Reduce cycle time by 20%"),
+        aiKeyResult("kr-2", "failure-rate", "leading", "Reduce failure rate by 20%"),
+        aiKeyResult("kr-3", "throughput", "leading", "Increase throughput by 15%"),
+      ],
+    }),
+    /indicator mix is invalid/,
+  );
+});
+
+test("generateAiKeyResultsModel falls back when AI indicator mix is invalid", async () => {
+  const graph = generateCausalMetricsGraph("Improve onboarding activation");
+  const model = await generateAiKeyResultsModel(graph, {}, {
+    apiKey: "test-key",
+    fetch: async () => jsonResponse({
+      keyResults: [
+        aiKeyResult("kr-1", "cycle-time", "leading", "Reduce cycle time by 20%"),
+        aiKeyResult("kr-2", "failure-rate", "leading", "Reduce failure rate by 20%"),
+        aiKeyResult("kr-3", "throughput", "leading", "Increase throughput by 15%"),
+      ],
+    }),
+  });
+
+  assert.equal(model.generation.mode, "fallback");
+  assert.equal(model.keyResults.length, 4);
+  assertValidIndicatorMix(model.keyResults);
+});
+
+test("AI trace logging is disabled by default", async () => {
+  const traceLogPath = await tempTracePath();
+  await generateAiCausalMetricsGraph("Improve onboarding activation", {
+    apiKey: "test-key",
+    traceLogPath,
+    fetch: async () => jsonResponse({
+      summary: "Activation depends on speed, clarity, and early value.",
+      nodes: [
+        aiNode("activation", "outcome", "Improve onboarding activation", 4, false),
+        aiNode("time-to-value", "driver", "Time to first value", 2, true, "reduce"),
+        aiNode("setup-completion", "evidence", "Setup completion rate", 3, true),
+        aiNode("guided-help", "upstream-driver", "Guided help quality", 1, true),
+      ],
+      edges: [
+        aiEdge("guided-help", "time-to-value"),
+        aiEdge("time-to-value", "setup-completion"),
+        aiEdge("setup-completion", "activation"),
+      ],
+    }),
+  });
+
+  await assert.rejects(() => stat(traceLogPath), /ENOENT/);
+  await rm(dirname(traceLogPath), { recursive: true, force: true });
+});
+
+test("AI trace logging writes request and response JSONL without credentials", async () => {
+  const traceLogPath = await tempTracePath();
+
+  await generateAiKeyResultsModel(generateCausalMetricsGraph("Improve onboarding activation"), {}, {
+    apiKey: "super-secret-test-key",
+    traceEnabled: true,
+    traceLogPath,
+    fetch: async (_url, options) => {
+      assert.match(options.headers.Authorization, /super-secret-test-key/);
+      return jsonResponse({
+        keyResults: [
+          aiKeyResult("kr-1", "cycle-time", "leading", "Reduce cycle time by 20%"),
+          aiKeyResult("kr-2", "failure-rate", "leading", "Reduce failure rate by 20%"),
+          aiKeyResult("kr-3", "primary-result", "lagging", "Increase success rate by 15%"),
+        ],
+      });
+    },
+  });
+
+  const lines = await readTraceLines(traceLogPath);
+  assert.equal(lines.length, 1);
+  assert.equal(lines[0].operation, "key-results");
+  assert.equal(lines[0].schemaName, "key_results");
+  assert.equal(lines[0].provider.ok, true);
+  assert.equal(lines[0].requestBody.input[0].role, "system");
+  assert.equal(lines[0].parsedOutput.keyResults[0].indicatorType, "leading");
+  assert.doesNotMatch(JSON.stringify(lines), /super-secret-test-key|Authorization/);
+  await rm(dirname(traceLogPath), { recursive: true, force: true });
+});
+
+test("AI trace logging records provider error diagnostics", async () => {
+  const traceLogPath = await tempTracePath();
+  const graph = generateCausalMetricsGraph("Improve onboarding activation");
+
+  const model = await generateAiKeyResultsModel(graph, {}, {
+    apiKey: "test-key",
+    traceEnabled: true,
+    traceLogPath,
+    fetch: async () => ({
+      ok: false,
+      status: 503,
+      async json() {
+        return { error: { message: "unavailable" } };
+      },
+    }),
+  });
+
+  const lines = await readTraceLines(traceLogPath);
+  assert.equal(model.generation.mode, "fallback");
+  assert.equal(lines.length, 1);
+  assert.equal(lines[0].provider.ok, false);
+  assert.equal(lines[0].provider.status, 503);
+  assert.equal(lines[0].provider.reasonCode, "provider_http_error");
+  assert.deepEqual(lines[0].responseBody, { error: { message: "unavailable" } });
+  await rm(dirname(traceLogPath), { recursive: true, force: true });
+});
+
+test("AI trace logging records parsed output validation failures", async () => {
+  const traceLogPath = await tempTracePath();
+  const graph = generateCausalMetricsGraph("Improve onboarding activation");
+
+  const model = await generateAiKeyResultsModel(graph, {}, {
+    apiKey: "test-key",
+    traceEnabled: true,
+    traceLogPath,
+    fetch: async () => jsonResponse({
+      keyResults: [
+        aiKeyResult("kr-1", "cycle-time", "leading", "Reduce cycle time by 20%"),
+        aiKeyResult("kr-2", "failure-rate", "leading", "Reduce failure rate by 20%"),
+        aiKeyResult("kr-3", "throughput", "leading", "Increase throughput by 15%"),
+      ],
+    }),
+  });
+
+  const lines = await readTraceLines(traceLogPath);
+  assert.equal(model.generation.mode, "fallback");
+  assert.equal(model.generation.reasonCode, "invalid_provider_output");
+  assert.equal(lines.length, 1);
+  assert.equal(lines[0].provider.ok, false);
+  assert.equal(lines[0].provider.reasonCode, "invalid_provider_output");
+  assert.match(lines[0].provider.error, /indicator mix is invalid/);
+  assert.equal(lines[0].parsedOutput.keyResults.length, 3);
+  await rm(dirname(traceLogPath), { recursive: true, force: true });
+});
+
+test("AI trace logging redacts credentials from endpoints and provider diagnostics", async () => {
+  const traceLogPath = await tempTracePath();
+  const secret = "super-secret-test-key";
+  const endpointSecret = "endpoint-token";
+
+  await generateAiCausalMetricsGraph("Improve onboarding activation", {
+    apiKey: secret,
+    endpoint: `https://example.test/responses?token=${endpointSecret}`,
+    traceEnabled: true,
+    traceLogPath,
+    fetch: async () => {
+      throw new Error(`failed with Bearer ${secret} and token ${endpointSecret}`);
+    },
+  });
+
+  const lines = await readTraceLines(traceLogPath);
+  const traceText = JSON.stringify(lines);
+  assert.equal(lines.length, 1);
+  assert.equal(lines[0].endpointHost, "example.test");
+  assert.equal(lines[0].endpoint, undefined);
+  assert.doesNotMatch(traceText, new RegExp(`${secret}|${endpointSecret}`));
+  assert.match(lines[0].provider.error, /Bearer \[redacted\]/);
+  await rm(dirname(traceLogPath), { recursive: true, force: true });
+});
+
 function aiNode(id, type, label, stage, influenceable, direction = "increase") {
   return {
     id,
@@ -489,10 +705,18 @@ function aiEdge(source, target) {
   };
 }
 
-function aiKeyResult(id, variableId, text) {
+function aiKeyResult(id, variableId, indicatorTypeOrText, maybeText) {
+  const text = maybeText ?? indicatorTypeOrText;
+  const indicatorType = maybeText
+    ? indicatorTypeOrText
+    : ["primary-result", "experience-quality", "setup-completion"].includes(variableId)
+      ? "lagging"
+      : "leading";
+
   return {
     id,
     variableId,
+    indicatorType,
     text,
     rationale: `Selected because ${variableId} was highly ranked and matched the user clarification.`,
     relatedDrivers: ["Guided help quality"],
@@ -537,4 +761,24 @@ function textResponse(text) {
       };
     },
   };
+}
+
+function assertValidIndicatorMix(keyResults) {
+  const lagging = keyResults.filter((keyResult) => keyResult.indicatorType === "lagging").length;
+  const leading = keyResults.filter((keyResult) => keyResult.indicatorType === "leading").length;
+  assert.ok(lagging >= 1 && lagging <= 2, `expected 1-2 lagging KRs, got ${lagging}`);
+  assert.ok(leading >= 2 && leading <= 3, `expected 2-3 leading KRs, got ${leading}`);
+}
+
+async function tempTracePath() {
+  const dir = await mkdtemp(join(tmpdir(), "kr-ai-trace-"));
+  return join(dir, "ai-traces.jsonl");
+}
+
+async function readTraceLines(traceLogPath) {
+  return (await readFile(traceLogPath, "utf8"))
+    .trim()
+    .split("\n")
+    .filter(Boolean)
+    .map((line) => JSON.parse(line));
 }

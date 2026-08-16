@@ -110,7 +110,13 @@ Last updated: 2026-08-15
 
 ## Active
 
-- None.
+- Issues `#19` and `#20` implementation is complete locally on branch `feature/19-20-ai-observability`; PR/merge closeout is in progress.
+- Added explicit `indicatorType` classification to deterministic and AI-generated KRs.
+- Added AI schema, prompt, normalization, and fallback validation for a 1-2 lagging / 2-3 leading mix.
+- Added env-gated local JSONL trace logging for AI request/response observability, with credential redaction and `logs/` ignored by Git.
+- Updated README and browser rendering for indicator/trace behavior.
+- Added unit/API and Playwright coverage; `npm run build` and `npm run test:browser` pass.
+- Delegated focused test-gap analysis and review to low-cost `gpt-5.6-luna` workers; both outputs were reviewed and acted on.
 
 ## Blocked
 
@@ -118,5 +124,4 @@ Last updated: 2026-08-15
 
 ## Next
 
-- Decide whether to add explicit leading/lagging classification; current implementation treats the mix as prompt guidance only.
 - Consider durable persistence or graph editing as the next product increment.
