@@ -8,7 +8,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { evaluateReport } from '../ai-team/bin/increment-check.mjs';
+import { evaluateReport, evaluateStateCoherence } from '../ai-team/bin/increment-check.mjs';
 
 const fixtures = JSON.parse(
   readFileSync(new URL('./fixtures/pr-bodies.json', import.meta.url), 'utf8')
@@ -114,5 +114,68 @@ test('a negated delegation claim is not delegation evidence', () => {
     ),
     null,
     'a body that both declines and performs delegation has delegated'
+  );
+});
+
+// The template is prefilled into every PR body by GitHub. If submitting it
+// unchanged passed the gate, the gate would be decorative.
+test('the unfilled PR template does not satisfy the gate', () => {
+  const template = readFileSync(
+    new URL('../.github/pull_request_template.md', import.meta.url),
+    'utf8'
+  );
+  const result = evaluateReport(template, 'pull_request');
+  assert.ok(result, 'an unedited template must not pass');
+  assert.match(result.message, /empty section/i);
+});
+
+test('template guidance in HTML comments is not evidence', () => {
+  const body = [
+    '## Verification',
+    'Tests pass.',
+    '## Demonstration',
+    '<!-- If there is no user-facing change, say so explicitly here. -->',
+    '## Model Use',
+    'Delegated the sweep to a cheaper worker.',
+    '## Documentation',
+    'None.',
+  ].join('\n');
+  const result = evaluateReport(body, 'pull_request');
+  assert.ok(result, 'a comment must not satisfy the demonstration gate');
+  assert.match(result.message, /empty section|no link/i);
+});
+
+// State coherence — issue #32. Freshness proves a file was edited today, not
+// that it agrees with its neighbours.
+test('state coherence: index must not contradict the ledger', () => {
+  const index = (active) => `# Index\n\n## Active work\n\n${active}\n\n## Next action\n\nSomething.\n`;
+  const ledger = (active) => `# Task Ledger\n\n## Active\n\n${active}\n\n## Blocked\n\n- None.\n`;
+
+  // The exact contradiction found on main on 2026-08-16.
+  const drifted = evaluateStateCoherence(
+    index('Issue #24: compact project-state. Branch `chore/24-state-compaction`.'),
+    ledger('- None. The operating-model audit is complete through #28.')
+  );
+  assert.ok(drifted, 'a stale active-work claim in index.md must fail');
+  assert.match(drifted.message, /#24/);
+
+  assert.equal(
+    evaluateStateCoherence(index('See `project-state/task-ledger.md`.'), ledger('- None.')),
+    null,
+    'pointing at the ledger instead of restating it must pass'
+  );
+  assert.equal(
+    evaluateStateCoherence(index('Issue #31 is active.'), ledger('- `#31` Harden the gate.')),
+    null,
+    'agreement must pass'
+  );
+  assert.ok(
+    evaluateStateCoherence(index('Issues #31 and #32 are active.'), ledger('- `#31` Harden the gate.')),
+    'a partially stale list must fail'
+  );
+  assert.equal(
+    evaluateStateCoherence(null, ledger('- None.')),
+    null,
+    'a missing file is the freshness check\'s problem, not this one'
   );
 });

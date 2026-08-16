@@ -211,3 +211,11 @@ Tradeoff: still a claim check, not a truth check. Scoping raises the cost of a f
 Decision: `ai-team/bin/increment-check.mjs` carries automated tests (`test/increment-check.test.js`, 43 PR-body fixtures) and exports its report-gate logic as a pure function so tests can drive it without re-entering `npm run build`. Both demonstrated bypasses are pinned as named regression tests.
 
 Reason: The checker is the only mechanical enforcement of the hard gates, and its delegation regex needed several rounds of manual correction across #28 and #31. An untested gate that silently stops failing is worse than no gate, because it is trusted.
+
+## 2026-08-16: One Owner Per Kind Of State, Checked Mechanically
+
+Decision: `project-state/task-ledger.md` owns active, blocked, and next work. `index.md` points at it rather than restating it. `increment-check` fails when `index.md` names an issue as active that the ledger does not. Rejected the alternative of generating the state views from one machine-readable source.
+
+Reason: On 2026-08-16, `index.md` named issue #24 as active work with a live branch while the ledger said nothing was active and the handoff said #24 was merged — all three stamped that day, all three passing `npm run check`. Freshness proves a file was edited, not that it is true. The cause was duplicate ownership, so the fix is deletion rather than tooling; a generator would be a build step for six small files that a human still has to read.
+
+Tradeoff: the check is one-directional and shallow. It catches contradiction, not omission — a ledger that quietly drops an active issue still passes.
