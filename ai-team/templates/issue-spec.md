@@ -1,5 +1,7 @@
 # Issue Spec
 
+Tier: template. Fill in; do not treat as rules.
+
 ## Summary
 
 What needs to be done.

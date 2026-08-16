@@ -1,5 +1,7 @@
 # Model Policy
 
+Tier: guidance. Hard gates are in `ai-team/README.md`.
+
 Use the cheapest model that can reliably complete the role. Escalate capability when uncertainty, risk, or integration complexity increases.
 
 Cost control is an operating requirement, not a preference. The Lead must actively look for work that can be delegated to cheaper/faster worker models and should reserve high-capability models for leadership, architecture, ambiguity, integration judgement, and final review.

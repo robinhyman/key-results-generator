@@ -1,5 +1,7 @@
 # Increment Workflow
 
+Tier: guidance. Hard gates are in `ai-team/README.md`.
+
 An increment is a small, coherent unit of product progress that can be planned, built, reviewed, demonstrated, and either shipped or cleanly handed off.
 
 The increment is the team's default unit of delivery. Avoid open-ended work. If a goal is too large for one increment, split it into smaller GitHub issues before implementation begins.

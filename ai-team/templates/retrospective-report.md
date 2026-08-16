@@ -1,5 +1,7 @@
 # Retrospective Report
 
+Tier: template. Fill in; do not treat as rules.
+
 ## Increment
 
 Linked issue:

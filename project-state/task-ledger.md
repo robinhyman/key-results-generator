@@ -6,7 +6,7 @@ Active, blocked, and next work. Completed increments live in `archive/`.
 
 ## Active
 
-- Issue `#24 Compact project-state, archive closed-increment history, and enforce state budgets` on `chore/24-state-compaction`. Added `index.md` and `archive/2026-08-pre-compaction.md`, rewrote the live state files to a single canonical purpose each, and tightened the `increment-check` budget gates.
+- Issue `#26 Tier operating-model obligations` on `docs/26-obligation-tiering`. Hard gates are canonical in `ai-team/README.md`; `constitution.md` no longer restates them; all 23 operating docs declare a tier; root `README.md` now points agents at the operating model.
 
 ## Blocked
 

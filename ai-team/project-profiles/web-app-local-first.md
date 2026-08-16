@@ -1,5 +1,7 @@
 # Web App Local-First Project Profile
 
+Tier: guidance. Hard gates are in `ai-team/README.md`.
+
 This profile applies to web applications that must be built, tested, and demonstrated locally before later hosted deployment.
 
 ## Target Environment

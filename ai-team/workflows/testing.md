@@ -1,5 +1,7 @@
 # Testing Workflow
 
+Tier: guidance. Hard gates are in `ai-team/README.md`.
+
 Testing is a first-class part of every increment. The Lead owns verification, even when a Tester agent performs the work.
 
 ## Core Rules

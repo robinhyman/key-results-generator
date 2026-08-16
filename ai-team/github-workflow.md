@@ -1,5 +1,7 @@
 # GitHub Workflow
 
+Tier: guidance. Hard gates are in `ai-team/README.md`.
+
 GitHub provides the work queue, discussion record, and observable progress trail.
 
 All agent-managed issues should live inside the repository's GitHub Project. Standalone issues are allowed only as a temporary fallback when the project is unavailable or the Lead lacks permission to update it.

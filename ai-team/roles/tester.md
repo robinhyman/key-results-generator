@@ -1,5 +1,7 @@
 # Tester
 
+Tier: guidance. Hard gates are in `ai-team/README.md`.
+
 ## Purpose
 
 Verify that an increment satisfies acceptance criteria and expose defects, edge cases, and missing coverage.

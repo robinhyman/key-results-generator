@@ -1,5 +1,7 @@
 # Builder
 
+Tier: guidance. Hard gates are in `ai-team/README.md`.
+
 ## Purpose
 
 Implement bounded changes that satisfy a clear issue spec and task brief.

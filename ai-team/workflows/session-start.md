@@ -1,5 +1,7 @@
 # Session Start Workflow
 
+Tier: guidance. Hard gates are in `ai-team/README.md`.
+
 ## Always
 
 1. Read `project-state/index.md`. It is the only state file required at startup.

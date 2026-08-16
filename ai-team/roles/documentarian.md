@@ -1,5 +1,7 @@
 # Documentarian
 
+Tier: guidance. Hard gates are in `ai-team/README.md`.
+
 ## Purpose
 
 Keep durable documentation concise, current, and useful to future users, developers, and agent sessions.

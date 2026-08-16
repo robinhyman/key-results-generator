@@ -1,5 +1,7 @@
 # Architect
 
+Tier: guidance. Hard gates are in `ai-team/README.md`.
+
 ## Purpose
 
 Protect technical coherence as the product grows. The Architect shapes architecture, boundaries, data flow, dependency choices, and long-term maintainability.

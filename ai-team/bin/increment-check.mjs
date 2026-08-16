@@ -45,6 +45,9 @@ const CONFIG = {
     'project-state/task-ledger.md': 80,
     'project-state/verification.md': 120,
     'project-state/decisions.md': 300,
+    // On the mandatory read path since issue #26, so it carries a budget even
+    // though it is not a state file and has no Last updated stamp.
+    'ai-team/README.md': 80,
   },
 
   stateFiles: [
