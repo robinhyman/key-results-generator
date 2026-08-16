@@ -12,12 +12,13 @@ What the next session should do. For what the product is see `status.md`; for hi
 
 Issues #1-#22 are closed and merged. `main` is green: `npm run build` passes 39/39, `npm run test:browser` passes 1/1, and the `Process / increment-check` CI job passes.
 
-Issue #28 (delegate-by-default) is in progress on `chore/28-delegate-by-default`.
+All four operating-model audit increments are merged: #22 mechanical enforcement, #24 state compaction, #26 obligation tiering, #28 delegate-by-default.
 
 ## Next best actions
 
-1. **Enable branch protection on `main`** requiring the `Process / increment-check` status check. This is a repository setting only the user can apply. Until it exists, CI is advisory and hooks are bypassable with `--no-verify`, so the process gates are not truly binding.
-2. **Finish #24**: confirm `npm run check` is clean with `stateBudget` and `reportSections` at `fail`, then merge.
+1. **Run the retrospectives owed.** Increments #22, #24, #26, and #28 each captured their lessons in the PR body, but none had a formal retrospective per `ai-team/workflows/retrospective.md`. Constitution principle 10 requires one per increment. Either run them retrospectively as one combined review, or amend the principle if PR-body capture is deemed sufficient.
+2. **Enable branch protection on `main`** requiring the `Process / increment-check` status check. This is a repository setting only the user can apply. Until it exists, CI is advisory and hooks are bypassable with `--no-verify`, so the process gates are not truly binding.
+
 3. **Choose the next product direction** with the user: durable persistence, graph editing, or hosted deployment.
 
 ## Remaining operating-model work
