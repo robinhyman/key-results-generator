@@ -22,7 +22,7 @@ npm run check        # process gates (also run by git hooks and CI)
 
 ## Current state
 
-`main` is green. Issues #1-#28 are closed. Process gates are enforced mechanically by `ai-team/bin/increment-check.mjs` via git hooks and the `Process / increment-check` CI job. Branch protection is active, so CI is binding.
+`main` is green. Issues #1-#35 are closed. Process gates are enforced mechanically by `ai-team/bin/increment-check.mjs` via git hooks and the `Process / increment-check` CI job. Branch protection is active, so CI is binding.
 
 ## Active work
 
@@ -30,7 +30,7 @@ See `project-state/task-ledger.md`, which owns active, blocked, and next work.
 
 ## Next action
 
-Merge the open audit-response PRs, then choose the next product direction: durable persistence, graph editing, or hosted deployment. The retrospectives owed for #22-#28 are still outstanding — see `handoff.md`.
+The 2026-08-16 process audits are closed out. Choose the next product direction with the user: durable persistence, graph editing, or hosted deployment.
 
 ## Where things live
 
