@@ -42,6 +42,24 @@ OPENAI_MODEL=gpt-5-mini npm start
 
 The default model is `gpt-5-mini`, called through the OpenAI Responses API with structured JSON output. The server validates API request bodies and AI output before rendering it. If credentials are missing, the provider is unavailable, quota is exhausted, or the response is malformed, the app falls back to the local deterministic generator and returns safe fallback metadata such as `generation.reasonCode`. The server does not return API keys or raw provider payloads to the browser.
 
+### AI Trace Logging
+
+For local prompt tuning, enable JSONL traces of AI provider calls:
+
+```bash
+AI_TRACE_LOG=1 npm start
+```
+
+By default, traces are appended to `logs/ai-traces.jsonl`. Override the path with:
+
+```bash
+AI_TRACE_LOG=1 AI_TRACE_LOG_PATH=/tmp/key-results-ai-traces.jsonl npm start
+```
+
+Each trace record includes the operation name, model, endpoint host, schema name, exact Responses API request body, provider response body, parsed structured output when available, and provider error diagnostics. Trace records never include the API key or `Authorization` header.
+
+Trace files are local debugging artifacts and are ignored by Git. Treat them as sensitive: prompts and responses can include user-entered objectives, graph data, and clarification ratings.
+
 ## Checks
 
 ```bash

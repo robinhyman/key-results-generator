@@ -165,3 +165,15 @@ Decision: Use a concise shared system instruction plus task-specific graph-gener
 Reason: The prior shared system instruction was too generic to consistently express the product method. Keeping stable shared guidance separate from task-specific instructions improves token discipline while making graph-first reasoning, measurable influenceable variables, user clarification, traceability, and leading/lagging balance explicit.
 
 Current limitation: leading/lagging mix is prompt guidance only. Enforcing it requires a later schema/model decision such as adding `indicatorType` or a reliable classification rule.
+
+## 2026-08-16: Represent Leading/Lagging Key Results Explicitly
+
+Decision: Add `indicatorType` to each key result with allowed values `leading` and `lagging`, require it in the AI response schema, render it in the browser, and validate the final AI KR set against the target 1-2 lagging / 2-3 leading mix.
+
+Reason: Prompt-only guidance could not be reliably validated or displayed. Making the classification part of the structured model lets the app enforce quality contracts, fall back on invalid provider output, and support future UI/evaluation work.
+
+## 2026-08-16: Add Local AI Request/Response Trace Logging
+
+Decision: Add opt-in server-side JSONL trace logging for AI provider calls, enabled with `AI_TRACE_LOG=1`, with request body, response body, parsed output, provider diagnostics, operation metadata, and endpoint host.
+
+Reason: Prompt tuning requires observing the exact runtime payloads and responses, not just source prompt builders. Traces are local-only, ignored by Git, and sanitized to avoid credential/header leakage while still making prompts and responses inspectable.

@@ -193,14 +193,22 @@ function renderKeyResults(keyResults, keyResultsList) {
       const rationale = document.createElement("p");
       rationale.textContent = keyResult.rationale;
 
+      const indicator = document.createElement("p");
+      indicator.className = "drivers";
+      indicator.textContent = `${formatIndicatorType(keyResult.indicatorType)} indicator`;
+
       const driverText = document.createElement("p");
       driverText.className = "drivers";
       driverText.textContent = `Related drivers: ${keyResult.relatedDrivers.join(", ") || "top outcome model"}`;
 
-      item.append(title, rationale, driverText);
+      item.append(title, rationale, indicator, driverText);
       return item;
     }),
   );
+}
+
+function formatIndicatorType(indicatorType) {
+  return indicatorType === "lagging" ? "Lagging" : "Leading";
 }
 
 function renderRanking(model, rankedList) {

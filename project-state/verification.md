@@ -130,3 +130,14 @@ Last updated: 2026-08-15
 - Hosted deployment. It remains out of scope for issue `#4`.
 - Issue `#15` leading/lagging KR mix is instruction-only. It is not enforceable by schema/tests until a later `indicatorType` or classification rule is approved.
 - Issue `#16` still cannot verify the returned leading/lagging mix because the schema/model has no explicit indicator classification. Prompt text is covered; output enforcement remains a future schema/model decision.
+
+## Issues #19/#20 Verification
+
+- Test-first status: added focused behavioral tests for explicit `indicatorType`, valid/invalid leading-lagging mixes, deterministic selection preservation, trace opt-in behavior, credential redaction, provider errors, and parsed-output validation failures before/with implementation.
+- Automated checks: `npm run build` passed with 39/39 unit/API tests.
+- Browser checks: `npm run test:browser` passed with 1/1 Playwright test after adding an assertion that rendered KRs expose a Leading/Lagging indicator label.
+- Live local demo: server started at `http://127.0.0.1:5176/` with `AI_TRACE_LOG=1` and `AI_TRACE_LOG_PATH=/tmp/key-results-generator-ai-traces.jsonl`.
+- Live endpoint smoke: `/api/graph` returned HTTP `200`, AI mode; `/api/key-results` returned HTTP `200`, AI mode, 4 KRs, and indicator types `lagging, lagging, leading, leading`.
+- Trace smoke: `/tmp/key-results-generator-ai-traces.jsonl` contained two JSONL records with operations `graph` and `key-results`, schema names `causal_metrics_graph` and `key_results`, provider `ok: true`, parsed output present for both, endpoint host `api.openai.com`, and no `Authorization`/Bearer material.
+- Low-cost worker evidence: `gpt-5.6-luna` Tester worker inspected relevant source/tests and proposed focused coverage for #19/#20; `gpt-5.6-luna` Reviewer worker ran `git diff --stat`, `git diff --name-only`, `git diff`, `git diff --check`, `npm test`, and `npm run lint`, identifying deterministic-selection drift and trace credential leak risks. Both findings were fixed and covered by additional tests.
+- Known skipped checks: none for local completion. Hosted deployment remains out of scope.

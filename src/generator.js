@@ -141,7 +141,7 @@ const RELATIONSHIP_BLUEPRINTS = [
 
 export function generateKeyResultsModel(rawObjective, clarifications = {}) {
   const graph = applyClarifications(generateCausalMetricsGraph(rawObjective), clarifications);
-  const keyResults = graph.rankings.slice(0, 4).map((variable, index) =>
+  const keyResults = selectKeyResultVariables(graph.rankings).map((variable, index) =>
     toKeyResult(variable, graph.edges, graph.nodes, index, graph.assessments[variable.id]),
   );
 
@@ -285,12 +285,49 @@ function toKeyResult(variable, relationships, variables, index, assessment) {
   return {
     id: `kr-${index + 1}`,
     variableId: variable.id,
+    indicatorType: indicatorTypeForVariable(variable),
     text: phrase,
     rationale: `${variable.label} is a strong KR candidate because it is ${variable.influenceable ? "influenceable" : "observable"}, has high estimated impact (${variable.impact}/100), and connects the objective to ${relatedDrivers.length > 0 ? relatedDrivers.join(", ") : "the causal model"}${clarificationContext}.`,
     relatedDrivers,
     score: variable.score,
     assessment: assessment ?? null,
   };
+}
+
+export function indicatorTypeForVariable(variable) {
+  return ["evidence", "experience"].includes(variable?.type) ? "lagging" : "leading";
+}
+
+export function selectKeyResultVariables(rankedVariables, count = 4) {
+  const available = rankedVariables.filter((variable) => variable.type !== "outcome");
+  const topRanked = available.slice(0, count);
+  if (hasValidIndicatorMix(topRanked)) {
+    return topRanked;
+  }
+
+  const lagging = available.filter((variable) => indicatorTypeForVariable(variable) === "lagging");
+  const leading = available.filter((variable) => indicatorTypeForVariable(variable) === "leading");
+  const targetLagging = Math.min(2, lagging.length, Math.max(1, count - Math.min(3, leading.length)));
+  const targetLeading = Math.min(3, leading.length, count - targetLagging);
+  const selectedIds = new Set([
+    ...lagging.slice(0, targetLagging).map((variable) => variable.id),
+    ...leading.slice(0, targetLeading).map((variable) => variable.id),
+  ]);
+
+  for (const variable of available) {
+    if (selectedIds.size >= count) {
+      break;
+    }
+    selectedIds.add(variable.id);
+  }
+
+  return available.filter((variable) => selectedIds.has(variable.id)).slice(0, count);
+}
+
+function hasValidIndicatorMix(variables) {
+  const laggingCount = variables.filter((variable) => indicatorTypeForVariable(variable) === "lagging").length;
+  const leadingCount = variables.filter((variable) => indicatorTypeForVariable(variable) === "leading").length;
+  return laggingCount >= 1 && laggingCount <= 2 && leadingCount >= 2 && leadingCount <= 3;
 }
 
 function targetPhrase(variable, index) {
