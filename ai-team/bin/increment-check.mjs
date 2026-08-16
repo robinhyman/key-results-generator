@@ -14,6 +14,7 @@
 
 import { execFileSync } from 'node:child_process';
 import { existsSync, readFileSync } from 'node:fs';
+import { pathToFileURL } from 'node:url';
 
 // ---------------------------------------------------------------------------
 // Config. Severity is per check so gates can be introduced as `warn` and
@@ -128,15 +129,51 @@ function stagedContent(path) {
   return git(['show', `:${path}`], { allowFail: true });
 }
 
+// Which commits this run is responsible for.
+//
+// On a branch, that is everything since it left main, so merge-base works. On a
+// push to main it does not: HEAD *is* main, merge-base returns HEAD, and the
+// diff is empty — which silently turned the secrets scan into a no-op that
+// reported "0 changed file(s) clean". The pushed range has to come from the
+// event payload instead.
+//
+//   { kind: 'range' }   a real commit range to diff
+//   { kind: 'none' }    HEAD is the default branch and nothing was pushed
+//   { kind: 'unknown' } no origin/main to compare against; callers fail safe
+function diffScope() {
+  const before = process.env.PUSH_BEFORE ?? '';
+  if (before && !/^0+$/.test(before)) {
+    // Absent after a force-push or on a branch's first commit; fall through.
+    const exists = git(['rev-parse', '--verify', '--quiet', `${before}^{commit}`], { allowFail: true });
+    if (exists) return { kind: 'range', value: `${before}..HEAD` };
+  }
+  const base = git(['merge-base', 'HEAD', 'origin/main'], { allowFail: true });
+  if (!base) return { kind: 'unknown' };
+  if (base === git(['rev-parse', 'HEAD'], { allowFail: true })) return { kind: 'none' };
+  return { kind: 'range', value: `${base}...HEAD` };
+}
+
+function diffNames(range, extraArgs = []) {
+  const out = git(['diff', '--name-only', ...extraArgs, range], { allowFail: true });
+  return out ? out.split('\n').filter(Boolean) : [];
+}
+
+function trackedFiles() {
+  const out = git(['ls-files'], { allowFail: true });
+  return out ? out.split('\n').filter(Boolean) : [];
+}
+
 function changedStateFiles(mode) {
   if (mode === 'commit') {
     return stagedFiles().filter((f) => CONFIG.stateFiles.includes(f));
   }
   // push / ci: any state file that differs from the upstream default branch.
-  const base = git(['merge-base', 'HEAD', 'origin/main'], { allowFail: true });
-  if (!base) return CONFIG.stateFiles.filter((f) => existsSync(f));
-  const out = git(['diff', '--name-only', `${base}...HEAD`], { allowFail: true });
-  const changed = out ? out.split('\n').filter(Boolean) : [];
+  const scope = diffScope();
+  // No remote to compare against: assume every state file is in play rather
+  // than let an unverifiable stamp through.
+  if (scope.kind === 'unknown') return CONFIG.stateFiles.filter((f) => existsSync(f));
+  if (scope.kind === 'none') return [];
+  const changed = diffNames(scope.value);
   return CONFIG.stateFiles.filter((f) => changed.includes(f));
 }
 
@@ -145,11 +182,12 @@ function changedStateFiles(mode) {
 // ---------------------------------------------------------------------------
 
 // Files changed against the default branch, for modes where nothing is staged.
+// When there is no range to diff, scan the whole tracked tree: a secrets check
+// that examines nothing must not be able to report a pass.
 function changedFiles() {
-  const base = git(['merge-base', 'HEAD', 'origin/main'], { allowFail: true });
-  if (!base) return [];
-  const out = git(['diff', '--name-only', '--diff-filter=ACM', `${base}...HEAD`], { allowFail: true });
-  return out ? out.split('\n').filter(Boolean) : [];
+  const scope = diffScope();
+  if (scope.kind !== 'range') return trackedFiles();
+  return diffNames(scope.value, ['--diff-filter=ACM']);
 }
 
 // Credential and artefact material must never enter history. The repo handles
@@ -314,88 +352,179 @@ function checkCode(script, checkName) {
   }
 }
 
-// The increment report lives in the PR body, so only CI can see it.
-function checkReportSections() {
-  const body = process.env.PR_BODY ?? '';
-  if (!body) {
-    pass('reportSections', 'no PR body available; skipped');
-    return;
+// ---------------------------------------------------------------------------
+// Increment report gate
+//
+// The report lives in the PR body, so only CI can see it. The gate reads
+// evidence *within* the section that is supposed to carry it. Matching the
+// whole body instead — as this did until issue #31 — meant a stray URL anywhere
+// satisfied the demo gate and a stray sentence anywhere satisfied the
+// delegation gate, so four empty headings plus one line passed.
+// ---------------------------------------------------------------------------
+
+// Body split into { heading text (lowercased) -> lines beneath it }.
+function parseSections(body) {
+  const sections = new Map();
+  let current = null;
+  for (const line of body.split('\n')) {
+    const heading = line.match(/^#{1,4}\s+(.+?)\s*$/);
+    if (heading) {
+      current = heading[1].toLowerCase();
+      if (!sections.has(current)) sections.set(current, []);
+      continue;
+    }
+    if (current !== null) sections.get(current).push(line);
+  }
+  return sections;
+}
+
+// Headings may carry trailing words ("## Model Use And Cost"), so match on
+// prefix rather than equality.
+function sectionBody(sections, name) {
+  const key = [...sections.keys()].find((k) => k.startsWith(name.toLowerCase()));
+  return key === undefined ? null : sections.get(key).join('\n');
+}
+
+// A heading above the template's own unfilled labels is not evidence of
+// anything. Drop blank lines and bare "Label:" scaffold before deciding
+// whether a section actually says something.
+const SCAFFOLD_LINE = /^[-*]?\s*[A-Za-z][A-Za-z0-9 /(),'`-]{0,60}:$/;
+
+function substantive(text) {
+  return text
+    .split('\n')
+    .map((line) => line.trim())
+    .filter((line) => line && line !== '-' && line !== '*' && !SCAFFOLD_LINE.test(line))
+    .join('\n')
+    .trim();
+}
+
+// Permissive on phrasing, strict on negation. The gate exists to catch silence,
+// not to police wording — a delegation worker found the narrow first version
+// rejected "handed off verification to a cheaper model". Broadening it then
+// admitted "no delegation was needed" as evidence *of* delegation, so each
+// match is checked for a preceding negator.
+const NEGATOR = /\b(no|not|without|never|didn'?t|cannot|can'?t|skipp?ed?|instead of|rather than|lacked?|absent)\b[^.\n]{0,30}$/i;
+
+function hasUnnegated(text, re) {
+  for (const match of text.matchAll(re)) {
+    if (!NEGATOR.test(text.slice(Math.max(0, match.index - 40), match.index))) return true;
+  }
+  return false;
+}
+
+// Returns null when the report passes, or the problem detail when it does not.
+export function evaluateReport(body, event) {
+  if (!body.trim()) {
+    // An empty body used to skip the entire gate, which made submitting no
+    // report at all the cheapest way to satisfy it.
+    if (event === 'pull_request') {
+      return {
+        message: 'Pull request body is empty, so the increment report is missing entirely.',
+        offender: '(pull request body)',
+        fix: 'Fill in ai-team/templates/increment-report.md as the PR body.',
+        rule: 'ai-team/workflows/branch-and-pr.md (PR Requirements)',
+      };
+    }
+    return null;
   }
 
-  const missing = CONFIG.requiredReportSections.filter(
-    (section) => !new RegExp(`^#{1,4}\\s*${section}\\b`, 'im').test(body)
-  );
+  const sections = parseSections(body);
+  const missing = [];
+  const blank = [];
 
-  if (missing.length > 0) {
-    problem('reportSections', {
-      message: `PR body is missing required increment-report section(s): ${missing.join(', ')}.`,
+  for (const name of CONFIG.requiredReportSections) {
+    const content = sectionBody(sections, name);
+    if (content === null) missing.push(name);
+    else if (!substantive(content)) blank.push(name);
+  }
+
+  if (missing.length > 0 || blank.length > 0) {
+    const parts = [];
+    if (missing.length > 0) parts.push(`missing section(s): ${missing.join(', ')}`);
+    if (blank.length > 0) parts.push(`empty section(s): ${blank.join(', ')}`);
+    return {
+      message: `Increment report incomplete — ${parts.join('; ')}.`,
       offender: '(pull request body)',
-      fix: 'Populate the missing sections using ai-team/templates/increment-report.md',
+      fix: 'Populate every required section using ai-team/templates/increment-report.md. A heading with no content below it does not count.',
       rule: 'ai-team/workflows/branch-and-pr.md (PR Requirements)',
-    });
-    return;
+    };
+  }
+
+  // Delegation is a hard gate. The exemption path must be an explicit written
+  // claim, not silence — three increments in a row were exempted quietly
+  // before this check existed.
+  const modelUse = sectionBody(sections, 'Model Use');
+  const hasDelegationEvidence =
+    hasUnnegated(modelUse, /\b(delegat\w*|handed off|handed to|assigned to)/gi) ||
+    hasUnnegated(modelUse, /\b(low-cost|cheaper|cheap|mid-capability)\s+(worker|model|tier)/gi) ||
+    hasUnnegated(modelUse, /\bworker\b[^\n]{0,40}\b(tier|model|ran|inspected|verified|reported|found)/gi);
+  const declaredExemption = /delegation (gate )?[^\n]*\b(not satisfied|exempt|exemption|exception)\b/i.test(modelUse);
+
+  if (!hasDelegationEvidence && !declaredExemption) {
+    return {
+      message: 'Model Use section shows neither delegation evidence nor an explicit exemption.',
+      offender: '(pull request body, Model Use section)',
+      fix: 'Record the worker model tier and what it returned, or name which exemption in ai-team/model-policy.md applied.',
+      rule: 'ai-team/README.md hard gate 11 (delegate or record the exemption)',
+    };
   }
 
   // A "Demonstration" heading with no link is the failure mode that let issue
   // #4 be marked Done without a working demo. The rule applies to user-facing
   // work only, so an explicit written opt-out is accepted — but silence is
   // not, which keeps the exemption auditable rather than assumed.
-  const hasLink = /https?:\/\/\S+/.test(body);
+  const demonstration = sectionBody(sections, 'Demonstration');
+  const hasLink = /https?:\/\/\S+/.test(demonstration);
   const declaredNotUserFacing =
-    /\bno (app\/demo|demo|app) link applies\b/i.test(body) ||
-    /\bnot user-facing\b/i.test(body) ||
-    /\bno user-facing (product )?behavior(al)? change/i.test(body);
-
-  // Delegation is a hard gate. The exemption path must be an explicit written
-  // claim, not silence — three increments in a row were exempted quietly
-  // before this check existed.
-  // Permissive on phrasing, strict on negation. The gate exists to catch
-  // silence, not to police wording — a delegation worker found the narrow
-  // first version rejected "handed off verification to a cheaper model".
-  // Broadening it then admitted "no delegation was needed" as *evidence of*
-  // delegation, so each match is checked for a preceding negator.
-  const NEGATOR = /\b(no|not|without|never|didn'?t|cannot|can'?t|skipp?ed?|instead of|rather than|lacked?|absent)\b[^.\n]{0,30}$/i;
-  const hasUnnegated = (re) => {
-    for (const m of body.matchAll(re)) {
-      if (!NEGATOR.test(body.slice(Math.max(0, m.index - 40), m.index))) return true;
-    }
-    return false;
-  };
-
-  const hasDelegationEvidence =
-    hasUnnegated(/\b(delegat\w*|handed off|handed to|assigned to)/gi) ||
-    hasUnnegated(/\b(low-cost|cheaper|cheap|mid-capability)\s+(worker|model|tier)/gi) ||
-    hasUnnegated(/\bworker\b[^\n]{0,40}\b(tier|model|ran|inspected|verified|reported|found)/gi);
-  const declaredDelegationExemption =
-    /delegation (gate )?[^\n]*\b(not satisfied|exempt|exemption|exception)\b/i.test(body);
-
-  if (!hasDelegationEvidence && !declaredDelegationExemption) {
-    problem('reportSections', {
-      message: 'Model Use section shows neither delegation evidence nor an explicit exemption.',
-      offender: '(pull request body)',
-      fix: 'Record the worker model tier and what it returned, or name which exemption in ai-team/model-policy.md applied.',
-      rule: 'ai-team/README.md hard gate 11 (delegate or record the exemption)',
-    });
-    return;
-  }
+    /\bno (app\/demo|demo|app) link applies\b/i.test(demonstration) ||
+    /\bnot user-facing\b/i.test(demonstration) ||
+    // Unambiguous anywhere in the section: "change" makes it a claim about the
+    // increment, not a passing remark.
+    /\bno user-facing (product )?behaviou?r(al)? change/i.test(demonstration) ||
+    // Bare "no user-facing behaviour" is also a declaration, but only anchored
+    // to the start of a line (optionally after a template label) — otherwise an
+    // embedded clause such as "confirmed no user-facing regressions" would
+    // quietly become an exemption.
+    /^[\s>*-]*(?:[a-z /()]{0,40}:\s*)?no user-facing\b/im.test(demonstration);
 
   if (!hasLink && !declaredNotUserFacing) {
-    problem('reportSections', {
-      message: 'PR body has no link and no explicit non-user-facing declaration.',
-      offender: '(pull request body)',
+    return {
+      message: 'Demonstration section has no link and no explicit non-user-facing declaration.',
+      offender: '(pull request body, Demonstration section)',
       fix: 'Add the checked demo link, or state explicitly that no app/demo link applies and why.',
       rule: 'ai-team/workflows/increment.md (Demo Or Deployment Is Available)',
-    });
-    return;
+    };
   }
 
-  pass('reportSections', 'all required report sections present');
+  return null;
+}
+
+function checkReportSections() {
+  const body = process.env.PR_BODY ?? '';
+  const event = process.env.GITHUB_EVENT_NAME ?? '';
+  const failure = evaluateReport(body, event);
+
+  if (failure) {
+    problem('reportSections', failure);
+    return;
+  }
+  if (!body.trim()) {
+    pass('reportSections', `no PR body and event is "${event || 'none'}"; skipped`);
+    return;
+  }
+  pass('reportSections', 'all required report sections carry evidence');
 }
 
 // ---------------------------------------------------------------------------
 // Runner
+//
+// Guarded so that test/increment-check.test.js can import the gate logic
+// without running the checks — importing unguarded would re-enter `npm run
+// build`, which runs the tests, which import this file.
 // ---------------------------------------------------------------------------
 
+function main() {
 const mode = (process.argv.find((a) => a.startsWith('--mode=')) ?? '--mode=push').split('=')[1];
 
 if (!['commit', 'push', 'ci'].includes(mode)) {
@@ -456,3 +585,8 @@ if (failures.length > 0) {
 }
 
 process.exit(0);
+}
+
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+  main();
+}

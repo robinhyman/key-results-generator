@@ -1,0 +1,303 @@
+[
+  {
+    "name": "empty-body",
+    "expect": "fail",
+    "reason": "rule 1: empty body with pull_request event",
+    "event": "pull_request",
+    "body": ""
+  },
+  {
+    "name": "whitespace-only-body",
+    "expect": "fail",
+    "reason": "rule 1: whitespace-only body with pull_request event",
+    "event": "pull_request",
+    "body": "   \n\n  \t\n  "
+  },
+  {
+    "name": "missing-verification",
+    "expect": "fail",
+    "reason": "rule 2: missing required Verification section",
+    "event": "pull_request",
+    "body": "## Demonstration\nThis change is user-facing and visible at https://example.com/demo\n\n## Model Use\nDelegated analysis to a cheaper worker for code review.\n\n## Documentation\nUpdated README with new feature overview."
+  },
+  {
+    "name": "missing-demonstration",
+    "expect": "fail",
+    "reason": "rule 2: missing required Demonstration section",
+    "event": "pull_request",
+    "body": "## Verification\nAdded unit tests covering the new API endpoint and edge cases.\n\n## Model Use\nUsed Claude Haiku to generate test fixtures.\n\n## Documentation\nAdded inline code comments explaining the validation logic."
+  },
+  {
+    "name": "missing-model-use",
+    "expect": "fail",
+    "reason": "rule 2: missing required Model Use section",
+    "event": "pull_request",
+    "body": "## Verification\nManual testing confirms the fix resolves the reported issue.\n\n## Demonstration\nChanges are not user-facing; internal refactoring only.\n\n## Documentation\nAdded architecture decision record in docs/adr/"
+  },
+  {
+    "name": "missing-documentation",
+    "expect": "fail",
+    "reason": "rule 2: missing required Documentation section",
+    "event": "pull_request",
+    "body": "## Verification\nRan full test suite; all 247 tests pass.\n\n## Demonstration\nhttps://staging.example.com/new-feature shows the change in action.\n\n## Model Use\nDelegated schema migration review to a cheaper worker."
+  },
+  {
+    "name": "verification-empty",
+    "expect": "fail",
+    "reason": "rule 3: Verification section has no substantive content",
+    "event": "pull_request",
+    "body": "## Verification\nTest plan:\n\n## Demonstration\nNot user-facing.\n\n## Model Use\nDelegated to cheaper worker.\n\n## Documentation\nUpdated CHANGELOG."
+  },
+  {
+    "name": "demonstration-empty",
+    "expect": "fail",
+    "reason": "rule 3 and 4: Demonstration section has no substantive content and no URL or declaration",
+    "event": "pull_request",
+    "body": "## Verification\nAdded tests for the new endpoint.\n\n## Demonstration\nDemo link:\n\n## Model Use\nDelegated code review to cheaper worker.\n\n## Documentation\nAdded API docs."
+  },
+  {
+    "name": "model-use-empty",
+    "expect": "fail",
+    "reason": "rule 3 and 5: Model Use section has no substantive content and no delegation or exemption",
+    "event": "pull_request",
+    "body": "## Verification\nUnit tests all passing.\n\n## Demonstration\nNot user-facing.\n\n## Model Use\nApproach:\n\n## Documentation\nUpdated docs."
+  },
+  {
+    "name": "documentation-empty",
+    "expect": "fail",
+    "reason": "rule 3: Documentation section has no substantive content",
+    "event": "pull_request",
+    "body": "## Verification\nIntegration tests pass.\n\n## Demonstration\nNo user-facing changes.\n\n## Model Use\nDelegated to cheaper model for analysis.\n\n## Documentation\nChanges made:"
+  },
+  {
+    "name": "demonstration-no-url-no-declaration",
+    "expect": "fail",
+    "reason": "rule 4: Demonstration has neither URL nor non-user-facing declaration",
+    "event": "pull_request",
+    "body": "## Verification\nAll tests passing.\n\n## Demonstration\nThis is a backend refactoring that improves code quality.\n\n## Model Use\nDelegated to cheaper worker.\n\n## Documentation\nAdded comments."
+  },
+  {
+    "name": "model-use-no-delegation-no-exemption",
+    "expect": "fail",
+    "reason": "rule 5: Model Use has neither delegation evidence nor exemption",
+    "event": "pull_request",
+    "body": "## Verification\nManual verification complete.\n\n## Demonstration\nNot user-facing.\n\n## Model Use\nI wrote the code myself using my own reasoning.\n\n## Documentation\nAdded to docs."
+  },
+  {
+    "name": "url-in-wrong-section",
+    "expect": "fail",
+    "reason": "rule 4: URL present but in Verification section, not Demonstration",
+    "event": "pull_request",
+    "body": "## Verification\nTested at https://example.com/demo and confirmed working.\n\n## Demonstration\nInternal changes only.\n\n## Model Use\nDelegated to cheaper worker.\n\n## Documentation\nUpdated README."
+  },
+  {
+    "name": "delegation-in-wrong-section",
+    "expect": "fail",
+    "reason": "rule 5: Delegation evidence in Verification section, not Model Use",
+    "event": "pull_request",
+    "body": "## Verification\nDelegated testing to a cheaper worker for review.\n\n## Demonstration\nNot user-facing.\n\n## Model Use\nI wrote this myself.\n\n## Documentation\nAdded docs."
+  },
+  {
+    "name": "negation-no-delegation-needed",
+    "expect": "fail",
+    "reason": "rule 5: Negation 'no delegation was needed' is not evidence",
+    "event": "pull_request",
+    "body": "## Verification\nAll tests pass.\n\n## Demonstration\nNo user-facing behavior change.\n\n## Model Use\nNo delegation was needed; I completed this myself.\n\n## Documentation\nUpdated docs."
+  },
+  {
+    "name": "negation-without-delegation",
+    "expect": "fail",
+    "reason": "rule 5: Negation 'without delegation' is not evidence",
+    "event": "pull_request",
+    "body": "## Verification\nManual tests pass.\n\n## Demonstration\nNot user-facing.\n\n## Model Use\nCompleted this work without delegation.\n\n## Documentation\nAdded comments."
+  },
+  {
+    "name": "negation-did-not-delegate",
+    "expect": "fail",
+    "reason": "rule 5: Negation 'we did not delegate' is not evidence",
+    "event": "pull_request",
+    "body": "## Verification\nIntegration tests complete.\n\n## Demonstration\nNot user-facing.\n\n## Model Use\nWe did not delegate this work to another worker.\n\n## Documentation\nUpdated architecture docs."
+  },
+  {
+    "name": "mixed-delegation-and-negation",
+    "expect": "pass",
+    "reason": "rule 5 satisfied: delegates something AND declines to delegate something else is evidence of real delegation",
+    "event": "pull_request",
+    "body": "## Verification\nDelegated test writing to a cheaper worker, but I did the code review myself.\n\n## Demonstration\nNot user-facing.\n\n## Model Use\nDelegated test suite expansion to a mid-capability worker, but skipped delegation on the critical path review.\n\n## Documentation\nUpdated README."
+  },
+  {
+    "name": "explicit-declaration-no-demo-link",
+    "expect": "pass",
+    "reason": "rule 4 satisfied: explicit 'no demo link applies' declaration",
+    "event": "pull_request",
+    "body": "## Verification\nUnit tests pass; 42 tests added.\n\n## Demonstration\nNo demo link applies. This is an internal refactoring of the validation logic.\n\n## Model Use\nDelegated code review to a cheaper worker.\n\n## Documentation\nAdded inline documentation."
+  },
+  {
+    "name": "explicit-declaration-no-app-link",
+    "expect": "pass",
+    "reason": "rule 4 satisfied: explicit 'no app link applies' declaration",
+    "event": "pull_request",
+    "body": "## Verification\nAll 89 tests passing.\n\n## Demonstration\nNo app link applies; this is a backend library change.\n\n## Model Use\nDelegated implementation to a cheaper worker.\n\n## Documentation\nUpdated API reference."
+  },
+  {
+    "name": "explicit-declaration-not-user-facing",
+    "expect": "pass",
+    "reason": "rule 4 satisfied: explicit 'not user-facing' declaration",
+    "event": "pull_request",
+    "body": "## Verification\nIntegration tests pass; coverage 94%.\n\n## Demonstration\nThis is not user-facing. Internal dependency upgrade.\n\n## Model Use\nDelegated review to cheaper worker for efficiency.\n\n## Documentation\nUpdated changelog."
+  },
+  {
+    "name": "explicit-declaration-no-ufbc",
+    "expect": "pass",
+    "reason": "rule 4 satisfied: explicit 'no user-facing behavior change' declaration",
+    "event": "pull_request",
+    "body": "## Verification\nFull test suite: 156 tests passing.\n\n## Demonstration\nThere is no user-facing behavior change. This is optimization work.\n\n## Model Use\nDelegated analysis to a cheaper model.\n\n## Documentation\nAdded performance notes."
+  },
+  {
+    "name": "delegation-exemption",
+    "expect": "pass",
+    "reason": "rule 5 satisfied: explicit exemption 'Delegation gate: exempt'",
+    "event": "pull_request",
+    "body": "## Verification\nManual testing complete.\n\n## Demonstration\nNot user-facing.\n\n## Model Use\nDelegation gate: exempt due to security-sensitive review requirements.\n\n## Documentation\nAdded security notes."
+  },
+  {
+    "name": "heading-level-h1",
+    "expect": "pass",
+    "reason": "rule 2, 3, 4, 5 satisfied: valid sections with all content",
+    "event": "pull_request",
+    "body": "# Verification\nAdded comprehensive test coverage for edge cases.\n\n# Demonstration\nNot user-facing; internal optimization.\n\n# Model Use\nDelegated implementation to cheaper worker.\n\n# Documentation\nUpdated inline comments and README."
+  },
+  {
+    "name": "heading-level-h3",
+    "expect": "pass",
+    "reason": "rule 2, 3, 4, 5 satisfied: valid sections at h3 level",
+    "event": "pull_request",
+    "body": "### Verification\nAll unit tests pass.\n\n### Demonstration\nNo user-facing behavior change.\n\n### Model Use\nDelegated code review to a cheaper worker.\n\n### Documentation\nAdded architecture documentation."
+  },
+  {
+    "name": "heading-level-h4",
+    "expect": "pass",
+    "reason": "rule 2, 3, 4, 5 satisfied: valid sections at h4 level",
+    "event": "pull_request",
+    "body": "#### Verification\nIntegration tests passing.\n\n#### Demonstration\nNot user-facing.\n\n#### Model Use\nDelegated to cheaper worker for review.\n\n#### Documentation\nUpdated docs."
+  },
+  {
+    "name": "heading-with-trailing-text",
+    "expect": "pass",
+    "reason": "rule 2 satisfied: headings with trailing text match by prefix",
+    "event": "pull_request",
+    "body": "## Verification And Testing\nAll tests pass; coverage increased to 96%.\n\n## Demonstration Platform\nNot user-facing change.\n\n## Model Use Case Analysis\nDelegated to a cheaper worker.\n\n## Documentation Updates\nAdded new sections to README."
+  },
+  {
+    "name": "case-insensitive-uppercase",
+    "expect": "pass",
+    "reason": "rule 4 via line-anchored declaration: \"No user-facing behavior.\" is accepted",
+    "event": "pull_request",
+    "body": "## VERIFICATION\nAll tests passing.\n\n## DEMONSTRATION\nNo user-facing behavior.\n\n## MODEL USE\nDelegated to cheaper worker.\n\n## DOCUMENTATION\nUpdated docs."
+  },
+  {
+    "name": "case-insensitive-mixed",
+    "expect": "pass",
+    "reason": "rule 2 satisfied: mixed case headings",
+    "event": "pull_request",
+    "body": "## Verification\nUnit tests: 42 passing.\n\n## DeMoNsTraTioN\nNot user-facing.\n\n## model use\nDelegated to cheaper model.\n\n## DocuMENTATION\nAdded comments."
+  },
+  {
+    "name": "no-blank-line-after-heading",
+    "expect": "pass",
+    "reason": "rule 3, 4, 5 satisfied: content immediately after heading still counts",
+    "event": "pull_request",
+    "body": "## Verification\nAll tests pass.\n## Demonstration\nNot user-facing.\n## Model Use\nDelegated to cheaper worker.\n## Documentation\nUpdated README."
+  },
+  {
+    "name": "fully-valid-realistic",
+    "expect": "pass",
+    "reason": "all rules satisfied: complete valid PR body",
+    "event": "pull_request",
+    "body": "## Verification\nAdded 15 new unit tests covering the validation endpoint. All 287 tests pass locally and in CI. Coverage increased from 91% to 94% for this module.\n\n## Demonstration\nThis change is not user-facing. It refactors internal validation logic to improve maintainability and performance. No behavioral changes are visible to end users.\n\n## Model Use\nDelegated implementation details review to a cheaper worker for efficiency. The critical path review was done by senior engineers.\n\n## Documentation\nUpdated API documentation with new validation rules. Added inline code comments explaining the validation algorithm. Updated CHANGELOG with feature description."
+  },
+  {
+    "name": "bypass-empty-body-with-event",
+    "expect": "fail",
+    "reason": "rule 1: the empty body bypass case",
+    "event": "pull_request",
+    "body": ""
+  },
+  {
+    "name": "bypass-headings-empty-url-outside",
+    "expect": "fail",
+    "reason": "rule 3, 4, 5: known bypass with empty sections, URL and delegation outside their sections",
+    "event": "pull_request",
+    "body": "## Verification\n\n## Demonstration\n\n## Model Use\n\n## Documentation\n\nSee https://example.com/demo for reference. Delegated to a cheaper worker."
+  },
+  {
+    "name": "heading-prefix-partial-match",
+    "expect": "pass",
+    "reason": "rule 2 satisfied: section heading starts with required name",
+    "event": "pull_request",
+    "body": "## Verification Process and Results\nComprehensive testing done.\n\n## Demonstration of Features\nNot user-facing.\n\n## Model Use and Cost Analysis\nDelegated to cheaper worker.\n\n## Documentation and Comments\nAll updated."
+  },
+  {
+    "name": "only-template-labels-verification",
+    "expect": "fail",
+    "reason": "rule 3: Verification with only blank template scaffold lines",
+    "event": "pull_request",
+    "body": "## Verification\nTest plan:\nCoverage:\nEdge cases:\n\n## Demonstration\nNot user-facing.\n\n## Model Use\nDelegated to cheaper worker.\n\n## Documentation\nAdded docs."
+  },
+  {
+    "name": "only-template-labels-demonstration",
+    "expect": "fail",
+    "reason": "rule 3 and 4: Demonstration with only template labels, no URL or declaration",
+    "event": "pull_request",
+    "body": "## Verification\nAll tests pass.\n\n## Demonstration\nDemo link:\nScreenshot:\nUser-facing:\n\n## Model Use\nDelegated to cheaper worker.\n\n## Documentation\nUpdated docs."
+  },
+  {
+    "name": "only-template-labels-model-use",
+    "expect": "fail",
+    "reason": "rule 3 and 5: Model Use with only template labels, no delegation or exemption",
+    "event": "pull_request",
+    "body": "## Verification\nTests pass.\n\n## Demonstration\nNot user-facing.\n\n## Model Use\nDelegation details:\nWorker assigned:\nCost:\n\n## Documentation\nUpdated."
+  },
+  {
+    "name": "real-url-in-demonstration",
+    "expect": "pass",
+    "reason": "rule 4 satisfied: valid URL in Demonstration section",
+    "event": "pull_request",
+    "body": "## Verification\nFull test suite passing.\n\n## Demonstration\nView the changes at https://staging-env.example.com/features/new-validation-gate\n\n## Model Use\nDelegated to cheaper worker.\n\n## Documentation\nUpdated all references."
+  },
+  {
+    "name": "https-url-in-demonstration",
+    "expect": "pass",
+    "reason": "rule 4 satisfied: valid HTTPS URL in Demonstration",
+    "event": "pull_request",
+    "body": "## Verification\nAll tests pass.\n\n## Demonstration\nhttps://example.com/pr-preview/abc123\n\n## Model Use\nDelegated review to cheaper worker.\n\n## Documentation\nAdded docs."
+  },
+  {
+    "name": "uppercase-headings-with-real-link",
+    "expect": "pass",
+    "reason": "rule 2: heading matching is case-insensitive, isolated from the declaration rule",
+    "event": "pull_request",
+    "body": "## VERIFICATION\nnpm run build passed 39/39.\n\n## DEMONSTRATION\nChecked link: http://127.0.0.1:5173/ and confirmed the graph renders.\n\n## MODEL USE\nDelegated the smoke check to a low-cost worker.\n\n## DOCUMENTATION\nNo doc impact; behaviour unchanged."
+  },
+  {
+    "name": "demonstration-embedded-no-user-facing-clause",
+    "expect": "fail",
+    "reason": "rule 4: an embedded clause mid-sentence is not a declaration and there is no link",
+    "event": "pull_request",
+    "body": "## Verification\nUnit tests pass.\n\n## Demonstration\nWe reviewed the diff carefully and confirmed no user-facing regressions were introduced by the refactor.\n\n## Model Use\nDelegated the regression sweep to a cheaper worker tier.\n\n## Documentation\nNo changes needed."
+  },
+  {
+    "name": "heading-prefix-must-not-partial-match",
+    "expect": "fail",
+    "reason": "rule 2: \"Verified\" does not satisfy the required \"Verification\" section",
+    "event": "pull_request",
+    "body": "## Verified\nEverything checked out fine.\n\n## Demonstration\nhttp://127.0.0.1:5173/\n\n## Model Use\nDelegated to a cheaper worker.\n\n## Documentation\nUpdated the README."
+  },
+  {
+    "name": "push-event-empty-body-skips",
+    "expect": "pass",
+    "reason": "rule 1: an empty body only fails on pull_request events",
+    "event": "push",
+    "body": ""
+  }
+]
