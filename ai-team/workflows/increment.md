@@ -15,7 +15,7 @@ The increment is the team's default unit of delivery. Avoid open-ended work. If 
 5. Plan the smallest coherent change that satisfies the acceptance criteria.
 6. Make a lightweight model-use plan using `ai-team/model-policy.md`.
 7. Define the verification plan using `ai-team/workflows/testing.md`.
-8. Delegate at least one bounded routine worker task to a cheaper/faster model, or record the delegation exception before review/completion.
+8. Delegate the increment's routine work to a cheaper worker by default, per `ai-team/model-policy.md`. Do not deliberate over whether to; deliberate only over whether an enumerated exemption applies, and record it if so.
 9. Build, test, and review the change.
 10. Deploy or start the target demonstration environment.
 11. Check the linked app or demo and confirm the increment works there.

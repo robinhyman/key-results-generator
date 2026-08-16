@@ -64,14 +64,43 @@ Escalate to a stronger model when:
 
 ## Delegation Rules
 
-- Before implementation begins, the Lead must identify which parts of the increment can be delegated to mid-capability or low-cost workers.
-- For every product increment, the Lead must delegate at least one routine worker task to a cheaper/faster model before the increment is reported for review or completion, unless a documented exception applies.
-- Default delegated tasks are routine verification, build/test runs, focused review, documentation checks, release-note drafts, issue/PR summaries, and mechanical updates with clear inputs, bounded scope, and low blast radius.
-- The Lead may skip delegation only when delegation overhead would exceed the task cost, the task is too small to split, no subagent/tooling path is available, or the task requires continuous architectural judgement.
-- Any skipped delegation must be recorded in the increment report and PR with the reason, risk, and what will be delegated next time.
-- If the Lead keeps substantial worker work on a high-capability model, the increment report and PR must explain why.
-- Worker briefs must include a suggested model tier and enough context to avoid making the worker read the full project history.
-- Worker outputs must be reviewed by the Lead before merge, release, or Done status.
+Delegation is the default, not a decision. The Lead does not weigh it up per increment; it happens for the task types below unless an enumerated exemption applies.
+
+### Delegated by default
+
+Send these to a cheaper worker automatically, without deliberation:
+
+- Running build, test, lint, or smoke checks and reporting the results.
+- Verifying a completed change against a written checklist or acceptance criteria.
+- Independent test-gap analysis on a diff.
+- Cross-file consistency checks, including whether docs, code, and issues agree.
+- Documentation drafts and documentation-impact checks.
+- Issue summaries, PR summaries, and release notes.
+- Mechanical repo-wide edits with clear inputs and low blast radius.
+
+### What "cheaper" means
+
+Cheaper is not model price. It is whether **writing the brief plus reviewing the output costs less than doing the task directly.**
+
+Delegation is cheaper when the task is specifiable in a brief, its evidence is mechanical — commands run, files inspected, findings listed — and it does not need the session's accumulated context. It is more expensive when explaining the task would take longer than performing it.
+
+### Exemptions
+
+Skip delegation only when one of these is true, and record which one:
+
+1. **Transfer cost exceeds task cost.** The brief would take longer to write than the task takes to do.
+2. **Continuous judgement.** The task cannot be reduced to a brief because it requires architectural decisions that emerge while doing it.
+3. **No worker path.** The harness cannot spawn a worker in this session. Record this as a harness limitation, not a property of the task — the same increment in another harness would delegate it.
+4. **Indivisible.** The task is the increment itself and splitting it would create more coordination than work.
+
+An exemption is a claim that must be written down, not a silence. `increment-check` fails a PR whose Model Use section shows neither delegation evidence nor an explicit exemption.
+
+### Worker briefs and review
+
+- Briefs state the model tier, the bounded scope, what is out of scope, and exactly what evidence to return.
+- Briefs carry enough context that the worker never needs to read the full project history.
+- The Lead reviews every worker output before merge, release, or `Done`. Delegation moves the work, not the accountability.
+- If substantial builder, tester, documentation, or release work stays on a high-capability model, the increment report and PR explain why.
 
 ## Token Efficiency Rules
 

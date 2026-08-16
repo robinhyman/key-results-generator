@@ -346,6 +346,39 @@ function checkReportSections() {
     /\bnot user-facing\b/i.test(body) ||
     /\bno user-facing (product )?behavior(al)? change/i.test(body);
 
+  // Delegation is a hard gate. The exemption path must be an explicit written
+  // claim, not silence — three increments in a row were exempted quietly
+  // before this check existed.
+  // Permissive on phrasing, strict on negation. The gate exists to catch
+  // silence, not to police wording — a delegation worker found the narrow
+  // first version rejected "handed off verification to a cheaper model".
+  // Broadening it then admitted "no delegation was needed" as *evidence of*
+  // delegation, so each match is checked for a preceding negator.
+  const NEGATOR = /\b(no|not|without|never|didn'?t|cannot|can'?t|skipp?ed?|instead of|rather than|lacked?|absent)\b[^.\n]{0,30}$/i;
+  const hasUnnegated = (re) => {
+    for (const m of body.matchAll(re)) {
+      if (!NEGATOR.test(body.slice(Math.max(0, m.index - 40), m.index))) return true;
+    }
+    return false;
+  };
+
+  const hasDelegationEvidence =
+    hasUnnegated(/\b(delegat\w*|handed off|handed to|assigned to)/gi) ||
+    hasUnnegated(/\b(low-cost|cheaper|cheap|mid-capability)\s+(worker|model|tier)/gi) ||
+    hasUnnegated(/\bworker\b[^\n]{0,40}\b(tier|model|ran|inspected|verified|reported|found)/gi);
+  const declaredDelegationExemption =
+    /delegation (gate )?[^\n]*\b(not satisfied|exempt|exemption|exception)\b/i.test(body);
+
+  if (!hasDelegationEvidence && !declaredDelegationExemption) {
+    problem('reportSections', {
+      message: 'Model Use section shows neither delegation evidence nor an explicit exemption.',
+      offender: '(pull request body)',
+      fix: 'Record the worker model tier and what it returned, or name which exemption in ai-team/model-policy.md applied.',
+      rule: 'ai-team/README.md hard gate 11 (delegate or record the exemption)',
+    });
+    return;
+  }
+
   if (!hasLink && !declaredNotUserFacing) {
     problem('reportSections', {
       message: 'PR body has no link and no explicit non-user-facing declaration.',
