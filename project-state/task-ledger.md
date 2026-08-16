@@ -1,6 +1,6 @@
 # Task Ledger
 
-Last updated: 2026-08-15
+Last updated: 2026-08-16
 
 ## Completed
 
@@ -110,6 +110,7 @@ Last updated: 2026-08-15
 
 ## Active
 
+- Issue `#22 Add harness-agnostic process enforcement` on branch `chore/22-process-enforcement`: added `ai-team/bin/increment-check.mjs`, `.githooks/`, and `.github/workflows/process.yml`.
 - Issues `#19` and `#20` implementation is complete locally on branch `feature/19-20-ai-observability`; PR/merge closeout is in progress.
 - Added explicit `indicatorType` classification to deterministic and AI-generated KRs.
 - Added AI schema, prompt, normalization, and fallback validation for a 1-2 lagging / 2-3 leading mix.

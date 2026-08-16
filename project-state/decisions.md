@@ -174,6 +174,14 @@ Decision: Add `indicatorType` to each key result with allowed values `leading` a
 
 Reason: Prompt-only guidance could not be reliably validated or displayed. Making the classification part of the structured model lets the app enforce quality contracts, fall back on invalid provider output, and support future UI/evaluation work.
 
+## 2026-08-16: Enforce Process In Code, Not Prose
+
+Decision: Mechanically enforce the operating model with `ai-team/bin/increment-check.mjs`, invoked from `.githooks/pre-commit`, `.githooks/pre-push`, and `.github/workflows/process.yml`. No rule may live in a harness-specific instruction file; any such file may only point at `ai-team/README.md`.
+
+Reason: An audit found the operating model unreachable and unenforced — no CI, no hooks, no auto-loaded instructions, and no root-README reference. All 101 obligations across 24 docs were self-attested by the agent that did the work, and drift had already occurred undetected (four state files claimed `2026-08-15` while carrying 08-16 content; `decisions.md` had no stamp at all). Enforcing in code is harness-agnostic, since git and CI are indifferent to whether Codex, Claude, or OpenClaw produced the commit; it raises adherence, since a hook is a guarantee rather than a hope; and it lowers token cost, since an enforced rule need not be read to be obeyed.
+
+Tradeoff: hooks are bypassable with `--no-verify`, so CI is the binding gate and requires branch protection on `main` to be non-advisory. Budget and PR-report checks ship as `warn` until state compaction lands, to avoid alarm fatigue that would get the whole check disabled.
+
 ## 2026-08-16: Add Local AI Request/Response Trace Logging
 
 Decision: Add opt-in server-side JSONL trace logging for AI provider calls, enabled with `AI_TRACE_LOG=1`, with request body, response body, parsed output, provider diagnostics, operation metadata, and endpoint host.
