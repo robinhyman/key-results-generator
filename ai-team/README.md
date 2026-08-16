@@ -6,15 +6,13 @@ Core principle:
 
 > The chat is temporary. The repository is memory. GitHub tracks work.
 
-Start each serious session by reading:
+Start each serious session by reading `project-state/index.md` and this file. Read nothing else by default.
 
-1. `ai-team/constitution.md`
-2. `ai-team/model-policy.md`
-3. `ai-team/github-workflow.md`
-4. `project-state/status.md`
-5. `project-state/handoff.md`
+`ai-team/workflows/session-start.md` has the routing table for what to read when. Use only the workflow or template files that match the current task.
 
-Use only the extra workflow or template files that match the current task.
+Process is enforced mechanically, not by trust: `npm run check` runs `ai-team/bin/increment-check.mjs` from the git hooks and from CI, and blocks credential material, stale or missing state stamps, over-budget state files, non-conforming branch names, incomplete PR increment reports, and lint/build failures. Install the hooks with `npm run setup`; `npm install` does it automatically.
+
+Rules live only in `ai-team/`. No harness-specific instruction file may contain a rule — at most a pointer to this file — so the operating model behaves identically under Codex, Claude, or OpenClaw.
 
 For product work, use `ai-team/workflows/increment.md` as the default delivery loop.
 

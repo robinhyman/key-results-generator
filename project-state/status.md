@@ -2,119 +2,47 @@
 
 Last updated: 2026-08-16
 
-## Current State
+What the product is and how it is built. For what to do next see `handoff.md`; for history see `archive/`.
 
-This repository contains the initial AI team operating artefacts plus the first local web-app MVP for objective-to-key-results generation, now merged into `main`.
+## Product
 
-The MVP is a dependency-free Node/local browser app. It can be started with `npm start` and opened at `http://127.0.0.1:5173/`.
+A local-first web app that turns an objective into graph-backed key results.
 
-The app lets a user enter an objective, generates an inspectable causal metrics graph, ranks influenceable variables, and produces graph-backed key results with rationales.
+Flow: objective input, then AI-generated causal metrics graph, then a clarification step asking which high-impact metrics are most influenceable and where the user perceives the biggest gaps, then final key results generated from the graph plus those answers.
 
-The first generator is deterministic and local. It does not use external AI APIs, persistence, accounts, or hosting.
+The graph is a first-class serializable artefact — nodes, edges, rankings, user assessments, and traceable links to the final KRs — not disposable render state. It is ready to persist later without redesign.
 
-The team now has an explicit increment workflow and Increment Definition Of Done in `ai-team/workflows/increment.md`.
+Final KRs are a set of 3-5, each carrying an explicit `indicatorType` of `leading` or `lagging`, validated against a target mix of 1-2 lagging and 2-3 leading.
 
-An increment is not `Done` unless it is available in the target demonstration environment and reported with a checked working link.
+## Architecture
 
-Testing is a first-class increment gate. Use `ai-team/workflows/testing.md` for verification planning and failure handling.
+- `server.js` exports `handleRequest` for sandbox-friendly API tests, validates request bodies, serves only files under `public/`, and returns structured JSON errors. There is no static `/src/*` exposure.
+- `src/generator.js` is the deterministic local generator: structured graph, clarification application, and the fallback KR path.
+- `src/ai-service.js` is the server-side OpenAI Responses API boundary. It builds the approved system and task instructions, validates structured output, applies user influenceability/gap assessments, and falls back to the deterministic generator on missing credentials, provider errors, or invalid output — recording a `generation.reasonCode` either way.
+- The browser calls `/api/graph` and `/api/key-results` and never imports generator logic or reads credentials. Browser code is native ES modules: `public/api.js`, `app.js`, `format.js`, `render.js`. No framework, no build step.
 
-Test-first development is preferred for behaviorally clear work and should be reported per increment.
+## Configuration
 
-Lead intake and ticket creation are governed by `ai-team/workflows/intake-and-specification.md`.
+- Model defaults to `gpt-5-mini`; override with `OPENAI_MODEL` or `AI_MODEL`.
+- Credentials come from `OPENAI_API_KEY`, a configured key-path env var, or a local ignored `keys/key.txt`. Never print, commit, or copy the key value.
+- `AI_TRACE_LOG=1` appends JSONL request/response traces to `logs/ai-traces.jsonl`, overridable with `AI_TRACE_LOG_PATH`. Traces are local-only, git-ignored, and redact credential material.
 
-Role specs, branch/PR policy, web local-first project profile, and retrospective workflow are now defined.
+## Operating model
 
-Documentation standards are defined in `ai-team/workflows/documentation.md`, with a Documentarian role spec in `ai-team/roles/documentarian.md`.
+Delivery unit is the increment, one primary GitHub issue each, tracked in the `Key Results Generator` GitHub Project via the `Agent Status` field.
 
-Reusable baseline: `robinhyman/ai-team-operating-system` at tag `v0.1`.
+Process gates are mechanical as of issue #22: `ai-team/bin/increment-check.mjs` runs from `.githooks/pre-commit`, `.githooks/pre-push`, and `.github/workflows/process.yml`. It fails on staged credential material, missing or stale state stamps, non-conforming branch names, and lint/build failures, and enforces state-file line budgets and PR report sections.
 
-This repository is tagged at `ai-team-os-v0.1` before product-specific work begins.
+Rules live only in `ai-team/`. No harness-specific instruction file may contain a rule, so the model works identically under Codex, Claude, or OpenClaw.
 
-GitHub repository: `robinhyman/key-results-generator`
+Reusable baseline: `robinhyman/ai-team-operating-system` at `v0.1`. This repo is tagged `ai-team-os-v0.1` as its pre-product baseline.
 
-GitHub Project: `Key Results Generator` at `https://github.com/users/robinhyman/projects/4`
+## Repository
 
-Closed GitHub issue: `#1 Set up AI agent team operating system`, `Agent Status: Done`.
+- GitHub: `robinhyman/key-results-generator`
+- Project: https://github.com/users/robinhyman/projects/4
 
-Closed GitHub issue: `#2 Build first local MVP for objective-to-key-results generation`, merged via PR #3 and set to `Agent Status: Done`.
+## Open questions
 
-Closed GitHub issue: `#4 Add AI-guided clarification step before key result generation`, completed by PR #8 and set to `Agent Status: Done`.
-
-Merged pull request: `#3 Build local objective-to-KR MVP`
-
-Merged pull request: `#5 Add clarification step before final KRs` as partial groundwork for issue `#4`.
-
-Closed follow-up issue: `#6 Add browser-level tests for clarification flow`, completed by PR #13 and set to `Agent Status: Done`.
-
-Closed follow-up issue: `#7 Improve GitHub Project status update tooling`, completed by PR #13 and set to `Agent Status: Done`.
-
-Closed architecture hardening issue: `#9 Harden server routing, validation, and AI fallback diagnostics`, completed by PR #13 and set to `Agent Status: Done`.
-
-Closed architecture hardening issue: `#10 Split frontend workflow into focused browser modules`, completed by PR #13 and set to `Agent Status: Done`.
-
-Closed duplicate issue: `#11 Add browser-level tests for the clarification workflow`, duplicate of `#6`, with `Agent Status: Done`.
-
-Closed architecture hardening closeout issue: `#12 Document architecture hardening decisions and close the review iteration`, completed by PR #13 and set to `Agent Status: Done`.
-
-Closed specification issue: `#14 Specify AI instructions for graph-first OKR generation`, approved by the user and set to `Agent Status: Done`.
-
-Closed issue: `#15 Implement approved AI instruction structure in the generation service`, completed by PR #17 and set to `Agent Status: Done`.
-
-Closed issue: `#16 Add regression checks for AI instruction and output quality`, completed by PR #18 and set to `Agent Status: Done`.
-
-## Active Goal
-
-Active issue: `#22 Add harness-agnostic process enforcement via increment-check, git hooks, and CI` on branch `chore/22-process-enforcement`.
-
-Process gates are now mechanical. `npm run check` (or the pre-commit/pre-push hooks, or CI) runs `ai-team/bin/increment-check.mjs`, which blocks staged credential material, missing/stale state-file `Last updated` stamps, non-conforming branch names, and lint/build failures. State-file line budgets and PR increment-report sections currently warn; flip them to `fail` in the script's `CONFIG.severity` once state compaction lands. Hooks activate via `npm run setup` or automatically on `npm install`.
-
-Known follow-up: state compaction and `project-state/index.md` are not yet done, so four state files are over budget and reported as warnings.
-
-
-Active iteration: issues `#19 Represent leading and lagging key results explicitly` and `#20 Add env-gated AI prompt and response trace logging`.
-
-Implementation branch: `feature/19-20-ai-observability`.
-
-Current implementation adds explicit `indicatorType` values (`leading` or `lagging`) to generated key results, updates the AI KR schema/prompt/normalization to require and validate the field, enforces a valid 1-2 lagging / 2-3 leading mix by falling back when provider output is invalid, and preserves the previous deterministic top-ranked KR selection when it already satisfies the mix.
-
-AI trace logging is now env-gated with `AI_TRACE_LOG=1`, appends JSONL records to `logs/ai-traces.jsonl` by default, includes request body, response body, parsed output, provider diagnostics, operation, model, schema name, and endpoint host, and redacts credential material. Trace logs remain server-side/local-only and are ignored by Git.
-
-Verification for issues `#19`/`#20`: `npm run build` passes with 39/39 unit/API tests; `npm run test:browser` passes with 1/1 Playwright test; live local endpoint smoke at `http://127.0.0.1:5176/` returned AI mode for graph and key-results, 4 KRs, and indicator types `lagging, lagging, leading, leading`; trace inspection found 2 JSONL records, no `Authorization`/Bearer material, endpoint host `api.openai.com`, and parsed output for both calls.
-
-Local demo server is running at `http://127.0.0.1:5176/` with tracing enabled and trace path `/tmp/key-results-generator-ai-traces.jsonl`.
-
-Local implementation separates graph generation from final KR generation. `src/generator.js` exports the deterministic structured graph and fallback KR path. `src/ai-service.js` now adds a server-side OpenAI Responses API boundary for AI-backed graph generation and AI-synthesized final KRs, validates structured output, applies user influenceability/gap assessments, and falls back to the deterministic generator when the provider is unavailable.
-
-The browser UI calls local server endpoints instead of importing generator logic directly. It shows whether output came from AI or the local fallback. The API key remains server-only and is read from `OPENAI_API_KEY`, configured key path env vars, or ignored local `keys/key.txt`.
-
-Current implementation includes server/API contract tests, robust public-file containment, structured JSON validation errors, safe AI fallback `reasonCode` metadata, a native ES module split for browser code, Playwright browser workflow coverage, and a documented GitHub CLI Project-status fallback.
-
-Verification so far: after issue `#16`, `npm run build` passes with 30/30 unit/API tests.
-
-The configured OpenAI API credential now has sufficient quota for the issue `#4` smoke checks. Real AI graph generation and final KR synthesis have been verified with `gpt-5-mini`; live local endpoints returned AI-mode graph and KR responses.
-
-Issue `#15` updates the OpenAI Responses API request construction to use the user-approved shared system instruction, graph-generation prompt, and KR-synthesis prompt from issue `#14`. AI KR schema and normalization now accept 3 to 5 final KRs; deterministic fallback still returns 4 KRs, which remains valid. The leading/lagging KR mix is instruction-only until a future explicit `indicatorType` or classification rule is approved.
-
-## Current Runtime Assumption
-
-- Codex main chat acts as Project Lead.
-- Short-lived subagents handle bounded worker tasks.
-- GitHub issues inside the `Key Results Generator` GitHub Project provide work tracking and observability.
-- Repo state files provide compact continuation memory.
-- Product work should be delivered in increments, each tied to one primary GitHub issue.
-- Any `Done` notification for product work must include a checked app/demo link the user can open.
-- Each increment must define and report its verification plan.
-- New actionable tickets should use `ai-team/templates/issue-spec.md` and meet Ready Criteria before `Agent Status: Ready`.
-- Each completed, blocked, or paused increment must have a retrospective before the next increment starts.
-- Retrospective improvement proposals require user approval before operating files are changed.
-- Documentation impact must be assessed for every increment, and required docs are part of `Done`.
-- Future reusable operating-system improvements should be considered for `robinhyman/ai-team-operating-system`.
-- Cost control is now explicit: future increments should use cheaper/faster worker models whenever possible and reserve stronger models for Lead, Architect, ambiguity, integration, escalation, and final review.
-- Product requirements now explicitly include a clarification step before final KRs: the app asks the user which high-impact metrics are most influenceable and where the biggest perceived gaps are.
-- The causal/metrics graph is treated as a first-class intermediate artefact: serializable structured data with nodes, edges, rankings, user influenceability/gap assessments, and links to final KRs.
-- GitHub issue `#4` is closed and has `Agent Status: Done`. The AI provider path is implemented and real-provider smoke checks pass. The API key path was provided in a GitHub issue comment and the local path exists; do not copy the key value into repo files, logs, issue comments, or chat.
-
-## Open Questions
-
-- What hosted deployment target should be used for a future increment?
-- Should durable persistence or graph editing be the next product increment after architecture hardening?
+- What hosted deployment target should be used?
+- Is durable persistence or graph editing the next product increment?

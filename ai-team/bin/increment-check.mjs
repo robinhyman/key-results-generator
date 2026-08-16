@@ -28,15 +28,18 @@ const CONFIG = {
     branchName: 'fail',
     lint: 'fail',
     build: 'fail',
-    // `warn` until the state compaction step lands, then flip to `fail`.
-    stateBudget: 'warn',
-    reportSections: 'warn',
+    // Enforced as failures since issue #24 compacted the state files.
+    stateBudget: 'fail',
+    reportSections: 'fail',
   },
 
   // Line budgets. decisions.md is legitimately append-only durable truth, so it
   // gets a high ceiling; the rest are continuation state and must stay compact.
   budgets: {
-    'project-state/index.md': 60,
+    // The index carries orientation, run commands, a routing table, and the
+    // hard gates. ~50 lines is its working size; 75 leaves headroom for the
+    // active-work section to change within an increment without churn.
+    'project-state/index.md': 75,
     'project-state/status.md': 80,
     'project-state/handoff.md': 80,
     'project-state/task-ledger.md': 80,
@@ -45,6 +48,7 @@ const CONFIG = {
   },
 
   stateFiles: [
+    'project-state/index.md',
     'project-state/status.md',
     'project-state/handoff.md',
     'project-state/task-ledger.md',
