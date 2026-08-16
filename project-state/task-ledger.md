@@ -8,7 +8,7 @@ This file owns active, blocked, and next work. `index.md` points here rather tha
 
 ## Active
 
-- `#35` Tier retrospectives so the default one actually gets run. Branch `docs/35-tiered-retrospectives`.
+- None. The 2026-08-16 process audits are closed out through #35.
 
 ## Blocked
 
@@ -42,5 +42,6 @@ Issues `#1`-`#22` are closed. Summary of what each delivered:
 - `#28` Cheaper-worker delegation made the default with recorded exemptions.
 - `#31` Section-scoped PR-report gate, push-range fix, and the checker's first test suite.
 - `#32` Single owner for active work, a state-coherence gate, PR template, and scoped role reads.
+- `#35` Tiered retrospectives, and the #22-#28 retrospective debt discharged.
 
 Per-issue detail, verification runs, retrospectives, and worker evidence are in `archive/2026-08-pre-compaction.md`.

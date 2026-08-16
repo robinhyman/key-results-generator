@@ -18,10 +18,8 @@ Branch protection is enabled as of 2026-08-16: the `main: require increment-chec
 
 ## Next best actions
 
-1. **Merge the open audit-response PR** for issue #32 (state coherence). Issue #31 merged as #33. Note that merging is gated in the agent's current permission set and is the user's action.
+1. **Start the next product increment.** The operating-model work is closed out; the product has not moved since #20. Choose with the user: durable persistence, graph editing, or hosted deployment.
 2. **Run a delta retro on every increment.** Three fields in the increment report, per the tiered principle 10 adopted in #35. The full multi-role retrospective now runs only on a named trigger. No retrospectives are owed.
-
-3. **Choose the next product direction** with the user: durable persistence, graph editing, or hosted deployment.
 
 ## Remaining operating-model work
 
