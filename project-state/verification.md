@@ -1,6 +1,6 @@
 # Verification
 
-Last updated: 2026-08-16
+Last updated: 2026-08-17
 
 Current verification posture and known gaps. Per-increment verification history is in `archive/`.
 
@@ -17,6 +17,7 @@ Current verification posture and known gaps. Per-increment verification history 
 
 ## Known gaps
 
+- Graph-generation quality is not yet automatically evaluated. The 2026-08-17 offline characterization found that deterministic fallback graphs reuse the same topology, scores, and ranking order across objectives, and AI graph normalization does not enforce exactly one outcome, connectivity to outcome, stage-forward edges, or meaningful evidence/experience paths.
 - The process gates cannot verify truthfulness. An agent can write "Demo link checked" above a URL it never opened. Only an independent process-review step closes this, and only partially.
 - Demo-link evidence is not durable. The demonstration link for this project is `http://127.0.0.1:5173/`, which is dead to anyone reading the PR later, so the gate can be audited only while the server is up. A committed screenshot or recording would outlive the link.
 - No browser test for manually tampered slider payloads. Malformed input is covered at the server request-shape boundary only.

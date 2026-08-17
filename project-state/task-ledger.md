@@ -1,6 +1,6 @@
 # Task Ledger
 
-Last updated: 2026-08-16
+Last updated: 2026-08-17
 
 Active, blocked, and next work. Completed increments live in `archive/`.
 
@@ -8,14 +8,15 @@ This file owns active, blocked, and next work. `index.md` points here rather tha
 
 ## Active
 
-- None. The 2026-08-16 process audits are closed out through #35.
+- Offline graph generation characterization on `feature/0-graph-generation-characterization`. GitHub is unavailable, so the local shadow issue and findings live in `project-state/offline-graph-generation.md`.
 
 ## Blocked
 
-- None.
+- GitHub issue, Project, and PR updates for the graph generation characterization are blocked until GitHub is available.
 
 ## Next
-- Choose the next product increment: durable persistence, graph editing, or hosted deployment.
+- Backfill the graph-generation characterization into GitHub when available.
+- Start the next graph-generation improvement increment: normalization quality gates for graph shape and connectivity.
 - Remaining operating-model work from the 2026-08-16 audits, listed in `handoff.md`.
 
 ## Completed

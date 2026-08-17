@@ -1,6 +1,6 @@
 # Handoff
 
-Last updated: 2026-08-16
+Last updated: 2026-08-17
 
 What the next session should do. For what the product is see `status.md`; for history see `archive/`.
 
@@ -16,10 +16,13 @@ All four operating-model audit increments are merged: #22 mechanical enforcement
 
 Branch protection is enabled as of 2026-08-16: the `main: require increment-check` ruleset requires a PR and a passing `increment-check`, with no bypass actors. CI is now genuinely binding, which was the largest known enforcement gap.
 
+GitHub was unavailable on 2026-08-17, so graph-generation work started locally on `feature/0-graph-generation-characterization`. The shadow issue, characterization findings, verification plan, and backfill steps are in `project-state/offline-graph-generation.md`.
+
 ## Next best actions
 
-1. **Start the next product increment.** The operating-model work is closed out; the product has not moved since #20. Choose with the user: durable persistence, graph editing, or hosted deployment.
-2. **Run a delta retro on every increment.** Three fields in the increment report, per the tiered principle 10 adopted in #35. The full multi-role retrospective now runs only on a named trigger. No retrospectives are owed.
+1. **Backfill the offline graph-generation characterization.** Create the GitHub issue, add it to Project 4, and set Agent Status to match the real state once GitHub is available.
+2. **Start the next graph-generation improvement.** Recommended first behavior slice: add normalization quality gates for exactly one outcome, outcome connectivity, stage-forward edges, and evidence/experience paths.
+3. **Run a delta retro on every increment.** Three fields in the increment report, per the tiered principle 10 adopted in #35. The full multi-role retrospective now runs only on a named trigger. No retrospectives are owed.
 
 ## Remaining operating-model work
 
