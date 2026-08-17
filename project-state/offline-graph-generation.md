@@ -66,6 +66,10 @@ Start with prompt/schema redesign for rich AI graph generation:
 
 Then implement local convergence validation/scoring if model-only convergence is too unstable.
 
+## Refactor Prep
+
+Before changing graph behavior, split `src/ai-service.js` into a thin facade plus focused `src/ai/` modules for prompts, schemas, provider transport, output normalization, tracing, shared formatting, and fallback diagnostics. This reduces the amount of code a future prompt/schema session must read and keeps prompt work away from credential and trace plumbing.
+
 ## GitHub Backfill
 
 When GitHub is back:

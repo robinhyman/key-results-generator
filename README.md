@@ -90,7 +90,8 @@ npx playwright install chromium
 
 - `server.js`: local HTTP server, static public file serving, API request validation, and JSON endpoints.
 - `src/generator.js`: deterministic graph and KR fallback logic.
-- `src/ai-service.js`: server-side OpenAI Responses API boundary, AI output normalization, and fallback diagnostics.
+- `src/ai-service.js`: thin server-side AI generation facade.
+- `src/ai/`: AI prompts, schemas, provider client, output normalization, fallback diagnostics, and trace logging.
 - `public/app.js`: browser workflow entrypoint.
 - `public/api.js`: browser API calls.
 - `public/render.js`: DOM rendering helpers.

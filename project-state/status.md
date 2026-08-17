@@ -1,6 +1,6 @@
 # Project Status
 
-Last updated: 2026-08-16
+Last updated: 2026-08-17
 
 What the product is and how it is built. For what to do next see `handoff.md`; for history see `archive/`.
 
@@ -18,7 +18,7 @@ Final KRs are a set of 3-5, each carrying an explicit `indicatorType` of `leadin
 
 - `server.js` exports `handleRequest` for sandbox-friendly API tests, validates request bodies, serves only files under `public/`, and returns structured JSON errors. There is no static `/src/*` exposure.
 - `src/generator.js` is the deterministic local generator: structured graph, clarification application, and the fallback KR path.
-- `src/ai-service.js` is the server-side OpenAI Responses API boundary. It builds the approved system and task instructions, validates structured output, applies user influenceability/gap assessments, and falls back to the deterministic generator on missing credentials, provider errors, or invalid output — recording a `generation.reasonCode` either way.
+- `src/ai-service.js` is the thin server-side AI generation facade. Focused modules under `src/ai/` own prompts, schemas, provider transport, output normalization, trace logging, and fallback diagnostics.
 - The browser calls `/api/graph` and `/api/key-results` and never imports generator logic or reads credentials. Browser code is native ES modules: `public/api.js`, `app.js`, `format.js`, `render.js`. No framework, no build step.
 
 ## Configuration
