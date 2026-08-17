@@ -1,5 +1,6 @@
 import {
   applyClarifications,
+  exploreKeyResultSets,
   generateCausalMetricsGraph,
   indicatorTypeForVariable,
   selectKeyResultVariables,
@@ -58,7 +59,7 @@ export async function generateAiKeyResultsModel(graph, clarifications = {}, opti
   const normalizedGraph = normalizeGraphInput(graph) ?? generateCausalMetricsGraph("");
   const clarifiedGraph = applyClarifications(normalizedGraph, clarifications);
   const fallback = (error) => {
-    const keyResults = selectKeyResultVariables(clarifiedGraph.rankings, defaultKeyResultCount).map((variable, index) =>
+    const keyResults = selectKeyResultVariables(clarifiedGraph.rankings, defaultKeyResultCount, clarifiedGraph).map((variable, index) =>
       toFallbackKeyResult(variable, clarifiedGraph.edges, clarifiedGraph.nodes, index, clarifiedGraph.assessments[variable.id]),
     );
 
@@ -97,6 +98,8 @@ async function withFallback(action, fallback) {
 }
 
 function toModel(graph, keyResults) {
+  const candidateKeyResultSets = exploreKeyResultSets(graph);
+
   return {
     objective: graph.objective,
     summary: graph.summary,
@@ -104,6 +107,7 @@ function toModel(graph, keyResults) {
     variables: graph.nodes,
     relationships: graph.edges,
     rankedVariables: graph.rankings,
+    candidateKeyResultSets,
     keyResults,
   };
 }

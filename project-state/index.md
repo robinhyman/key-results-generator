@@ -6,7 +6,7 @@ The only state file a session must read. Everything else is read on demand.
 
 ## Project
 
-Local-first web app that turns an objective into graph-backed key results. The user enters an objective, the app generates a causal metrics graph, asks which metrics are most influenceable and where the gaps are, then synthesises 3-5 key results with explicit `leading`/`lagging` types and rationales.
+Local-first web app that turns an objective into graph-backed key results. The user enters an objective, the app generates a causal metrics graph, asks which metrics are most influenceable and where the gaps are, then synthesises 3-5 key results with explicit `leading`/`lagging` types and rationales. The current local branch also explores algorithmic KR-set selection by ranking candidate sets from the planning graph.
 
 AI generation runs server-side against the OpenAI Responses API with a deterministic local fallback. No persistence, accounts, or hosting.
 
@@ -15,7 +15,7 @@ AI generation runs server-side against the OpenAI Responses API with a determini
 ```
 npm install          # also installs git hooks via prepare
 npm start            # http://127.0.0.1:5173/
-npm run build        # lint + 39 unit/API tests
+npm run build        # lint + unit/API/process tests
 npm run test:browser # Playwright, needs: npx playwright install chromium
 npm run check        # process gates (also run by git hooks and CI)
 ```
@@ -32,7 +32,7 @@ See `project-state/task-ledger.md`, which owns active, blocked, and next work.
 
 ## Next action
 
-Finish local verification for the rich graph contract, then backfill the issue, Project status, branch push, and PR when GitHub returns.
+Finish local verification for the graph/KR exploration slice, then backfill the issue, Project status, branch push, and PR when GitHub returns.
 
 ## Where things live
 

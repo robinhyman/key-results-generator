@@ -6,6 +6,7 @@ import { tmpdir } from "node:os";
 
 import {
   applyClarifications,
+  exploreKeyResultSets,
   generateCausalMetricsGraph,
   generateKeyResultsModel,
   indicatorTypeForVariable,
@@ -88,19 +89,32 @@ test("generated key results prefer clarified influenceability and perceived gaps
   const keyResultVariableIds = model.keyResults.map((keyResult) => keyResult.variableId);
 
   assert.equal(keyResultVariableIds[0], "cycle-time");
-  assert.ok(keyResultVariableIds.includes("feedback-signal"));
+  assert.equal(model.candidateKeyResultSets[0].assessments["cycle-time"].gap, 5);
   assert.ok(model.keyResults[0].rationale.includes("your clarification"));
   assert.equal(model.graph.assessments["cycle-time"].gap, 5);
 });
 
-test("generated key results preserve top ranked selection when it already has a valid indicator mix", () => {
+test("generated key results use the top algorithmic candidate set", () => {
   const model = generateKeyResultsModel("Expand enterprise customer retention");
 
   assert.deepEqual(
     model.keyResults.map((keyResult) => keyResult.variableId),
-    ["primary-result", "failure-rate", "experience-quality", "throughput"],
+    model.candidateKeyResultSets[0].variableIds,
   );
   assertValidIndicatorMix(model.keyResults);
+  assert.ok(model.candidateKeyResultSets[0].metrics.branchCount >= 2);
+});
+
+test("generateKeyResultsModel exposes ranked algorithmic candidate sets", () => {
+  const model = generateKeyResultsModel("Expand enterprise customer retention");
+
+  assert.ok(model.candidateKeyResultSets.length > 0);
+  assert.deepEqual(
+    model.keyResults.map((keyResult) => keyResult.variableId),
+    model.candidateKeyResultSets[0].variableIds,
+  );
+  assertValidIndicatorMix(model.candidateKeyResultSets[0].variables);
+  assert.ok(model.candidateKeyResultSets[0].rationale.includes("branches"));
 });
 
 test("generated key results come from high-impact, influenceable graph variables", () => {
@@ -173,6 +187,33 @@ test("rankVariables sorts by KR suitability and excludes the top outcome", () =>
     ["driver", "evidence", "weak"],
   );
   assert.ok(ranked[0].score > ranked[1].score);
+});
+
+test("exploreKeyResultSets ranks valid non-outcome KR sets with branch coverage metadata", () => {
+  const graph = graphForSetExploration();
+  const candidateSets = exploreKeyResultSets(graph, { setSizes: [4], limit: 5 });
+
+  assert.ok(candidateSets.length > 0);
+  assert.deepEqual(candidateSets[0].variableIds, ["primary-result", "quality-driver", "speed-result", "capacity-driver"]);
+  assert.equal(candidateSets[0].variables.some((variable) => variable.type === "outcome"), false);
+  assertValidIndicatorMix(candidateSets[0].variables);
+  assert.equal(candidateSets[0].metrics.branchCount, 3);
+  assert.ok(candidateSets[0].metrics.redundancyPenalty > 0);
+  assert.ok(candidateSets[0].score >= candidateSets[1].score);
+  assert.deepEqual(
+    candidateSets.map((candidateSet) => candidateSet.variableIds.join("|")),
+    [...new Set(candidateSets.map((candidateSet) => candidateSet.variableIds.join("|")))],
+  );
+});
+
+test("exploreKeyResultSets uses clarification scores to re-rank candidate sets", () => {
+  const graph = applyClarifications(graphForSetExploration(), {
+    "support-driver": { influenceability: 5, gap: 5 },
+  });
+  const candidateSets = exploreKeyResultSets(graph, { setSizes: [4], limit: 5 });
+
+  assert.ok(candidateSets[0].variableIds.includes("support-driver"));
+  assert.equal(candidateSets[0].assessments["support-driver"].gap, 5);
 });
 
 test("generateAiCausalMetricsGraph normalizes mocked AI graph output", async () => {
@@ -707,6 +748,73 @@ function aiEdge(source, target) {
     target,
     rationale: `${source} affects ${target}`,
     strength: 78,
+  };
+}
+
+function graphForSetExploration() {
+  const nodes = [
+    {
+      id: "outcome",
+      type: "outcome",
+      label: "Improve activation",
+      description: "The outcome.",
+      impact: 100,
+      confidence: 90,
+      influenceable: false,
+      stage: 4,
+      direction: "improve",
+    },
+    testNode("primary-result", "evidence", "Activation rate", 94, 86, 3),
+    testNode("quality-result", "experience", "Setup quality", 88, 80, 3),
+    testNode("speed-result", "experience", "Setup speed", 87, 80, 3, "reduce"),
+    testNode("quality-driver", "driver", "Guidance quality", 86, 78, 2),
+    testNode("speed-driver", "driver", "Time to first action", 85, 78, 2, "reduce"),
+    testNode("capacity-driver", "upstream-driver", "Instrumentation coverage", 84, 76, 1),
+    testNode("support-driver", "upstream-driver", "Support response time", 68, 62, 1, "reduce"),
+    testNode("duplicate-speed", "driver", "Time to first action duplicate", 84, 77, 2, "reduce"),
+  ];
+  const edges = [
+    testEdge("primary-result", "outcome", 95),
+    testEdge("quality-result", "primary-result", 88),
+    testEdge("speed-result", "primary-result", 87),
+    testEdge("quality-driver", "quality-result", 86),
+    testEdge("speed-driver", "speed-result", 86),
+    testEdge("capacity-driver", "primary-result", 84),
+    testEdge("support-driver", "quality-result", 70),
+    testEdge("duplicate-speed", "speed-result", 84),
+  ];
+
+  return {
+    objective: "Improve activation",
+    summary: "Fixture graph for KR set exploration.",
+    nodes,
+    edges,
+    rankings: rankVariables(nodes),
+    assessments: {},
+  };
+}
+
+function testNode(id, type, label, impact, confidence, stage, direction = "increase") {
+  return {
+    id,
+    type,
+    label,
+    description: `${label} description.`,
+    impact,
+    confidence,
+    influenceable: true,
+    stage,
+    direction,
+  };
+}
+
+function testEdge(source, target, strength) {
+  return {
+    id: `${source}-to-${target}`,
+    source,
+    target,
+    rationale: `${source} affects ${target}.`,
+    strength,
   };
 }
 

@@ -10,7 +10,7 @@ A local-first web app that turns an objective into graph-backed key results.
 
 Flow: objective input, then AI-generated causal metrics graph, then a clarification step asking which high-impact metrics are most influenceable and where the user perceives the biggest gaps, then final key results generated from the graph plus those answers.
 
-The graph is a first-class serializable artefact — nodes, edges, rankings, user assessments, and traceable links to the final KRs — not disposable render state. It is ready to persist later without redesign.
+The graph is a first-class serializable artefact — nodes, edges, rankings, user assessments, algorithmic candidate KR sets, and traceable links to the final KRs — not disposable render state. It is ready to persist later without redesign.
 
 Final KRs are a set of 3-5, each carrying an explicit `indicatorType` of `leading` or `lagging`, validated against a target mix of 1-2 lagging and 2-3 leading.
 

@@ -6,7 +6,7 @@ GitHub was unavailable when this work started, so this file is the local shadow 
 
 ## Shadow Issue
 
-Summary: Refactor AI graph generation toward rich-map-then-converge behavior.
+Summary: Refactor AI graph generation toward rich-map-then-converge behavior, then explore algorithmic KR-set selection.
 
 User outcome: The next graph-generation improvement should make the AI-generated causal map richer and closer to the user’s manual Miro-style exploration, then converge that map into a usable planning graph.
 
@@ -20,25 +20,29 @@ Acceptance criteria:
 - [x] `src/ai/prompts.js` asks for a broad `fullGraph` and converged `planningGraph`, not 8-10 compressed nodes.
 - [x] `src/ai/schemas.js` supports the richer graph response contract.
 - [x] Normalization preserves `fullGraph`, uses `planningGraph` for current nodes/rankings, and keeps the current UI/KR path working.
+- [x] Add an algorithmic KR-set explorer that enumerates candidate sets and scores set quality, not just individual node rank.
+- [x] Expose ranked candidate KR-set alternatives with score components for node quality, indicator mix, branch coverage, connectedness, redundancy, and externality.
+- [x] Use the top algorithmic 4-KR candidate set for the deterministic KR path while keeping the explorer capable of 3-5 item alternatives.
 - [ ] GitHub issue, Project status, branch push, and PR are backfilled after GitHub returns.
 
 Verification plan:
 
-- Test-first: add failing mocked-provider tests for graph prompt/schema expectations and normalization of `fullGraph` plus `planningGraph`.
+- Test-first: add failing mocked-provider tests for graph prompt/schema expectations and normalization of `fullGraph` plus `planningGraph`; add failing local tests for algorithmic candidate-set ranking, branch coverage, clarification re-ranking, and exposure in the KR model.
 - Automated: run targeted node tests, `npm run build`, then `npm run check` after state updates.
-- Manual: inspect `src/ai/prompts.js`, `src/ai/schemas.js`, `src/ai/normalize.js`, and the local graph request path.
+- Manual: inspect `src/ai/prompts.js`, `src/ai/schemas.js`, `src/ai/normalize.js`, `src/generator.js`, `src/ai-service.js`, and the local graph/KR request path.
 - Browser: skip `npm run test:browser` because this slice changes the server-side AI response contract and preserves the existing rendered planning graph shape.
 - Demo: no user-facing demo link is required for this server-side contract slice; do not call the increment `Done` until GitHub backfill is possible.
 
 Scope:
 
-- In scope: AI graph prompt, response schema, mocked-provider normalization, local state/report updates.
-- Out of scope: live AI quality evaluation, local convergence scoring, UI for inspecting `fullGraph`, browser changes, GitHub issue/project updates while GitHub is down.
+- In scope: AI graph prompt, response schema, mocked-provider normalization, algorithmic candidate KR-set exploration, local state/report updates.
+- Out of scope: live AI quality evaluation, UI for inspecting `fullGraph` or candidate sets, browser changes, GitHub issue/project updates while GitHub is down.
 
 Model use:
 
 - Lead model: Codex.
 - Delegated worker: `gpt-5.6-luna` subagent "Godel" performed a read-only cross-check of tests/state/process needs. It recommended pinning `fullGraph`/`planningGraph`, ranking from `planningGraph`, retaining convergence metadata, and updating this local report plus verification/handoff/ledger state.
+- Delegated worker: `gpt-5.6-luna` subagent "Ptolemy" performed a read-only cross-check for the KR-set explorer. It recommended tests for unique candidate enumeration, indicator-mix scoring, branch coverage, redundancy penalties, ranked distinct alternatives, and process/state updates.
 
 ## Implementation Report
 
@@ -50,12 +54,15 @@ Changed files:
 - `src/ai/prompts.js`: replaced the 8-10 node instruction with a 40-60 node `fullGraph` and 12-18 node `planningGraph`, with explicit convergence criteria and branch coverage.
 - `src/ai/schemas.js`: changed graph response schema to require `summary`, `fullGraph`, and `planningGraph`; `planningGraph` nodes require `convergenceRationale`.
 - `src/ai/normalize.js`: normalizes both graph layers, caps `fullGraph` at 70 nodes/120 edges and `planningGraph` at 20 nodes/32 edges, and keeps existing `nodes`, `edges`, and `rankings` derived from the planning graph.
+- `src/generator.js`: adds `exploreKeyResultSets`, enumerating candidate KR sets and ranking them by node quality, leading/lagging mix, branch coverage, selected causal connections, redundancy penalties, externality penalties, and user clarification scores.
+- `src/ai-service.js`: includes local algorithmic candidate sets in KR models and uses the same algorithmic selector for fallback KRs.
 
 Verification results so far:
 
 - Targeted rich graph contract tests: passed after implementation.
-- `npm test`: passed 92/92.
-- `npm run build`: passed 92/92.
+- Targeted algorithmic KR-set tests: passed after implementation.
+- `npm test`: passed 95/95.
+- `npm run build`: passed 95/95.
 - `npm run check`: passed.
 - `npm run test:browser`: skipped; no browser behavior changed.
 
@@ -69,7 +76,7 @@ AI path: `src/ai-service.js` sends a system instruction plus graph task prompt t
 
 Fallback path: if credentials are missing, the provider fails, or output is invalid, `src/generator.js` creates a deterministic compact planning graph. This is not the focus of this improvement.
 
-Clarification path: user influenceability and gap ratings are applied after graph generation. They affect rankings and final KR selection over the planning graph, not the rich `fullGraph`.
+Clarification path: user influenceability and gap ratings are applied after graph generation. They affect rankings and final KR selection over the planning graph, not the rich `fullGraph`. The KR model now also carries `candidateKeyResultSets`, a local algorithmic ranking of alternative 3-5 KR sets.
 
 ## Findings
 
@@ -81,19 +88,18 @@ Clarification path: user influenceability and gap ratings are applied after grap
 
 ## Recommended Next Increment
 
-Implement local normalization quality gates for graph shape and connectivity:
+Implement an inspection surface for algorithmic KR-set alternatives:
 
-- validate or repair exactly one outcome node per graph;
-- require planning nodes to be a meaningful subset of the full graph when ids match;
-- preserve coverage across evidence, experience, drivers, upstream constraints/capabilities, and failure modes;
-- reject or fall back on undersized/disconnected planning graphs;
-- decide whether local convergence scoring should supplement model-only convergence.
+- render the top candidate sets and their score components;
+- compare the algorithmic top set against any AI-selected KRs;
+- add normalization quality gates for graph shape/connectivity, branch coverage, subset quality, and exactly-one-outcome validation;
+- decide whether final KR selection should always be algorithmic, AI-critiqued, or user-selected from alternatives.
 
 ## GitHub Backfill
 
 When GitHub is back:
 
-- Create issue: "Generate rich causal map before converging to planning graph".
+- Create issue: "Generate rich causal map and explore algorithmic KR-set selection".
 - Add to Project 4.
 - Set Agent Status to `Review`.
 - Link branch `feature/0-graph-generation-characterization`.
