@@ -21,7 +21,7 @@ GitHub was unavailable on 2026-08-17, so graph-generation work started locally o
 ## Next best actions
 
 1. **Backfill the offline graph-generation characterization.** Create the GitHub issue, add it to Project 4, and set Agent Status to match the real state once GitHub is available.
-2. **Start the next graph-generation improvement.** Recommended first behavior slice: add normalization quality gates for exactly one outcome, outcome connectivity, stage-forward edges, and evidence/experience paths.
+2. **Start the next graph-generation improvement.** Recommended first behavior slice: redesign the AI graph prompt/schema around rich-map-then-converge: a broad `fullGraph`, a smaller `planningGraph`, explicit convergence rationale, and tests that pin the prompt before live AI calls.
 3. **Run a delta retro on every increment.** Three fields in the increment report, per the tiered principle 10 adopted in #35. The full multi-role retrospective now runs only on a named trigger. No retrospectives are owed.
 
 ## Remaining operating-model work

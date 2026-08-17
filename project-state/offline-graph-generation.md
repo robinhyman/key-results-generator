@@ -6,27 +6,27 @@ GitHub was unavailable when this increment started, so this file is the local sh
 
 ## Shadow Issue
 
-Summary: Characterize current graph generation before changing graph quality.
+Summary: Characterize and improve the AI graph-generation prompt before changing graph behavior.
 
-User outcome: The next graph-generation improvement should target a named failure mode instead of making broad prompt or fallback changes.
+User outcome: The next graph-generation improvement should make the AI-generated causal map richer and closer to the user’s manual Miro-style exploration, then converge that map into a usable planning graph.
 
 Acceptance criteria:
 
-- [x] Current graph-generation path is mapped from browser/API to AI and deterministic fallback.
-- [x] Deterministic fallback output is sampled across several objectives.
-- [x] Concrete improvement candidates are identified and ordered for the next increment.
+- [x] Current AI graph-generation instructions, prompt size limits, schema limits, and normalization behavior are mapped.
+- [x] The current 8-10 node prompt limit is identified as the likely cause of undersized graphs.
+- [x] Rich-map-then-converge design choice is recorded for implementation.
 - [x] Verification plan and GitHub outage handling are recorded locally.
 
 Verification plan:
 
 - Automated: run `npm run check` after state updates.
-- Manual: inspect `src/generator.js`, `src/ai-service.js`, `server.js`, and graph tests; sample fallback graphs for several objectives.
+- Manual: inspect `src/ai-service.js`, graph prompt/schema tests, and the local graph request path.
 - Test-first: skipped because this increment characterizes existing behavior and does not change product behavior.
 - Demo: not required for a non-behavioral characterization increment.
 
 Scope:
 
-- In scope: current generation mechanics, quality risks, local handoff.
+- In scope: current AI prompt mechanics, graph size constraints, convergence design, local handoff.
 - Out of scope: behavior changes, live AI quality evaluation, GitHub issue/project updates while GitHub is down.
 
 Model use:
@@ -42,23 +42,29 @@ API: `server.js` validates a non-empty objective, then calls `generateAiCausalMe
 
 AI path: `src/ai-service.js` sends a system instruction plus graph task prompt to the Responses API using strict JSON schema. It then normalizes nodes, edges, ids, stages, scores, directions, and returns rankings from local `rankVariables`.
 
-Fallback path: if credentials are missing, the provider fails, or output is invalid, `src/generator.js` creates a deterministic graph from fixed node and edge blueprints.
+Fallback path: if credentials are missing, the provider fails, or output is invalid, `src/generator.js` creates a deterministic graph. This is not the focus of the next improvement.
 
 Clarification path: user influenceability and gap ratings are applied after graph generation. They affect rankings and final KR selection, not the original generated graph structure.
 
 ## Findings
 
-1. Deterministic fallback is structurally stable but too generic. Across objectives like onboarding activation, enterprise churn, and developer productivity, the node ids, edge topology, impacts, confidences, and ranking order are identical; only labels change.
-2. Objective parsing is shallow. `extractFocus` removes a few verbs and stop words, then uses up to three remaining words. This creates awkward labels such as "enterprise churn success rate" for a reduction objective.
-3. AI prompt asks for domain-specific variables, but normalization does not enforce quality beyond schema shape. It accepts disconnected edges, multiple outcome nodes, missing outcome edges, weak stage ordering, and thin domain coverage if the schema passes.
-4. Ranking is local and formulaic. AI-supplied scores are not accepted as rankings; local ranking recomputes from impact, confidence, influenceability, gap, and type weight. This is good for consistency but can flatten domain nuance.
-5. Tests cover structure, fallback diagnostics, instruction presence, KR mix, and trace redaction. They do not yet pin graph-quality expectations such as one outcome, connectedness to outcome, stage-forward edges, objective-sensitive fallback labels, or domain-specific diversity.
+1. The AI graph prompt explicitly says: "Use 8 to 10 nodes, including exactly one outcome node at stage 4." This is probably too small for the intended causal-discovery workflow.
+2. The schema allows 4 to 12 nodes and up to 16 edges, so both prompt and schema are biased toward a compact graph.
+3. The product direction should support divergent causal mapping before convergence. The user’s manual Miro graph had roughly 52 nodes, so an 8-10 node AI graph is too much compression too early.
+4. Convergence should be explicit: remove weak nodes, score planning usefulness, preserve causal branch coverage, keep useful paths, deduplicate by meaning, then let user clarification re-rank the shortlist.
+5. The deterministic fallback is secondary for this work. Optimize the AI prompt and response contract first.
 
 ## Recommended Next Increment
 
-Start with graph normalization quality gates, not prompt tuning. Add tests and validation for exactly one outcome node, all non-outcome nodes connected to the outcome through directed edges, no stage-regressing edges, and at least one evidence or experience path into the outcome. This improves both AI and fallback safety without live-provider spend.
+Start with prompt/schema redesign for rich AI graph generation:
 
-After that, improve fallback objective sensitivity so reduction objectives produce natural labels and directions, then tune the AI prompt if needed.
+- ask for a rich `fullGraph` around 40-60 nodes;
+- ask for a converged `planningGraph` around 12-18 nodes;
+- require the model to explain why planning nodes survived convergence;
+- preserve coverage across outcome evidence, experience measures, operating drivers, upstream constraints or capabilities, and failure modes;
+- update tests to pin the exact graph prompt and schema limits before making live AI calls.
+
+Then implement local convergence validation/scoring if model-only convergence is too unstable.
 
 ## GitHub Backfill
 
