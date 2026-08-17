@@ -16,12 +16,13 @@ All four operating-model audit increments are merged: #22 mechanical enforcement
 
 Branch protection is enabled as of 2026-08-16: the `main: require increment-check` ruleset requires a PR and a passing `increment-check`, with no bypass actors. CI is now genuinely binding, which was the largest known enforcement gap.
 
-GitHub was unavailable on 2026-08-17, so graph-generation work started locally on `feature/0-graph-generation-characterization`. The shadow issue, characterization findings, verification plan, and backfill steps are in `project-state/offline-graph-generation.md`.
+GitHub was unavailable on 2026-08-17, so graph-generation work continued locally on `feature/0-graph-generation-characterization`. The branch now has a local rich graph contract implementation: the AI graph prompt asks for `fullGraph` plus `planningGraph`, the schema requires both, and normalization preserves the rich graph while using the planning graph for current rankings/KR flow. The shadow issue, implementation report, verification plan, delegation evidence, and backfill steps are in `project-state/offline-graph-generation.md`.
 
 ## Next best actions
 
-1. **Backfill the offline graph-generation characterization.** Create the GitHub issue, add it to Project 4, and set Agent Status to match the real state once GitHub is available.
-2. **Start the next graph-generation improvement.** Recommended first behavior slice: redesign the AI graph prompt/schema around rich-map-then-converge: a broad `fullGraph`, a smaller `planningGraph`, explicit convergence rationale, and tests that pin the prompt before live AI calls.
+1. **Finish local verification for the rich graph contract.** `npm test` passed 92/92. Run `npm run build` and `npm run check` before handoff/commit if they have not already been recorded in `project-state/offline-graph-generation.md`.
+2. **Backfill the offline graph contract implementation.** Create the GitHub issue, add it to Project 4, set Agent Status to `Review`, push the branch, and open a PR once GitHub is available.
+3. **Start the next graph-generation improvement.** Recommended next behavior slice: local normalization quality gates for graph shape/connectivity, branch coverage, full/planning subset quality, and exactly-one-outcome validation.
 3. **Run a delta retro on every increment.** Three fields in the increment report, per the tiered principle 10 adopted in #35. The full multi-role retrospective now runs only on a named trigger. No retrospectives are owed.
 
 ## Remaining operating-model work

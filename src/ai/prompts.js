@@ -8,11 +8,16 @@ const sharedSystemInstruction = [
 ].join(" ");
 
 const graphTaskInstruction = [
-  "Create a causal metrics graph for the objective.",
-  "Treat the objective as the downstream outcome, then work backward through measurable evidence, experience factors, operating drivers, upstream causes, and failure modes.",
+  "Create a rich causal map for the objective, then converge it into a smaller planning graph.",
+  "Treat the objective as the downstream outcome, then work backward through measurable outcome evidence, experience factors, operating drivers, upstream constraints or capabilities, and failure modes.",
   "Use domain-specific variables that a team could plausibly understand and influence during an OKR period.",
   "Prefer concrete measurable factors over generic activity, effort, engagement, or vanity metrics.",
-  "Include one outcome node, useful non-outcome nodes across stages 1-3, and directional cause-to-effect edges with concise rationales.",
+  "Build fullGraph first as broad causal discovery, comparable to a manual whiteboard exploration.",
+  "Then build planningGraph by removing duplicate, vague, non-measurable, activity-shaped, and disconnected nodes.",
+  "Select planningGraph nodes by outcome proximity, causal leverage, measurability, influenceability, diagnostic value, planning relevance, and penalties for externality, vanity metrics, and redundancy.",
+  "Preserve causal branch coverage and useful paths across outcome evidence, experience measures, operating drivers, upstream constraints or capabilities, and failure modes.",
+  "Include exactly one outcome node at stage 4 in each graph, useful non-outcome nodes across stages 1-3, and directional cause-to-effect edges with concise rationales.",
+  "Add convergenceRationale to every planningGraph node explaining why it survived convergence.",
   "Estimate impact, confidence, influenceability, stage, and desired direction for each node.",
   "Return only schema-valid JSON.",
 ].join(" ");
@@ -33,8 +38,9 @@ export function buildGraphPrompt(objective) {
   return [
     `Objective: ${objective}`,
     graphTaskInstruction,
-    "Use 8 to 10 nodes, including exactly one outcome node at stage 4.",
+    "Use 40 to 60 nodes in fullGraph and 12 to 18 nodes in planningGraph.",
     "Use stable lowercase kebab-case ids. Scores are integers from 1 to 100. Stages are integers 1 to 4.",
+    "planningGraph nodes should be a meaningful subset of fullGraph nodes unless a retained node needs a clearer consolidated id.",
     "Return only data that fits the schema.",
   ].join("\n");
 }

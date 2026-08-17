@@ -178,61 +178,53 @@ test("rankVariables sorts by KR suitability and excludes the top outcome", () =>
 test("generateAiCausalMetricsGraph normalizes mocked AI graph output", async () => {
   const graph = await generateAiCausalMetricsGraph("Improve onboarding activation", {
     apiKey: "test-key",
-    fetch: async () => jsonResponse({
-      summary: "Activation depends on speed, clarity, and early value.",
-      nodes: [
-        aiNode("activation", "outcome", "Improve onboarding activation", 4, false),
-        aiNode("time-to-value", "driver", "Time to first value", 2, true, "reduce"),
-        aiNode("setup-completion", "evidence", "Setup completion rate", 3, true),
-        aiNode("guided-help", "upstream-driver", "Guided help quality", 1, true),
-      ],
-      edges: [
-        aiEdge("guided-help", "time-to-value"),
-        aiEdge("time-to-value", "setup-completion"),
-        aiEdge("setup-completion", "activation"),
-      ],
-    }),
+    fetch: async () => jsonResponse(richAiGraphResponse()),
   });
 
   assert.equal(graph.objective, "Improve onboarding activation");
   assert.equal(graph.generation.mode, "ai");
   assert.equal(graph.nodes.length, 4);
   assert.equal(graph.edges.length, 3);
+  assert.equal(graph.fullGraph.nodes.length, 6);
+  assert.equal(graph.planningGraph.nodes.length, 4);
   assert.ok(graph.rankings.some((variable) => variable.id === "time-to-value"));
 });
 
-test("generateAiCausalMetricsGraph sends approved shared and graph instructions", async () => {
+test("generateAiCausalMetricsGraph sends approved rich-map and convergence instructions", async () => {
   let requestBody;
   await generateAiCausalMetricsGraph("Improve onboarding activation", {
     apiKey: "test-key",
     fetch: async (_url, options) => {
       requestBody = JSON.parse(options.body);
-      return jsonResponse({
-        summary: "Activation depends on speed, clarity, and early value.",
-        nodes: [
-          aiNode("activation", "outcome", "Improve onboarding activation", 4, false),
-          aiNode("time-to-value", "driver", "Time to first value", 2, true, "reduce"),
-          aiNode("setup-completion", "evidence", "Setup completion rate", 3, true),
-          aiNode("guided-help", "upstream-driver", "Guided help quality", 1, true),
-        ],
-        edges: [
-          aiEdge("guided-help", "time-to-value"),
-          aiEdge("time-to-value", "setup-completion"),
-          aiEdge("setup-completion", "activation"),
-        ],
-      });
+      return jsonResponse(richAiGraphResponse());
     },
   });
 
+  const schema = requestBody.text.format.schema;
+
+  assert.deepEqual(schema.required, ["summary", "fullGraph", "planningGraph"]);
+  assert.equal(schema.properties.fullGraph.properties.nodes.minItems, 20);
+  assert.equal(schema.properties.fullGraph.properties.nodes.maxItems, 70);
+  assert.equal(schema.properties.planningGraph.properties.nodes.minItems, 4);
+  assert.equal(schema.properties.planningGraph.properties.nodes.maxItems, 20);
+  assert.equal(schema.properties.planningGraph.properties.edges.maxItems, 32);
+  assert.ok(schema.properties.planningGraph.properties.nodes.items.properties.convergenceRationale);
   assert.match(requestBody.input[0].content, /OKR planning analyst/);
   assert.match(requestBody.input[0].content, /graph-backed OKR planning data/);
   assert.match(requestBody.input[0].content, /do not invent external facts/);
-  assert.match(requestBody.input[1].content, /causal metrics graph/);
+  assert.match(requestBody.input[1].content, /rich causal map/);
+  assert.match(requestBody.input[1].content, /fullGraph/);
+  assert.match(requestBody.input[1].content, /planningGraph/);
+  assert.match(requestBody.input[1].content, /40 to 60 nodes/);
+  assert.match(requestBody.input[1].content, /12 to 18 nodes/);
+  assert.doesNotMatch(requestBody.input[1].content, /8 to 10 nodes/);
   assert.match(requestBody.input[1].content, /downstream outcome/);
   assert.match(requestBody.input[1].content, /failure modes/);
   assert.match(requestBody.input[1].content, /domain-specific variables/);
   assert.match(requestBody.input[1].content, /concrete measurable factors/);
   assert.match(requestBody.input[1].content, /vanity metrics/);
+  assert.match(requestBody.input[1].content, /duplicate, vague, non-measurable, activity-shaped, and disconnected nodes/);
+  assert.match(requestBody.input[1].content, /Preserve causal branch coverage/);
 });
 
 test("generateAiCausalMetricsGraph falls back when no API key is configured", async () => {
@@ -250,6 +242,19 @@ test("normalizeAiGraph rejects malformed graph output", () => {
     () => normalizeAiGraph("Improve onboarding activation", { nodes: [], edges: [] }),
     /at least four nodes/,
   );
+});
+
+test("normalizeAiGraph keeps the rich full graph while using planning graph for rankings", () => {
+  const graph = normalizeAiGraph("Improve onboarding activation", richAiGraphResponse());
+
+  assert.deepEqual(
+    graph.nodes.map((node) => node.id),
+    ["activation", "time-to-value", "setup-completion", "guided-help"],
+  );
+  assert.equal(graph.fullGraph.nodes.length, 6);
+  assert.equal(graph.fullGraph.edges.length, 5);
+  assert.equal(graph.planningGraph.nodes.length, 4);
+  assert.equal(graph.rankings.some((variable) => variable.id === "qualitative-comment"), false);
 });
 
 test("generateAiKeyResultsModel preserves clarification traceability from mocked AI output", async () => {
@@ -702,6 +707,41 @@ function aiEdge(source, target) {
     target,
     rationale: `${source} affects ${target}`,
     strength: 78,
+  };
+}
+
+function richAiGraphResponse() {
+  const fullNodes = [
+    aiNode("activation", "outcome", "Improve onboarding activation", 4, false),
+    aiNode("time-to-value", "driver", "Time to first value", 2, true, "reduce"),
+    aiNode("setup-completion", "evidence", "Setup completion rate", 3, true),
+    aiNode("guided-help", "upstream-driver", "Guided help quality", 1, true),
+    aiNode("qualitative-comment", "experience", "Qualitative comments about onboarding", 3, true),
+    aiNode("support-backlog", "failure-mode", "Support backlog from onboarding confusion", 1, true, "reduce"),
+  ];
+  const fullEdges = [
+    aiEdge("support-backlog", "guided-help"),
+    aiEdge("guided-help", "time-to-value"),
+    aiEdge("time-to-value", "setup-completion"),
+    aiEdge("setup-completion", "activation"),
+    aiEdge("qualitative-comment", "activation"),
+  ];
+
+  return {
+    summary: "Activation depends on speed, clarity, and early value.",
+    fullGraph: {
+      summary: "A broad causal map with discarded and retained discovery nodes.",
+      nodes: fullNodes,
+      edges: fullEdges,
+    },
+    planningGraph: {
+      summary: "A converged planning graph for clarification and KR selection.",
+      nodes: fullNodes.slice(0, 4).map((node) => ({
+        ...node,
+        convergenceRationale: `${node.label} remains measurable, influenceable, and causally useful.`,
+      })),
+      edges: fullEdges.slice(1, 4),
+    },
   };
 }
 

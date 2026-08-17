@@ -1,6 +1,6 @@
 # Index
 
-Last updated: 2026-08-16
+Last updated: 2026-08-17
 
 The only state file a session must read. Everything else is read on demand.
 
@@ -24,13 +24,15 @@ npm run check        # process gates (also run by git hooks and CI)
 
 `main` is green. Issues #1-#35 are closed. Process gates are enforced mechanically by `ai-team/bin/increment-check.mjs` via git hooks and the `Process / increment-check` CI job. Branch protection is active, so CI is binding.
 
+GitHub is currently unavailable for this workstream. Local graph-generation work is on `feature/0-graph-generation-characterization`; the shadow issue/report and backfill list are in `project-state/offline-graph-generation.md`.
+
 ## Active work
 
 See `project-state/task-ledger.md`, which owns active, blocked, and next work.
 
 ## Next action
 
-The 2026-08-16 process audits are closed out. Choose the next product direction with the user: durable persistence, graph editing, or hosted deployment.
+Finish local verification for the rich graph contract, then backfill the issue, Project status, branch push, and PR when GitHub returns.
 
 ## Where things live
 

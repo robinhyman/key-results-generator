@@ -19,23 +19,19 @@ export function normalizeAiGraph(objective, response) {
     throw new Error("AI graph response must be an object.");
   }
 
-  const nodes = normalizeNodes(response.nodes);
-  const nodeIds = new Set(nodes.map((node) => node.id));
-  const edges = normalizeEdges(response.edges, nodeIds);
+  const fullGraph = normalizeGraphContainer(objective, response.fullGraph ?? response, {
+    maxNodes: 70,
+    maxEdges: 120,
+    includeFallbackOutcome: true,
+  });
+  const planningGraph = normalizeGraphContainer(objective, response.planningGraph ?? response, {
+    maxNodes: 20,
+    maxEdges: 32,
+    includeFallbackOutcome: true,
+  });
 
-  if (!nodes.some((node) => node.type === "outcome")) {
-    nodes.push({
-      id: "outcome",
-      type: "outcome",
-      label: objective,
-      description: "The downstream outcome the objective is trying to create.",
-      impact: 100,
-      confidence: 85,
-      influenceable: false,
-      stage: 4,
-      direction: "improve",
-    });
-  }
+  const nodes = planningGraph.nodes;
+  const edges = planningGraph.edges;
 
   return {
     objective,
@@ -44,6 +40,8 @@ export function normalizeAiGraph(objective, response) {
     edges,
     rankings: rankVariables(nodes),
     assessments: {},
+    fullGraph,
+    planningGraph,
   };
 }
 
@@ -96,15 +94,30 @@ export function normalizeGraphInput(graph) {
     return null;
   }
 
-  const nodes = normalizeNodes(graph.nodes);
+  const nodes = normalizeNodes(graph.nodes, { maxNodes: 20 });
+  const edges = normalizeEdges(graph.edges, new Set(nodes.map((node) => node.id)), { maxEdges: 32 });
 
   return {
     objective: normalizeObjective(graph.objective),
     summary: cleanText(graph.summary),
     nodes,
-    edges: normalizeEdges(graph.edges, new Set((graph.nodes ?? []).map((node) => cleanId(node.id)))),
+    edges,
     rankings: rankVariables(nodes),
     assessments: graph.assessments && typeof graph.assessments === "object" ? graph.assessments : {},
+    fullGraph: graph.fullGraph
+      ? normalizeGraphContainer(normalizeObjective(graph.objective), graph.fullGraph, {
+        maxNodes: 70,
+        maxEdges: 120,
+        includeFallbackOutcome: false,
+      })
+      : undefined,
+    planningGraph: graph.planningGraph
+      ? normalizeGraphContainer(normalizeObjective(graph.objective), graph.planningGraph, {
+        maxNodes: 20,
+        maxEdges: 32,
+        includeFallbackOutcome: false,
+      })
+      : undefined,
   };
 }
 
@@ -115,17 +128,41 @@ export function relatedDriverLabels(variableId, graph) {
     .filter(Boolean);
 }
 
-function normalizeNodes(nodes) {
+function normalizeGraphContainer(objective, graph, { maxNodes, maxEdges, includeFallbackOutcome }) {
+  const nodes = normalizeNodes(graph?.nodes, { maxNodes });
+  if (includeFallbackOutcome && !nodes.some((node) => node.type === "outcome")) {
+    nodes.push({
+      id: "outcome",
+      type: "outcome",
+      label: objective,
+      description: "The downstream outcome the objective is trying to create.",
+      impact: 100,
+      confidence: 85,
+      influenceable: false,
+      stage: 4,
+      direction: "improve",
+    });
+  }
+
+  return {
+    summary: cleanText(graph?.summary),
+    nodes,
+    edges: normalizeEdges(graph?.edges, new Set(nodes.map((node) => node.id)), { maxEdges }),
+  };
+}
+
+function normalizeNodes(nodes, { maxNodes } = {}) {
   if (!Array.isArray(nodes) || nodes.length < 4) {
     throw new Error("AI graph response must include at least four nodes.");
   }
 
-  return nodes.slice(0, 12).map((node, index) => {
+  return nodes.slice(0, maxNodes ?? 12).map((node, index) => {
     const id = cleanId(node.id) || `metric-${index + 1}`;
     const type = graphTypes.has(node.type) ? node.type : "driver";
     const stage = clampNumber(node.stage, type === "outcome" ? 4 : 2, 1, 4);
+    const convergenceRationale = cleanText(node.convergenceRationale);
 
-    return {
+    const normalizedNode = {
       id,
       type,
       label: cleanText(node.label) || titleFromId(id),
@@ -136,16 +173,22 @@ function normalizeNodes(nodes) {
       stage,
       direction: cleanDirection(node.direction),
     };
+
+    if (convergenceRationale) {
+      normalizedNode.convergenceRationale = convergenceRationale;
+    }
+
+    return normalizedNode;
   });
 }
 
-function normalizeEdges(edges, nodeIds) {
+function normalizeEdges(edges, nodeIds, { maxEdges } = {}) {
   if (!Array.isArray(edges)) {
     return [];
   }
 
   return edges
-    .slice(0, 16)
+    .slice(0, maxEdges ?? 16)
     .map((edge, index) => ({
       id: cleanId(edge.id) || `rel-${index + 1}`,
       source: cleanId(edge.source),
