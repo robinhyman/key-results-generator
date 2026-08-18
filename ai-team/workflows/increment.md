@@ -104,6 +104,7 @@ An increment is done only when all applicable checks below are true.
 ### Evidence Exists
 
 - User-facing work has a verified app/demo link plus supporting evidence such as a screenshot, test result, or written verification note.
+- User-facing PR reports must include durable demo evidence: screenshot, recording, artifact, committed evidence path, log, or trace reference. A bare local URL is not enough.
 - Non-visual work has test output, logs, or another concrete verification artifact.
 
 ### Next Increment Is Clear

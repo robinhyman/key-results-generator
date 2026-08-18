@@ -21,7 +21,7 @@ This file is authoritative on what these gates *say*. Workflow and role docs app
 1. **`Done` requires a checked link.** An increment is `Done` only when it runs in the target demonstration environment, the Lead has opened the link and confirmed the behavior, and the report gives the user a link they can open. If the link is local, the server must still be running when it is handed over.
 2. **Never handle credentials unsafely.** Never print, commit, or copy a key value into repo files, logs, issue comments, or chat.
 3. **Human approval before irreversible action.** Destructive operations, credential changes, production deployment, billing, legal commitments, and irreversible data changes require the user's approval first.
-4. **Operating-doc changes require user approval.** The Lead may propose changes to the constitution, workflows, templates, role specs, model policy, or project profiles, but must not apply them unapproved.
+4. **Operating-doc changes need explicit authority.** The Lead may change the constitution, workflows, templates, role specs, model policy, or project profiles only when Robin has approved the change or a standing autonomous-maintenance policy covers it. Major operating-model direction changes still require Robin.
 5. **Never hide failures.** Failing, skipped, or unrun checks must be reported explicitly, with their risk. Do not summarise them away.
 6. **GitHub Project status must reflect reality.** Move an issue to `In Progress` when work starts, and update it promptly when it becomes blocked, enters review, or completes. If the Project cannot be updated, say so in the issue and the handoff.
 7. **Every increment has a verification plan before implementation.** It may be brief, but it must exist.
@@ -47,6 +47,7 @@ CI is the binding gate — hooks are bypassable with `--no-verify`.
 | Verification planning and failure handling | `workflows/testing.md` |
 | Turning goals into issues | `workflows/intake-and-specification.md` |
 | Branch, PR, and merge policy | `workflows/branch-and-pr.md` |
+| Final checks, autonomous merge, and closeout | `workflows/merge-closeout.md` |
 | Model tiers and delegation | `model-policy.md` |
 | Issues, Projects, labels | `github-workflow.md` |
 | Working while GitHub is unavailable | `workflows/offline-backfill.md` |
@@ -56,5 +57,7 @@ CI is the binding gate — hooks are bypassable with `--no-verify`.
 | Templates | `templates/` |
 | Project-specific delivery rules | `project-profiles/` |
 | Current project state | `project-state/index.md` |
+
+Prefer autonomous merge for routine low- and medium-risk increments once the gates pass and no human-approval trigger applies.
 
 Rules live only in `ai-team/`. No harness-specific instruction file may contain a rule — at most a pointer to this file.

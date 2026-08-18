@@ -8,15 +8,14 @@ This file owns active, blocked, and next work. `index.md` points here rather tha
 
 ## Active
 
-- `#41` Harden process-review evidence and offline backfill workflow. PR: `#42`. Agent Status: Review.
+- `#43` Automate closeout evidence and reduce routine human PR approvals. Branch: `chore/43-autonomous-closeout-evidence`.
 
 ## Blocked
 
 - None.
 
 ## Next
-- Start the next graph-generation improvement increment: render/inspect algorithmic candidate sets, then add normalization quality gates for graph shape, branch coverage, subset quality, and connectivity.
-- Remaining operating-model work from the 2026-08-16 audits after #41: canonical gate-restatement consistency and durable demo evidence.
+- After #43, start the next graph-generation improvement increment: render/inspect algorithmic candidate sets, then add normalization quality gates for graph shape, branch coverage, subset quality, and connectivity.
 
 ## Completed
 

@@ -48,6 +48,8 @@ Target environment:
 
 Checked app/demo link:
 
+Durable demo evidence, if user-facing:
+
 What was checked, and the result:
 
 ## Review
@@ -83,6 +85,8 @@ Delegation gate satisfied, or which exemption applied:
 Worker tasks delegated, and to which tier:
 
 Worker evidence returned:
+
+Lightweight model-use telemetry:
 
 Tasks kept on a high-capability model, and why:
 

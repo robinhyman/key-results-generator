@@ -11,6 +11,7 @@ This policy defines how code increments move from local work to reviewable chang
 - Prefer draft PRs for code increments before final review.
 - Link PRs to their GitHub issue.
 - Do not merge or close the issue until the Increment Definition Of Done is satisfied.
+- Routine low- and medium-risk PRs may be merged autonomously after `ai-team/workflows/merge-closeout.md` passes and no human-approval trigger applies.
 
 ## Branch Naming
 
@@ -34,8 +35,10 @@ Each PR should include:
 - Acceptance criteria status.
 - Test-first status.
 - Verification run.
+- Process-review evidence.
 - Model use summary, including cheaper/faster worker tasks delegated, worker model tier, worker evidence, and any delegation exception.
-- Demo/deployment link when available.
+- Demo/deployment link when available, plus durable evidence for user-facing changes.
+- Project-status check result before merge/Done.
 - Known risks or skipped checks.
 - Follow-up issues.
 
@@ -50,6 +53,8 @@ Ask for human approval before:
 - Billing, legal, or permission-impacting changes.
 - Any change the Lead cannot confidently verify.
 
+Robin approval is not required for routine low- or medium-risk increments when CI, process review, verification, Project status, and closeout checks pass, including operating-model maintenance covered by the standing autonomous-maintenance authority.
+
 ## Merge Guidance
 
 Merge only when:
@@ -58,4 +63,6 @@ Merge only when:
 - Required checks pass or skipped checks are justified.
 - The required cheaper/faster worker delegation evidence is present, or a documented delegation exception is justified.
 - The target demo/deployment link has been checked.
+- Durable demo evidence is present for user-facing changes, or the PR explicitly declares that no user-facing change applies.
 - GitHub Project status and issue comments are current.
+- `ai-team/workflows/merge-closeout.md` has passed.

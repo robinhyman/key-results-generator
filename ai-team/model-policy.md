@@ -124,3 +124,4 @@ Every substantial increment report should include:
 - Which tasks used a high-capability model and why.
 - Whether the required delegation gate was satisfied or an exception was used.
 - Any obvious missed opportunity to use a cheaper model next time.
+- Lightweight telemetry: count of Lead turns, worker count, and any known expensive reruns. Estimate only when exact token counts are unavailable.
