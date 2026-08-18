@@ -20,18 +20,15 @@ GitHub was unavailable on 2026-08-17, so graph-generation work continued locally
 
 ## Next best actions
 
-1. **Review PR #42 for issue #41.** Scope: process-review evidence in reports/checker plus a reusable GitHub-unavailable/offline backfill workflow.
+1. **Complete PR #44 for issue #43.** Scope: state compaction, hard-gate restatement check, durable demo evidence gate, Project status checker, merge-closeout workflow, lightweight model telemetry, and broader checker tests.
 2. **Then start the next graph-generation improvement.** Recommended next behavior slice: render/inspect algorithmic candidate sets, then add local normalization quality gates for graph shape/connectivity, branch coverage, full/planning subset quality, and exactly-one-outcome validation.
-3. **Run a delta retro on every increment.** Three fields in the increment report, per the tiered principle 10 adopted in #35. The full multi-role retrospective now runs only on a named trigger.
+3. **Run a delta retro on every increment.** Three fields in the increment report, per the tiered principle 10 adopted in #35.
 
 ## Remaining operating-model work
 
-From the 2026-08-16 audits, approved by the user but not yet done:
+From the 2026-08-16 audits, approved by the user but not yet done after #43:
 
 - Consider rewriting operating docs from prose to checklists. Lower value now that tiering keeps most docs off the mandatory read path — reassess before spending on it.
-- Nothing keeps gate restatements in workflow and role docs consistent with the canonical text in `ai-team/README.md`. A gate change currently needs a manual sweep; consider a checker rule.
-- Add a process-review task to the increment workflow so a cheap worker checks the increment report against the DoD, breaking the Lead's self-grading loop.
-- Make demo evidence durable — a committed screenshot or recording rather than a `127.0.0.1` link that dies with the server.
 
 ### Deliberately deferred
 

@@ -205,4 +205,5 @@ Whether this blocks the current task or should be handled separately.
 9. Update project state files.
 10. Comment a concise result or increment report on the issue.
 11. Open or update a PR when code is ready.
-12. Move the issue to `Review` or `Done` only when that status is true. `Done` requires a checked working app/demo link in the issue comment.
+12. Before merge, run `npm run check:project -- --issue=NUMBER --agent-status="Review"` or record the exact blocker.
+13. Move the issue to `Review` or `Done` only when that status is true. `Done` requires a checked working app/demo link or explicit non-user-facing declaration in the issue comment.

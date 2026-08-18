@@ -263,21 +263,21 @@
     "expect": "pass",
     "reason": "rule 4 satisfied: valid URL in Demonstration section",
     "event": "pull_request",
-    "body": "## Verification\nFull test suite passing.\n\n## Demonstration\nView the changes at https://staging-env.example.com/features/new-validation-gate\n\n## Process Review\nLow-cost worker checked the increment report against the DoD and found no unresolved process concerns.\n\n## Model Use\nDelegated to cheaper worker.\n\n## Documentation\nUpdated all references."
+    "body": "## Verification\nFull test suite passing.\n\n## Demonstration\nView the changes at https://staging-env.example.com/features/new-validation-gate\nDurable evidence: screenshot artifact attached to the PR.\n\n## Process Review\nLow-cost worker checked the increment report against the DoD and found no unresolved process concerns.\n\n## Model Use\nDelegated to cheaper worker.\n\n## Documentation\nUpdated all references."
   },
   {
     "name": "https-url-in-demonstration",
     "expect": "pass",
     "reason": "rule 4 satisfied: valid HTTPS URL in Demonstration",
     "event": "pull_request",
-    "body": "## Verification\nAll tests pass.\n\n## Demonstration\nhttps://example.com/pr-preview/abc123\n\n## Process Review\nLow-cost worker checked the increment report against the DoD and found no unresolved process concerns.\n\n## Model Use\nDelegated review to cheaper worker.\n\n## Documentation\nAdded docs."
+    "body": "## Verification\nAll tests pass.\n\n## Demonstration\nhttps://example.com/pr-preview/abc123\nDurable evidence: screenshot artifact attached to the PR.\n\n## Process Review\nLow-cost worker checked the increment report against the DoD and found no unresolved process concerns.\n\n## Model Use\nDelegated review to cheaper worker.\n\n## Documentation\nAdded docs."
   },
   {
     "name": "uppercase-headings-with-real-link",
     "expect": "pass",
     "reason": "rule 2: heading matching is case-insensitive, isolated from the declaration rule",
     "event": "pull_request",
-    "body": "## VERIFICATION\nnpm run build passed 39/39.\n\n## DEMONSTRATION\nChecked link: http://127.0.0.1:5173/ and confirmed the graph renders.\n\n## Process Review\nLow-cost worker checked the increment report against the DoD and found no unresolved process concerns.\n\n## Model Use\nDelegated the smoke check to a low-cost worker.\n\n## DOCUMENTATION\nNo doc impact; behaviour unchanged."
+    "body": "## VERIFICATION\nnpm run build passed 39/39.\n\n## DEMONSTRATION\nChecked link: http://127.0.0.1:5173/ and confirmed the graph renders.\nDurable evidence: screenshot artifact attached to the PR.\n\n## Process Review\nLow-cost worker checked the increment report against the DoD and found no unresolved process concerns.\n\n## Model Use\nDelegated the smoke check to a low-cost worker.\n\n## DOCUMENTATION\nNo doc impact; behaviour unchanged."
   },
   {
     "name": "demonstration-embedded-no-user-facing-clause",

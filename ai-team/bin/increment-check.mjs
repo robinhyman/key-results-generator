@@ -33,6 +33,7 @@ const CONFIG = {
     stateBudget: 'fail',
     reportSections: 'fail',
     stateCoherence: 'fail',
+    hardGateRestatements: 'fail',
   },
 
   // Line budgets. decisions.md is legitimately append-only durable truth, so it
@@ -83,6 +84,8 @@ const CONFIG = {
     { re: /OPENAI_API_KEY\s*[=:]\s*['"]?sk-/, label: 'assigned OPENAI_API_KEY value' },
     { re: /Authorization:\s*Bearer\s+[A-Za-z0-9._-]{20,}/i, label: 'Bearer credential' },
   ],
+
+  canonicalHardGatePath: 'ai-team/README.md',
 };
 
 // ---------------------------------------------------------------------------
@@ -369,6 +372,27 @@ function checkStateBudget() {
   if (clean) pass('stateBudget', 'all state files within budget');
 }
 
+function checkHardGateRestatements() {
+  const offenders = trackedFiles().filter((file) => {
+    if (file === CONFIG.canonicalHardGatePath) return false;
+    if (!existsSync(file)) return false;
+    const content = readFileSync(file, 'utf8');
+    return /^#{2,6}\s+Hard gates?\b/im.test(content);
+  });
+
+  if (offenders.length > 0) {
+    problem('hardGateRestatements', {
+      message: 'Hard-gate sections must not be restated outside the canonical operating-system README.',
+      offender: offenders.join('\n'),
+      fix: `Point readers to ${CONFIG.canonicalHardGatePath} or reference stable gate IDs instead of restating the hard gates.`,
+      rule: 'ai-team/README.md hard gate authority',
+    });
+    return;
+  }
+
+  pass('hardGateRestatements', 'no duplicate hard-gate sections found');
+}
+
 function checkBranchName() {
   // CI checks out a detached HEAD, so the real branch must come from the
   // event payload. Without this, branch policy would be enforced only by the
@@ -597,6 +621,19 @@ export function evaluateReport(rawBody, event) {
     };
   }
 
+  const hasDurableEvidence =
+    /\b(durable evidence|evidence path)\s*:\s*\S+/i.test(demonstration) ||
+    /\b(screenshot|screen shot|recording|video|artifact|artefact|log file|trace)\b[^\n]*(\b(attached|uploaded|committed)\b|https?:\/\/|[\w./-]+\.(png|jpe?g|webm|mp4|mov|jsonl|log)\b)/i.test(demonstration);
+
+  if (hasLink && !declaredNotUserFacing && !hasDurableEvidence) {
+    return {
+      message: 'Demonstration section has a user-facing link but no durable evidence reference.',
+      offender: '(pull request body, Demonstration section)',
+      fix: 'Add a screenshot, recording, artifact, committed evidence path, or log/trace reference for the checked demo.',
+      rule: 'ai-team/workflows/increment.md (Evidence Exists)',
+    };
+  }
+
   return null;
 }
 
@@ -636,6 +673,7 @@ checkSecrets(mode);
 checkStateFields();
 checkStateFreshness(mode);
 checkStateCoherence(mode);
+checkHardGateRestatements();
 checkBranchName();
 
 if (mode === 'commit') {

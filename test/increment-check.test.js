@@ -7,7 +7,10 @@
 
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import { mkdtempSync, mkdirSync, writeFileSync, readFileSync } from 'node:fs';
+import { execFileSync } from 'node:child_process';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 import { evaluateReport, evaluateStateCoherence } from '../ai-team/bin/increment-check.mjs';
 
 const fixtures = JSON.parse(
@@ -86,13 +89,33 @@ test('evidence must sit in the section that claims it', () => {
     evaluateReport(base('http://127.0.0.1:5173/', 'Kept everything on the lead model.'), 'pull_request'),
     'a Model Use section with no delegation claim must fail'
   );
-  assert.equal(
+  assert.ok(
     evaluateReport(
       base('http://127.0.0.1:5173/ — checked, graph renders.', 'Delegated fixtures to a low-cost worker.'),
       'pull_request'
     ),
+    'a user-facing link without durable evidence must fail'
+  );
+  assert.ok(
+    evaluateReport(
+      base(
+        'http://127.0.0.1:5173/ — checked, graph renders. Committed changes include the UI.',
+        'Delegated fixtures to a low-cost worker.'
+      ),
+      'pull_request'
+    ),
+    'a generic committed-change sentence must not count as durable demo evidence'
+  );
+  assert.equal(
+    evaluateReport(
+      base(
+        'http://127.0.0.1:5173/ — checked, graph renders. Durable evidence: committed screenshot in project-state/evidence/41.png.',
+        'Delegated fixtures to a low-cost worker.'
+      ),
+      'pull_request'
+    ),
     null,
-    'evidence in the right sections must pass'
+    'a user-facing link with durable evidence must pass'
   );
   assert.ok(
     evaluateReport(
@@ -251,3 +274,88 @@ test('state coherence: index must not contradict the ledger', () => {
     'a missing file is the freshness check\'s problem, not this one'
   );
 });
+
+test('commit-mode integration catches staged secrets and stale state stamps', () => {
+  const repo = fixtureRepo();
+  writeFileSync(join(repo, '.env'), 'OPENAI_API_KEY=' + 'sk-' + 'thislookssecret000000000000\n');
+  writeFileSync(
+    join(repo, 'project-state/status.md'),
+    '# Status\n\nLast updated: 2000-01-01\n'
+  );
+  execFileSync('git', ['add', '.'], { cwd: repo });
+
+  const result = runIncrementCheck(repo, 'commit');
+  assert.notEqual(result.status, 0);
+  assert.match(result.output, /secrets/);
+  assert.match(result.output, /stateFreshness/);
+});
+
+test('push-mode integration catches state budget violations', () => {
+  const repo = fixtureRepo();
+  writeFileSync(
+    join(repo, 'project-state/handoff.md'),
+    '# Handoff\n\nLast updated: ' + todayForTest() + '\n\n' + Array.from({ length: 90 }, (_, index) => `- line ${index}`).join('\n')
+  );
+
+  const result = runIncrementCheck(repo, 'push');
+  assert.notEqual(result.status, 0);
+  assert.match(result.output, /stateBudget/);
+});
+
+test('push-mode integration catches duplicate hard-gate section variants', () => {
+  const repo = fixtureRepo();
+  writeFileSync(join(repo, 'docs.md'), '# Docs\n\n### Hard Gates Summary\n\n- Do not restate these.\n');
+  execFileSync('git', ['add', 'docs.md'], { cwd: repo });
+  execFileSync('git', ['commit', '-m', 'add duplicated gates'], { cwd: repo, stdio: 'ignore' });
+
+  const result = runIncrementCheck(repo, 'push');
+  assert.notEqual(result.status, 0);
+  assert.match(result.output, /hardGateRestatements/);
+});
+
+function fixtureRepo() {
+  const repo = mkdtempSync(join(tmpdir(), 'increment-check-'));
+  mkdirSync(join(repo, 'ai-team/bin'), { recursive: true });
+  mkdirSync(join(repo, 'project-state'), { recursive: true });
+  writeFileSync(join(repo, 'package.json'), '{"type":"module","scripts":{"lint":"node --version","build":"node --version"}}\n');
+  writeFileSync(join(repo, 'ai-team/README.md'), '# AI Team\n\n## Hard gates\n\n- Canonical.\n');
+  for (const file of [
+    'index.md',
+    'status.md',
+    'handoff.md',
+    'task-ledger.md',
+    'verification.md',
+    'decisions.md',
+  ]) {
+    writeFileSync(join(repo, 'project-state', file), `# ${file}\n\nLast updated: ${todayForTest()}\n\n## Active\n\n- None.\n`);
+  }
+  writeFileSync(join(repo, 'project-state/index.md'), `# Index\n\nLast updated: ${todayForTest()}\n\n## Active work\n\nSee ledger.\n`);
+  execFileSync('git', ['init'], { cwd: repo, stdio: 'ignore' });
+  execFileSync('git', ['config', 'user.email', 'test@example.com'], { cwd: repo });
+  execFileSync('git', ['config', 'user.name', 'Test'], { cwd: repo });
+  execFileSync('git', ['add', '.'], { cwd: repo });
+  execFileSync('git', ['commit', '-m', 'initial'], { cwd: repo, stdio: 'ignore' });
+  return repo;
+}
+
+function runIncrementCheck(cwd, mode) {
+  try {
+    const output = execFileSync(
+      process.execPath,
+      [new URL('../ai-team/bin/increment-check.mjs', import.meta.url).pathname, `--mode=${mode}`],
+      { cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] }
+    );
+    return { status: 0, output };
+  } catch (error) {
+    return {
+      status: error.status ?? 1,
+      output: `${error.stdout ?? ''}${error.stderr ?? ''}`,
+    };
+  }
+}
+
+function todayForTest() {
+  const now = new Date();
+  const pad = (n) => String(n).padStart(2, '0');
+  return `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
+}

@@ -45,6 +45,8 @@ Target environment:
 
 Checked app/demo link:
 
+Durable demo evidence, if user-facing:
+
 Local server left running, if applicable:
 
 What was checked:
@@ -80,6 +82,8 @@ Worker tasks delegated to cheaper/faster models:
 Worker model tier(s):
 
 Worker evidence:
+
+Lightweight model-use telemetry:
 
 Tasks kept on high-capability model and why:
 

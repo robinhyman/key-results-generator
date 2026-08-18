@@ -32,7 +32,7 @@ See `project-state/task-ledger.md`, which owns active, blocked, and next work.
 
 ## Next action
 
-Issue #41 is in review on PR #42 from branch `chore/41-process-evidence-backfill`: harden process-review evidence and document the offline backfill workflow.
+Issue #43 is in review on PR #44 from branch `chore/43-autonomous-closeout-evidence`: autonomous closeout, stronger evidence gates, Project status checks, and state compaction.
 
 ## Where things live
 
@@ -46,6 +46,6 @@ Issue #41 is in review on PR #42 from branch `chore/41-process-evidence-backfill
 | History for closed increments #1-#22 | `project-state/archive/` |
 | Team operating rules | `ai-team/README.md` |
 
-## Hard gates
+## Operating guardrails
 
-An increment is not `Done` without a checked demo link, a verification report, and truthful GitHub Project status. Operating-doc changes need user approval. Never commit credentials. `npm run check` enforces the mechanical subset; the rest is on the Lead.
+Read canonical hard gates in `ai-team/README.md`. `npm run check` enforces the mechanical subset; the rest is on the Lead and closeout review.

@@ -10,7 +10,8 @@
     "check": "node ai-team/bin/increment-check.mjs --mode=push",
     "test": "node --test",
     "test:browser": "playwright test",
-    "lint": "node --check server.js && node --check src/generator.js && node --check src/ai-service.js && node --check src/ai/client.js && node --check src/ai/constants.js && node --check src/ai/errors.js && node --check src/ai/format.js && node --check src/ai/normalize.js && node --check src/ai/prompts.js && node --check src/ai/schemas.js && node --check src/ai/tracing.js && node --check public/api.js && node --check public/app.js && node --check public/format.js && node --check public/render.js",
+    "check:project": "node ai-team/bin/project-status-check.mjs",
+    "lint": "node --check server.js && node --check src/generator.js && node --check src/ai-service.js && node --check src/ai/client.js && node --check src/ai/constants.js && node --check src/ai/errors.js && node --check src/ai/format.js && node --check src/ai/normalize.js && node --check src/ai/prompts.js && node --check src/ai/schemas.js && node --check src/ai/tracing.js && node --check ai-team/bin/increment-check.mjs && node --check ai-team/bin/project-status-check.mjs && node --check public/api.js && node --check public/app.js && node --check public/format.js && node --check public/render.js",
     "build": "npm run lint && npm test"
   },
   "engines": {
