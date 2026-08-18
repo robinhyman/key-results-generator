@@ -32,7 +32,7 @@ See `project-state/task-ledger.md`, which owns active, blocked, and next work.
 
 ## Next action
 
-Issue #41 is active on branch `chore/41-process-evidence-backfill`: harden process-review evidence and document the offline backfill workflow.
+Issue #41 is in review on PR #42 from branch `chore/41-process-evidence-backfill`: harden process-review evidence and document the offline backfill workflow.
 
 ## Where things live
 

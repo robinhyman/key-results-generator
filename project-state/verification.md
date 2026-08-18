@@ -6,7 +6,7 @@ Current verification posture and known gaps. Per-increment verification history 
 
 ## Current posture
 
-- On branch `chore/41-process-evidence-backfill`, targeted process-checker tests pass 52/52 and `npm run build` passes 95/95 after adding the Process Review PR-body requirement.
+- On branch `chore/41-process-evidence-backfill` / PR #42, targeted process-checker tests pass 52/52 and `npm run build` passes 95/95 after adding the Process Review PR-body requirement.
 - On the current local branch, `npm test` passes 95/95 unit, API, and process-checker tests. Covers the deterministic generator, graph and KR contracts, rich `fullGraph` plus converged `planningGraph` AI response contract, algorithmic KR-set exploration, server routing and validation, path-traversal rejection, AI instruction composition, 3-5 KR normalization, provider fallback diagnostics, indicator-type validation, and trace redaction.
 - `npm run test:browser` passes 1/1 Playwright test covering objective submission, slider adjustment, final-KR submission, repeated generation, the rendered Leading/Lagging label, and console/page/request failures. Requires `npx playwright install chromium` first; a missing binary is a setup failure, not a product failure.
 - `npm run check` enforces the process gates. Failing gates: credential material, state stamp presence and freshness, branch naming, lint/build. Budget and PR-report gates are enforced as failures as of issue #24.

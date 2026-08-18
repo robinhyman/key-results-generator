@@ -20,7 +20,7 @@ GitHub was unavailable on 2026-08-17, so graph-generation work continued locally
 
 ## Next best actions
 
-1. **Finish issue #41 on `chore/41-process-evidence-backfill`.** Scope: process-review evidence in reports/checker plus a reusable GitHub-unavailable/offline backfill workflow.
+1. **Review PR #42 for issue #41.** Scope: process-review evidence in reports/checker plus a reusable GitHub-unavailable/offline backfill workflow.
 2. **Then start the next graph-generation improvement.** Recommended next behavior slice: render/inspect algorithmic candidate sets, then add local normalization quality gates for graph shape/connectivity, branch coverage, full/planning subset quality, and exactly-one-outcome validation.
 3. **Run a delta retro on every increment.** Three fields in the increment report, per the tiered principle 10 adopted in #35. The full multi-role retrospective now runs only on a named trigger.
 

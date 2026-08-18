@@ -8,7 +8,7 @@ This file owns active, blocked, and next work. `index.md` points here rather tha
 
 ## Active
 
-- `#41` Harden process-review evidence and offline backfill workflow. Branch: `chore/41-process-evidence-backfill`.
+- `#41` Harden process-review evidence and offline backfill workflow. PR: `#42`. Agent Status: Review.
 
 ## Blocked
 
