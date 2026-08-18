@@ -1,62 +1,33 @@
-import { appendFile, mkdir, readFile } from "node:fs/promises";
-import { dirname, join } from "node:path";
-import { fileURLToPath } from "node:url";
-
 import {
   applyClarifications,
+  exploreKeyResultSets,
   generateCausalMetricsGraph,
   indicatorTypeForVariable,
-  rankVariables,
   selectKeyResultVariables,
 } from "./generator.js";
+import { createOpenAiClient } from "./ai/client.js";
+import { defaultKeyResultCount } from "./ai/constants.js";
+import { fallbackDiagnostic } from "./ai/errors.js";
+import { normalizeObjective } from "./ai/format.js";
+import {
+  normalizeAiGraph,
+  normalizeAiKeyResults,
+  normalizeGraphInput,
+  relatedDriverLabels,
+} from "./ai/normalize.js";
+import {
+  buildGraphPrompt,
+  buildKeyResultsPrompt,
+} from "./ai/prompts.js";
+import {
+  graphResponseSchema,
+  keyResultsResponseSchema,
+} from "./ai/schemas.js";
 
-const root = fileURLToPath(new URL("..", import.meta.url));
-const defaultKeyPath = join(root, "keys", "key.txt");
-const defaultEndpoint = "https://api.openai.com/v1/responses";
-const defaultModel = "gpt-5-mini";
-const defaultTracePath = join(root, "logs", "ai-traces.jsonl");
-const defaultKeyResultCount = 4;
-const maxKeyResultCount = 5;
-
-const sharedSystemInstruction = [
-  "You are an OKR planning analyst.",
-  "Generate concise, realistic, graph-backed OKR planning data.",
-  "Work from causal relationships: objective -> outcome evidence -> drivers -> upstream causes and failure modes.",
-  "Prefer measurable, influenceable, domain-specific variables over generic activity or vanity metrics.",
-  "Use only the provided objective, graph, schema, and user clarification data; do not invent external facts.",
-  "Return valid JSON only, exactly matching the requested schema.",
-].join(" ");
-
-const graphTaskInstruction = [
-  "Create a causal metrics graph for the objective.",
-  "Treat the objective as the downstream outcome, then work backward through measurable evidence, experience factors, operating drivers, upstream causes, and failure modes.",
-  "Use domain-specific variables that a team could plausibly understand and influence during an OKR period.",
-  "Prefer concrete measurable factors over generic activity, effort, engagement, or vanity metrics.",
-  "Include one outcome node, useful non-outcome nodes across stages 1-3, and directional cause-to-effect edges with concise rationales.",
-  "Estimate impact, confidence, influenceability, stage, and desired direction for each node.",
-  "Return only schema-valid JSON.",
-].join(" ");
-
-const keyResultsTaskInstruction = [
-  "Generate 3 to 5 final key results from the clarified causal metrics graph.",
-  "Select only existing non-outcome graph variables and preserve each selected variableId.",
-  "Set indicatorType to either leading or lagging for every key result.",
-  "Use the graph ranking plus the user's influenceability and perceived-gap ratings to choose variables that are high-impact, realistically influenceable, and important now.",
-  "Produce a balanced set with 1 or 2 lagging KRs and 2 or 3 leading KRs.",
-  "Lagging KRs should usually use downstream evidence or experience measures; leading KRs should usually use operating drivers, upstream drivers, or failure-mode reductions that plausibly move the lagging measures.",
-  "Make each KR measurable, time-bounded, and outcome-oriented rather than an activity checklist.",
-  "In each rationale, explain how the graph and user clarification influenced the choice.",
-  "Return only schema-valid JSON.",
-].join(" ");
-
-const graphTypes = new Set([
-  "outcome",
-  "evidence",
-  "experience",
-  "driver",
-  "failure-mode",
-  "upstream-driver",
-]);
+export {
+  normalizeAiGraph,
+  normalizeAiKeyResults,
+};
 
 export async function generateAiCausalMetricsGraph(rawObjective, options = {}) {
   const objective = normalizeObjective(rawObjective);
@@ -85,9 +56,10 @@ export async function generateAiCausalMetricsGraph(rawObjective, options = {}) {
 }
 
 export async function generateAiKeyResultsModel(graph, clarifications = {}, options = {}) {
-  const clarifiedGraph = applyClarifications(normalizeGraphInput(graph), clarifications);
+  const normalizedGraph = normalizeGraphInput(graph) ?? generateCausalMetricsGraph("");
+  const clarifiedGraph = applyClarifications(normalizedGraph, clarifications);
   const fallback = (error) => {
-    const keyResults = selectKeyResultVariables(clarifiedGraph.rankings, defaultKeyResultCount).map((variable, index) =>
+    const keyResults = selectKeyResultVariables(clarifiedGraph.rankings, defaultKeyResultCount, clarifiedGraph).map((variable, index) =>
       toFallbackKeyResult(variable, clarifiedGraph.edges, clarifiedGraph.nodes, index, clarifiedGraph.assessments[variable.id]),
     );
 
@@ -117,204 +89,6 @@ export async function generateAiKeyResultsModel(graph, clarifications = {}, opti
   }, fallback);
 }
 
-export function normalizeAiGraph(objective, response) {
-  if (!response || typeof response !== "object") {
-    throw new Error("AI graph response must be an object.");
-  }
-
-  const nodes = normalizeNodes(response.nodes);
-  const nodeIds = new Set(nodes.map((node) => node.id));
-  const edges = normalizeEdges(response.edges, nodeIds);
-
-  if (!nodes.some((node) => node.type === "outcome")) {
-    nodes.push({
-      id: "outcome",
-      type: "outcome",
-      label: objective,
-      description: "The downstream outcome the objective is trying to create.",
-      impact: 100,
-      confidence: 85,
-      influenceable: false,
-      stage: 4,
-      direction: "improve",
-    });
-  }
-
-  return {
-    objective,
-    summary: cleanText(response.summary) || `AI-generated causal metrics model for "${objective}".`,
-    nodes,
-    edges,
-    rankings: rankVariables(nodes),
-    assessments: {},
-  };
-}
-
-export function normalizeAiKeyResults(graph, response) {
-  if (!response || typeof response !== "object" || !Array.isArray(response.keyResults)) {
-    throw providerError("invalid_provider_output", "AI key result response must include a keyResults array.");
-  }
-
-  if (response.keyResults.length < 3) {
-    throw providerError("invalid_provider_output", "AI key result response must include at least three key results.");
-  }
-
-  const nodeById = new Map(graph.nodes.map((node) => [node.id, node]));
-  const keyResults = response.keyResults.slice(0, maxKeyResultCount).map((keyResult, index) => {
-    const variableId = cleanId(keyResult.variableId);
-    const variable = nodeById.get(variableId);
-    if (!variable || variable.type === "outcome") {
-      throw providerError("invalid_provider_output", `AI key result references unknown variable: ${variableId}`);
-    }
-
-    const indicatorType = cleanIndicatorType(keyResult.indicatorType);
-
-    const relatedDrivers = Array.isArray(keyResult.relatedDrivers)
-      ? keyResult.relatedDrivers.map(cleanText).filter(Boolean).slice(0, 4)
-      : relatedDriverLabels(variable.id, graph);
-
-    return {
-      id: cleanId(keyResult.id) || `kr-${index + 1}`,
-      variableId,
-      indicatorType,
-      text: cleanText(keyResult.text) || `Improve ${variable.label} this quarter`,
-      rationale: cleanText(keyResult.rationale) || `${variable.label} was selected from the clarified causal graph.`,
-      relatedDrivers,
-      score: variable.score ?? graph.rankings.find((candidate) => candidate.id === variableId)?.score ?? 0,
-      assessment: graph.assessments[variableId] ?? null,
-    };
-  });
-
-  if (keyResults.length === 0) {
-    throw providerError("invalid_provider_output", "AI key result response did not include any usable key results.");
-  }
-
-  validateIndicatorMix(keyResults);
-
-  return keyResults;
-}
-
-async function createOpenAiClient(options) {
-  const apiKey = options.apiKey ?? (await readApiKey(options));
-  if (!apiKey) {
-    throw providerError("missing_api_key", "No OpenAI API key configured.");
-  }
-
-  const model = options.model ?? process.env.OPENAI_MODEL ?? process.env.AI_MODEL ?? defaultModel;
-  const endpoint = options.endpoint ?? process.env.OPENAI_RESPONSES_URL ?? defaultEndpoint;
-  const fetchImpl = options.fetch ?? globalThis.fetch;
-
-  if (typeof fetchImpl !== "function") {
-    throw providerError("provider_unavailable", "No fetch implementation is available.");
-  }
-
-  return {
-    model,
-    async createJsonResponse({ operation, schemaName, schema, prompt, validateParsedOutput }) {
-      let response;
-      const requestBody = {
-        model,
-        input: [
-          {
-            role: "system",
-            content: sharedSystemInstruction,
-          },
-          {
-            role: "user",
-            content: prompt,
-          },
-        ],
-        text: {
-          format: {
-            type: "json_schema",
-            name: schemaName,
-            strict: true,
-            schema,
-          },
-        },
-      };
-
-      try {
-        response = await fetchImpl(endpoint, {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${apiKey}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(requestBody),
-        });
-      } catch (error) {
-        await writeAiTrace(options, {
-          operation,
-          model,
-          schemaName,
-          requestBody,
-          provider: { ok: false, error: error.message },
-        });
-        throw providerError("provider_unavailable", "AI provider request failed before a response was received.", error);
-      }
-
-      let responseBody = null;
-      let parsedOutput = null;
-      if (!response.ok) {
-        responseBody = await safeReadResponseBody(response);
-        await writeAiTrace(options, {
-          operation,
-          model,
-          schemaName,
-          requestBody,
-          responseBody,
-          provider: { ok: false, status: response.status, reasonCode: "provider_http_error" },
-        });
-        throw providerError("provider_http_error", `AI provider returned HTTP ${response.status}.`);
-      }
-
-      try {
-        responseBody = await response.json();
-        parsedOutput = parseResponseText(responseBody);
-        if (validateParsedOutput) {
-          validateParsedOutput(parsedOutput);
-        }
-        await writeAiTrace(options, {
-          operation,
-          model,
-          schemaName,
-          requestBody,
-          responseBody,
-          parsedOutput,
-          provider: { ok: true, status: response.status },
-        });
-        return parsedOutput;
-      } catch (error) {
-        await writeAiTrace(options, {
-          operation,
-          model,
-          schemaName,
-          requestBody,
-          responseBody,
-          parsedOutput,
-          provider: { ok: false, status: response.status, reasonCode: "invalid_provider_output", error: error.message },
-        });
-        throw providerError("invalid_provider_output", "AI provider returned output that could not be parsed.", error);
-      }
-    },
-  };
-}
-
-async function readApiKey(options) {
-  if (process.env.OPENAI_API_KEY) {
-    return process.env.OPENAI_API_KEY.trim();
-  }
-
-  const keyPath = options.keyPath ?? process.env.OPENAI_API_KEY_PATH ?? process.env.AI_KEY_PATH ?? defaultKeyPath;
-
-  try {
-    return (await readFile(keyPath, "utf8")).trim();
-  } catch {
-    return "";
-  }
-}
-
 async function withFallback(action, fallback) {
   try {
     return await action();
@@ -323,128 +97,9 @@ async function withFallback(action, fallback) {
   }
 }
 
-function parseResponseText(body) {
-  const outputText =
-    body.output_text ??
-    body.output
-      ?.flatMap((item) => item.content ?? [])
-      .map((content) => content.text ?? "")
-      .join("");
-
-  if (!outputText) {
-    throw new Error("OpenAI response did not include output text.");
-  }
-
-  return JSON.parse(outputText);
-}
-
-function fallbackDiagnostic(error, defaultReason) {
-  const reasonCode = error?.reasonCode ?? "provider_unavailable";
-  return {
-    reasonCode,
-    reason: fallbackReason(reasonCode, defaultReason),
-  };
-}
-
-function fallbackReason(reasonCode, defaultReason) {
-  return {
-    missing_api_key: "No AI API key is configured; used the local deterministic generator.",
-    provider_unavailable: defaultReason,
-    provider_http_error: "AI provider returned an unsuccessful response; used the local deterministic generator.",
-    invalid_provider_output: "AI provider returned invalid structured output; used the local deterministic generator.",
-  }[reasonCode] ?? defaultReason;
-}
-
-function providerError(reasonCode, message, cause) {
-  const error = new Error(message);
-  error.reasonCode = reasonCode;
-  if (cause) {
-    error.cause = cause;
-  }
-  return error;
-}
-
-function buildGraphPrompt(objective) {
-  return [
-    `Objective: ${objective}`,
-    graphTaskInstruction,
-    "Use 8 to 10 nodes, including exactly one outcome node at stage 4.",
-    "Use stable lowercase kebab-case ids. Scores are integers from 1 to 100. Stages are integers 1 to 4.",
-    "Return only data that fits the schema.",
-  ].join("\n");
-}
-
-function buildKeyResultsPrompt(graph) {
-  return [
-    `Objective: ${graph.objective}`,
-    keyResultsTaskInstruction,
-    JSON.stringify({
-      summary: graph.summary,
-      nodes: graph.nodes,
-      edges: graph.edges,
-      rankings: graph.rankings.slice(0, 6),
-      assessments: graph.assessments,
-    }),
-  ].join("\n");
-}
-
-function normalizeGraphInput(graph) {
-  if (!graph || typeof graph !== "object") {
-    return generateCausalMetricsGraph("");
-  }
-
-  return {
-    objective: normalizeObjective(graph.objective),
-    summary: cleanText(graph.summary),
-    nodes: normalizeNodes(graph.nodes),
-    edges: normalizeEdges(graph.edges, new Set((graph.nodes ?? []).map((node) => cleanId(node.id)))),
-    rankings: rankVariables(normalizeNodes(graph.nodes)),
-    assessments: graph.assessments && typeof graph.assessments === "object" ? graph.assessments : {},
-  };
-}
-
-function normalizeNodes(nodes) {
-  if (!Array.isArray(nodes) || nodes.length < 4) {
-    throw new Error("AI graph response must include at least four nodes.");
-  }
-
-  return nodes.slice(0, 12).map((node, index) => {
-    const id = cleanId(node.id) || `metric-${index + 1}`;
-    const type = graphTypes.has(node.type) ? node.type : "driver";
-    const stage = clampNumber(node.stage, type === "outcome" ? 4 : 2, 1, 4);
-
-    return {
-      id,
-      type,
-      label: cleanText(node.label) || titleFromId(id),
-      description: cleanText(node.description) || "A measurable factor in the causal model.",
-      impact: clampNumber(node.impact, 70, 1, 100),
-      confidence: clampNumber(node.confidence, 70, 1, 100),
-      influenceable: type === "outcome" ? false : Boolean(node.influenceable ?? true),
-      stage,
-      direction: cleanDirection(node.direction),
-    };
-  });
-}
-
-function normalizeEdges(edges, nodeIds) {
-  if (!Array.isArray(edges)) {
-    return [];
-  }
-
-  return edges
-    .slice(0, 16)
-    .map((edge, index) => ({
-      id: cleanId(edge.id) || `rel-${index + 1}`,
-      source: cleanId(edge.source),
-      target: cleanId(edge.target),
-      rationale: cleanText(edge.rationale) || "This relationship contributes to the objective.",
-      strength: clampNumber(edge.strength, 70, 1, 100),
-    }))
-    .filter((edge) => nodeIds.has(edge.source) && nodeIds.has(edge.target) && edge.source !== edge.target);
-}
-
 function toModel(graph, keyResults) {
+  const candidateKeyResultSets = exploreKeyResultSets(graph);
+
   return {
     objective: graph.objective,
     summary: graph.summary,
@@ -452,6 +107,7 @@ function toModel(graph, keyResults) {
     variables: graph.nodes,
     relationships: graph.edges,
     rankedVariables: graph.rankings,
+    candidateKeyResultSets,
     keyResults,
   };
 }
@@ -490,216 +146,3 @@ function toFallbackKeyResult(variable, relationships, variables, index, assessme
     assessment: assessment ?? null,
   };
 }
-
-function relatedDriverLabels(variableId, graph) {
-  return graph.edges
-    .filter((edge) => edge.target === variableId)
-    .map((edge) => graph.nodes.find((node) => node.id === edge.source)?.label)
-    .filter(Boolean);
-}
-
-function normalizeObjective(rawObjective) {
-  const objective = String(rawObjective ?? "").replace(/\s+/g, " ").trim();
-  return objective ? objective.charAt(0).toUpperCase() + objective.slice(1) : "Improve a meaningful outcome";
-}
-
-function cleanText(value) {
-  return String(value ?? "").replace(/\s+/g, " ").trim().slice(0, 360);
-}
-
-function cleanId(value) {
-  return String(value ?? "")
-    .toLowerCase()
-    .replace(/[^a-z0-9-]+/g, "-")
-    .replace(/^-+|-+$/g, "")
-    .slice(0, 48);
-}
-
-function cleanDirection(value) {
-  return ["increase", "reduce", "improve"].includes(value) ? value : "improve";
-}
-
-function cleanIndicatorType(value) {
-  if (value === "leading" || value === "lagging") {
-    return value;
-  }
-
-  throw providerError("invalid_provider_output", `AI key result has invalid indicatorType: ${value}`);
-}
-
-function validateIndicatorMix(keyResults) {
-  const laggingCount = keyResults.filter((keyResult) => keyResult.indicatorType === "lagging").length;
-  const leadingCount = keyResults.filter((keyResult) => keyResult.indicatorType === "leading").length;
-
-  if (laggingCount < 1 || laggingCount > 2 || leadingCount < 2 || leadingCount > 3) {
-    throw providerError("invalid_provider_output", `AI key result indicator mix is invalid: ${laggingCount} lagging and ${leadingCount} leading.`);
-  }
-}
-
-async function safeReadResponseBody(response) {
-  try {
-    return await response.json();
-  } catch {
-    return null;
-  }
-}
-
-async function writeAiTrace(options, trace) {
-  const enabled = options.traceEnabled ?? process.env.AI_TRACE_LOG === "1";
-  if (!enabled) {
-    return;
-  }
-
-  const tracePath = options.traceLogPath ?? process.env.AI_TRACE_LOG_PATH ?? defaultTracePath;
-  const record = sanitizeTraceRecord({
-    timestamp: new Date().toISOString(),
-    ...trace,
-    endpointHost: endpointHost(options.endpoint ?? process.env.OPENAI_RESPONSES_URL ?? defaultEndpoint),
-  }, options);
-
-  try {
-    await mkdir(dirname(tracePath), { recursive: true });
-    await appendFile(tracePath, `${JSON.stringify(record)}\n`, "utf8");
-  } catch {
-    // Trace logging must never break generation.
-  }
-}
-
-function endpointHost(endpoint) {
-  try {
-    return new URL(endpoint).host;
-  } catch {
-    return "";
-  }
-}
-
-function sanitizeTraceRecord(record, options) {
-  const sensitiveValues = [
-    options.apiKey,
-    process.env.OPENAI_API_KEY,
-  ].filter(Boolean);
-
-  return sanitizeTraceValue(record, sensitiveValues);
-}
-
-function sanitizeTraceValue(value, sensitiveValues) {
-  if (typeof value === "string") {
-    return sensitiveValues.reduce(
-      (text, secret) => text.replaceAll(secret, "[redacted]"),
-      value
-        .replace(/Bearer\s+[A-Za-z0-9._~+/=-]+/gi, "Bearer [redacted]")
-        .replace(/\b(token|secret|api[_-]?key)(\s+|=)[^\s&]+/gi, "$1$2[redacted]"),
-    );
-  }
-
-  if (Array.isArray(value)) {
-    return value.map((item) => sanitizeTraceValue(item, sensitiveValues));
-  }
-
-  if (value && typeof value === "object") {
-    return Object.fromEntries(
-      Object.entries(value).map(([key, entry]) => [
-        key,
-        isSensitiveTraceKey(key) ? "[redacted]" : sanitizeTraceValue(entry, sensitiveValues),
-      ]),
-    );
-  }
-
-  return value;
-}
-
-function isSensitiveTraceKey(key) {
-  return ["authorization", "apiKey", "api_key", "token", "secret"].includes(key);
-}
-
-function clampNumber(value, fallback, min, max) {
-  const number = Number(value);
-  if (!Number.isFinite(number)) {
-    return fallback;
-  }
-
-  return Math.max(min, Math.min(max, Math.round(number)));
-}
-
-function titleFromId(id) {
-  return id
-    .split("-")
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(" ");
-}
-
-const graphResponseSchema = {
-  type: "object",
-  additionalProperties: false,
-  required: ["summary", "nodes", "edges"],
-  properties: {
-    summary: { type: "string" },
-    nodes: {
-      type: "array",
-      minItems: 4,
-      maxItems: 12,
-      items: {
-        type: "object",
-        additionalProperties: false,
-        required: ["id", "type", "label", "description", "impact", "confidence", "influenceable", "stage", "direction"],
-        properties: {
-          id: { type: "string" },
-          type: { type: "string", enum: [...graphTypes] },
-          label: { type: "string" },
-          description: { type: "string" },
-          impact: { type: "integer", minimum: 1, maximum: 100 },
-          confidence: { type: "integer", minimum: 1, maximum: 100 },
-          influenceable: { type: "boolean" },
-          stage: { type: "integer", minimum: 1, maximum: 4 },
-          direction: { type: "string", enum: ["increase", "reduce", "improve"] },
-        },
-      },
-    },
-    edges: {
-      type: "array",
-      maxItems: 16,
-      items: {
-        type: "object",
-        additionalProperties: false,
-        required: ["id", "source", "target", "rationale", "strength"],
-        properties: {
-          id: { type: "string" },
-          source: { type: "string" },
-          target: { type: "string" },
-          rationale: { type: "string" },
-          strength: { type: "integer", minimum: 1, maximum: 100 },
-        },
-      },
-    },
-  },
-};
-
-const keyResultsResponseSchema = {
-  type: "object",
-  additionalProperties: false,
-  required: ["keyResults"],
-  properties: {
-    keyResults: {
-      type: "array",
-      minItems: 3,
-      maxItems: 5,
-      items: {
-        type: "object",
-        additionalProperties: false,
-        required: ["id", "variableId", "indicatorType", "text", "rationale", "relatedDrivers"],
-        properties: {
-          id: { type: "string" },
-          variableId: { type: "string" },
-          indicatorType: { type: "string", enum: ["leading", "lagging"] },
-          text: { type: "string" },
-          rationale: { type: "string" },
-          relatedDrivers: {
-            type: "array",
-            maxItems: 4,
-            items: { type: "string" },
-          },
-        },
-      },
-    },
-  },
-};

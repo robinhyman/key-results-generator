@@ -1,6 +1,6 @@
 # Decisions
 
-Last updated: 2026-08-16
+Last updated: 2026-08-18
 
 ## 2026-08-14: Use Documented State Over Chat Memory
 
@@ -227,3 +227,13 @@ Decision: Constitution principle 10 now requires a three-field delta retrospecti
 Reason: Increments #22, #24, #26, and #28 each owed a retrospective and none ran. The prescribed ceremony asked up to seven roles for answers to nine questions regardless of increment size, so it was skipped, and the debt became visible and permanent. This is the same failure #28 diagnosed for the delegation gate — an obligation whose cost exceeds its convenience gets exempted until the exemption is the norm. A cheaper default is enforceable; an expensive one is aspirational.
 
 Tradeoff: delta retros will surface less than full ones. The triggers are the hedge, and they cover the cases where depth actually pays — failure, rework, and risk. The delta retro is also still a written claim; nothing verifies it happened.
+
+## 2026-08-17: Generate Rich Causal Maps Before Converging To Planning Graphs
+
+Decision: Graph generation should not treat the first AI graph as the final planning surface. Generate a broad causal map first, comparable to a manual Miro exploration, then converge it into a smaller planning graph for clarification and KR selection.
+
+Reason: The current AI prompt asks for only 8 to 10 nodes, which makes the graph feel like an executive summary rather than causal discovery. The user’s manual version reached roughly 52 nodes, suggesting the product should support divergent mapping before selection.
+
+Convergence algorithm: remove duplicate, vague, non-measurable, activity-shaped, and disconnected nodes; score remaining nodes by outcome proximity, causal leverage, measurability, influenceability, diagnostic value, planning relevance, and penalties for externality, vanity metrics, and redundancy; then select causal paths across branches rather than the highest-scoring nodes alone. Preserve coverage across outcome evidence, experience measures, operating drivers, upstream constraints or capabilities, and failure modes. User clarification should re-rank the shortlist before final KR selection.
+
+Implementation direction: Prompt for a rich `fullGraph` and a smaller `planningGraph`, or generate a full graph first and run local convergence. Keep the rich graph available for inspection later, even if the current UI initially renders only the planning graph.

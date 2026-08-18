@@ -1,12 +1,12 @@
 # Verification
 
-Last updated: 2026-08-16
+Last updated: 2026-08-18
 
 Current verification posture and known gaps. Per-increment verification history is in `archive/`.
 
-## Current posture on `main`
+## Current posture
 
-- `npm run build` passes 39/39 unit and API tests. Covers the deterministic generator, graph and KR contracts, server routing and validation, path-traversal rejection, AI instruction composition, 3-5 KR normalization, provider fallback diagnostics, indicator-type validation, and trace redaction.
+- On the current local branch, `npm test` passes 95/95 unit, API, and process-checker tests. Covers the deterministic generator, graph and KR contracts, rich `fullGraph` plus converged `planningGraph` AI response contract, algorithmic KR-set exploration, server routing and validation, path-traversal rejection, AI instruction composition, 3-5 KR normalization, provider fallback diagnostics, indicator-type validation, and trace redaction.
 - `npm run test:browser` passes 1/1 Playwright test covering objective submission, slider adjustment, final-KR submission, repeated generation, the rendered Leading/Lagging label, and console/page/request failures. Requires `npx playwright install chromium` first; a missing binary is a setup failure, not a product failure.
 - `npm run check` enforces the process gates. Failing gates: credential material, state stamp presence and freshness, branch naming, lint/build. Budget and PR-report gates are enforced as failures as of issue #24.
 - **CI is binding.** The `main: require increment-check` repository ruleset is active as of 2026-08-16: pull requests are required, `increment-check` is a required status check, force-pushes and deletion are blocked, and there are no bypass actors. Hooks remain bypassable with `--no-verify`, but nothing reaches `main` without CI passing.
@@ -17,6 +17,9 @@ Current verification posture and known gaps. Per-increment verification history 
 
 ## Known gaps
 
+- Graph-generation quality is not yet automatically evaluated. The 2026-08-17 offline implementation now asks the AI for a rich `fullGraph` followed by a converged `planningGraph`, but no automated quality suite yet checks whether live AI output is actually good.
+- Graph convergence validation is still thin. Tests pin prompt/schema shape and mocked normalization, but local code does not yet enforce branch coverage, connectivity, full/planning subset quality, or exactly-one-outcome invariants beyond schema/prompt guidance.
+- Algorithmic KR-set selection is implemented as an explorable heuristic, not yet a proven optimizer. It enumerates and scores candidate sets with explainable components, but the weights still need human review against live rich graphs and product judgment.
 - The process gates cannot verify truthfulness. An agent can write "Demo link checked" above a URL it never opened. Only an independent process-review step closes this, and only partially.
 - Demo-link evidence is not durable. The demonstration link for this project is `http://127.0.0.1:5173/`, which is dead to anyone reading the PR later, so the gate can be audited only while the server is up. A committed screenshot or recording would outlive the link.
 - No browser test for manually tampered slider payloads. Malformed input is covered at the server request-shape boundary only.

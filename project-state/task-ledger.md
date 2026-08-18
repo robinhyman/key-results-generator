@@ -1,6 +1,6 @@
 # Task Ledger
 
-Last updated: 2026-08-16
+Last updated: 2026-08-18
 
 Active, blocked, and next work. Completed increments live in `archive/`.
 
@@ -8,14 +8,15 @@ This file owns active, blocked, and next work. `index.md` points here rather tha
 
 ## Active
 
-- None. The 2026-08-16 process audits are closed out through #35.
+- Offline rich graph contract and algorithmic KR-set exploration on `feature/0-graph-generation-characterization`. GitHub issue #38 and draft PR #39 are backfilled; PR `increment-check` passes; Project 4 has `Status=In Progress`. The local shadow issue and implementation report live in `project-state/offline-graph-generation.md`. Status language: Review; do not mark `Done` until PR review, merge, and final Project status updates are complete.
 
 ## Blocked
 
 - None.
 
 ## Next
-- Choose the next product increment: durable persistence, graph editing, or hosted deployment.
+- Review PR #39, then merge and move issue #38/Project status to Done when complete.
+- Start the next graph-generation improvement increment: render/inspect algorithmic candidate sets, then add normalization quality gates for graph shape, branch coverage, subset quality, and connectivity.
 - Remaining operating-model work from the 2026-08-16 audits, listed in `handoff.md`.
 
 ## Completed

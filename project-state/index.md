@@ -1,12 +1,12 @@
 # Index
 
-Last updated: 2026-08-16
+Last updated: 2026-08-18
 
 The only state file a session must read. Everything else is read on demand.
 
 ## Project
 
-Local-first web app that turns an objective into graph-backed key results. The user enters an objective, the app generates a causal metrics graph, asks which metrics are most influenceable and where the gaps are, then synthesises 3-5 key results with explicit `leading`/`lagging` types and rationales.
+Local-first web app that turns an objective into graph-backed key results. The user enters an objective, the app generates a causal metrics graph, asks which metrics are most influenceable and where the gaps are, then synthesises 3-5 key results with explicit `leading`/`lagging` types and rationales. The current local branch also explores algorithmic KR-set selection by ranking candidate sets from the planning graph.
 
 AI generation runs server-side against the OpenAI Responses API with a deterministic local fallback. No persistence, accounts, or hosting.
 
@@ -15,7 +15,7 @@ AI generation runs server-side against the OpenAI Responses API with a determini
 ```
 npm install          # also installs git hooks via prepare
 npm start            # http://127.0.0.1:5173/
-npm run build        # lint + 39 unit/API tests
+npm run build        # lint + unit/API/process tests
 npm run test:browser # Playwright, needs: npx playwright install chromium
 npm run check        # process gates (also run by git hooks and CI)
 ```
@@ -24,13 +24,15 @@ npm run check        # process gates (also run by git hooks and CI)
 
 `main` is green. Issues #1-#35 are closed. Process gates are enforced mechanically by `ai-team/bin/increment-check.mjs` via git hooks and the `Process / increment-check` CI job. Branch protection is active, so CI is binding.
 
+GitHub backfill is complete for local graph-generation work on `feature/0-graph-generation-characterization`; issue #38 and draft PR #39 exist, PR `increment-check` passes, and Project 4 is updated. The shadow issue/report is in `project-state/offline-graph-generation.md`.
+
 ## Active work
 
 See `project-state/task-ledger.md`, which owns active, blocked, and next work.
 
 ## Next action
 
-The 2026-08-16 process audits are closed out. Choose the next product direction with the user: durable persistence, graph editing, or hosted deployment.
+Review PR #39, then merge and move issue #38/Project status to Done when complete.
 
 ## Where things live
 
