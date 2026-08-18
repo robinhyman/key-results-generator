@@ -46,7 +46,7 @@ Model use:
 
 ## Implementation Report
 
-Status: Review. GitHub backfill is complete, draft PR #39 is open, and issue #38 is in Project 4 with `Status=In Progress`. Keep this increment out of `Done` until PR review, CI, merge, and final Project status updates are complete.
+Status: Review. GitHub backfill is complete, draft PR #39 is open, PR `increment-check` passes, and issue #38 is in Project 4 with `Status=In Progress`. Keep this increment out of `Done` until PR review, merge, and final Project status updates are complete.
 
 Changed files:
 
@@ -64,6 +64,7 @@ Verification results so far:
 - `npm test`: passed 95/95.
 - `npm run build`: passed 95/95.
 - `npm run check`: passed.
+- PR #39 `increment-check`: passed on GitHub.
 - `npm run test:browser`: skipped; no browser behavior changed.
 
 ## Current Generation Map
