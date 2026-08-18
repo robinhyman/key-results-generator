@@ -32,7 +32,7 @@ See `project-state/task-ledger.md`, which owns active, blocked, and next work.
 
 ## Next action
 
-Issue #43 is active on branch `chore/43-autonomous-closeout-evidence`: autonomous closeout, stronger evidence gates, Project status checks, and state compaction.
+Issue #43 is in review on PR #44 from branch `chore/43-autonomous-closeout-evidence`: autonomous closeout, stronger evidence gates, Project status checks, and state compaction.
 
 ## Where things live
 

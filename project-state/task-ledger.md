@@ -8,7 +8,7 @@ This file owns active, blocked, and next work. `index.md` points here rather tha
 
 ## Active
 
-- `#43` Automate closeout evidence and reduce routine human PR approvals. Branch: `chore/43-autonomous-closeout-evidence`.
+- `#43` Automate closeout evidence and reduce routine human PR approvals. PR: `#44`. Agent Status: Review.
 
 ## Blocked
 

@@ -20,7 +20,7 @@ GitHub was unavailable on 2026-08-17, so graph-generation work continued locally
 
 ## Next best actions
 
-1. **Finish issue #43 on `chore/43-autonomous-closeout-evidence`.** Scope: state compaction, hard-gate restatement check, durable demo evidence gate, Project status checker, merge-closeout workflow, lightweight model telemetry, and broader checker tests.
+1. **Complete PR #44 for issue #43.** Scope: state compaction, hard-gate restatement check, durable demo evidence gate, Project status checker, merge-closeout workflow, lightweight model telemetry, and broader checker tests.
 2. **Then start the next graph-generation improvement.** Recommended next behavior slice: render/inspect algorithmic candidate sets, then add local normalization quality gates for graph shape/connectivity, branch coverage, full/planning subset quality, and exactly-one-outcome validation.
 3. **Run a delta retro on every increment.** Three fields in the increment report, per the tiered principle 10 adopted in #35.
 
