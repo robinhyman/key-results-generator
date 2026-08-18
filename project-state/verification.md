@@ -6,7 +6,7 @@ Current verification posture and known gaps. Per-increment verification history 
 
 ## Current posture
 
-- On branch `chore/43-autonomous-closeout-evidence` / PR #44, `npm test` passes 102/102, `npm run build` passes, `npm run check` passes 8/8 with no warnings, and `npm run check:project -- --issue=43 --agent-status="Review" --status="In Progress"` passes.
+- Issue #43 / PR #44 is merged. `npm test` passed 102/102, `npm run build` passed, `npm run check` passed 8/8 with no warnings, and Project closeout was verified.
 - Issue #41 / PR #42 is merged; process-review evidence is now part of the baseline PR-report gate.
 - On the current local branch, `npm test` passes 102/102 unit, API, process-checker, and Project-status checker tests. Covers the deterministic generator, graph and KR contracts, rich `fullGraph` plus converged `planningGraph` AI response contract, algorithmic KR-set exploration, server routing and validation, path-traversal rejection, AI instruction composition, 3-5 KR normalization, provider fallback diagnostics, indicator-type validation, trace redaction, and process gate regressions.
 - `npm run test:browser` passes 1/1 Playwright test covering objective submission, slider adjustment, final-KR submission, repeated generation, the rendered Leading/Lagging label, and console/page/request failures. Requires `npx playwright install chromium` first; a missing binary is a setup failure, not a product failure.
