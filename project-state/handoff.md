@@ -16,14 +16,12 @@ All four operating-model audit increments are merged: #22 mechanical enforcement
 
 Branch protection is enabled as of 2026-08-16: the `main: require increment-check` ruleset requires a PR and a passing `increment-check`, with no bypass actors. CI is now genuinely binding, which was the largest known enforcement gap.
 
-GitHub was unavailable on 2026-08-17, so graph-generation work continued locally on `feature/0-graph-generation-characterization`. GitHub is back as of 2026-08-18: issue #38 exists, draft PR #39 is open with `increment-check` passing, and Project 4 has `Status=In Progress`, `Agent Status=Review`. The branch has a local rich graph contract implementation: the AI graph prompt asks for `fullGraph` plus `planningGraph`, the schema requires both, and normalization preserves the rich graph while using the planning graph for current rankings/KR flow. It also has an algorithmic KR-set explorer that enumerates candidate 3-5 KR sets and scores node quality, leading/lagging mix, branch coverage, causal connectedness, redundancy, externality, and user clarification effects. The shadow issue, implementation report, verification plan, delegation evidence, and backfill record are in `project-state/offline-graph-generation.md`.
+GitHub was unavailable on 2026-08-17, so graph-generation work continued locally on `feature/0-graph-generation-characterization`. That work is now merged: issue #38 is closed, PR #39 is merged, and Project 4 is Done. The merged implementation asks the AI for `fullGraph` plus `planningGraph`, requires both in schema, and preserves the rich graph while using the planning graph for current rankings/KR flow. It also has an algorithmic KR-set explorer that enumerates candidate 3-5 KR sets and scores node quality, leading/lagging mix, branch coverage, causal connectedness, redundancy, externality, and user clarification effects. The shadow issue, implementation report, verification plan, delegation evidence, and backfill record are in `project-state/offline-graph-generation.md`.
 
 ## Next best actions
 
-1. **Review PR #39.** Handle review feedback if any, then mark ready for review or merge per user direction.
-2. **Finish issue #38 after merge.** Close via PR merge and move Project `Status`/`Agent Status` to Done.
-3. **Start the next graph-generation improvement.** Recommended next behavior slice: render/inspect algorithmic candidate sets, then add local normalization quality gates for graph shape/connectivity, branch coverage, full/planning subset quality, and exactly-one-outcome validation.
-4. **Run a delta retro on every increment.** Three fields in the increment report, per the tiered principle 10 adopted in #35. The full multi-role retrospective now runs only on a named trigger. No retrospectives are owed.
+1. **Start the next graph-generation improvement.** Recommended next behavior slice: render/inspect algorithmic candidate sets, then add local normalization quality gates for graph shape/connectivity, branch coverage, full/planning subset quality, and exactly-one-outcome validation.
+2. **Run a delta retro on every increment.** Three fields in the increment report, per the tiered principle 10 adopted in #35. The full multi-role retrospective now runs only on a named trigger. No retrospectives are owed.
 
 ## Remaining operating-model work
 

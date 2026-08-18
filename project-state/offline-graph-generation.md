@@ -46,7 +46,7 @@ Model use:
 
 ## Implementation Report
 
-Status: Review. GitHub backfill is complete, draft PR #39 is open, PR `increment-check` passes, and issue #38 is in Project 4 with `Status=In Progress`. Keep this increment out of `Done` until PR review, merge, and final Project status updates are complete.
+Status: Done. GitHub backfill is complete, PR #39 is merged, issue #38 is closed, and Project 4 is Done.
 
 Changed files:
 
@@ -65,6 +65,7 @@ Verification results so far:
 - `npm run build`: passed 95/95.
 - `npm run check`: passed.
 - PR #39 `increment-check`: passed on GitHub.
+- PR #39: merged on 2026-08-18.
 - `npm run test:browser`: skipped; no browser behavior changed.
 
 ## Current Generation Map
@@ -98,12 +99,12 @@ Implement an inspection surface for algorithmic KR-set alternatives:
 
 ## GitHub Backfill
 
-When GitHub is back:
+Completed on 2026-08-18:
 
 - Create issue: "Generate rich causal map and explore algorithmic KR-set selection". Backfilled as issue #38 on 2026-08-18.
 - Add to Project 4. Completed on 2026-08-18.
-- Set Agent Status to `Review`. Completed on 2026-08-18; Project `Status` is `In Progress`.
+- Set Agent Status to `Review`. Completed on 2026-08-18.
 - Link branch `feature/0-graph-generation-characterization`. Completed on 2026-08-18.
 - Push the branch. Completed on 2026-08-18.
 - Open a PR with this file as the issue context or completion comment. Completed as draft PR #39 on 2026-08-18: https://github.com/robinhyman/key-results-generator/pull/39.
-- Backfill that work started offline because GitHub was unavailable, and include the verification results plus skipped browser-test rationale.
+- Merge PR #39, close issue #38, and move Project status to Done. Completed on 2026-08-18.
