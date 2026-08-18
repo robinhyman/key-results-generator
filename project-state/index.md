@@ -6,7 +6,7 @@ The only state file a session must read. Everything else is read on demand.
 
 ## Project
 
-Local-first web app that turns an objective into graph-backed key results. The user enters an objective, the app generates a causal metrics graph, asks which metrics are most influenceable and where the gaps are, then synthesises 3-5 key results with explicit `leading`/`lagging` types and rationales. The current local branch also explores algorithmic KR-set selection by ranking candidate sets from the planning graph.
+Local-first web app that turns an objective into graph-backed key results. The user enters an objective, the app generates a causal metrics graph, asks which metrics are most influenceable and where the gaps are, then synthesises 3-5 key results with explicit `leading`/`lagging` types and rationales. The app also explores algorithmic KR-set selection by ranking candidate sets from the planning graph.
 
 AI generation runs server-side against the OpenAI Responses API with a deterministic local fallback. No persistence, accounts, or hosting.
 
@@ -24,7 +24,7 @@ npm run check        # process gates (also run by git hooks and CI)
 
 `main` is green. Issues #1-#35 are closed. Process gates are enforced mechanically by `ai-team/bin/increment-check.mjs` via git hooks and the `Process / increment-check` CI job. Branch protection is active, so CI is binding.
 
-GitHub backfill is complete for local graph-generation work on `feature/0-graph-generation-characterization`; issue #38 and draft PR #39 exist, PR `increment-check` passes, and Project 4 is updated. The shadow issue/report is in `project-state/offline-graph-generation.md`.
+Graph-generation work from the offline branch is merged: issue #38 is closed, PR #39 is merged, and Project 4 is Done. The shadow issue/report is in `project-state/offline-graph-generation.md`.
 
 ## Active work
 
@@ -32,7 +32,7 @@ See `project-state/task-ledger.md`, which owns active, blocked, and next work.
 
 ## Next action
 
-Review PR #39, then merge and move issue #38/Project status to Done when complete.
+Start the next graph-generation improvement: render or inspect algorithmic candidate KR sets, then add graph quality gates.
 
 ## Where things live
 
