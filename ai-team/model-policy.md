@@ -72,6 +72,7 @@ Send these to a cheaper worker automatically, without deliberation:
 
 - Running build, test, lint, or smoke checks and reporting the results.
 - Verifying a completed change against a written checklist or acceptance criteria.
+- Process-review checks against the increment Definition of Done and PR report.
 - Independent test-gap analysis on a diff.
 - Cross-file consistency checks, including whether docs, code, and issues agree.
 - Documentation drafts and documentation-impact checks.

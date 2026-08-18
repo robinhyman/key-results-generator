@@ -59,6 +59,16 @@ Risks considered:
 
 Remaining concerns:
 
+## Process Review
+
+Process reviewer and model tier:
+
+Checklist or rule set checked:
+
+Evidence returned:
+
+Unresolved process concerns:
+
 ## Model Use
 
 Lead model tier:

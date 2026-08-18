@@ -18,6 +18,7 @@ Tier: guidance. Hard gates are in `ai-team/README.md`.
 | Change code | `ai-team/workflows/branch-and-pr.md`, the relevant project profile |
 | Change behavior, setup, architecture, deployment, user workflow, or operating rules | `ai-team/workflows/documentation.md` |
 | Touch GitHub issues or Project fields | `ai-team/github-workflow.md` |
+| GitHub is unavailable during an increment | `ai-team/workflows/offline-backfill.md` |
 | Delegate substantial work | `ai-team/model-policy.md` |
 | Need the full operating rules | `ai-team/constitution.md` |
 | Need detail on a closed increment | `project-state/archive/` |

@@ -21,6 +21,10 @@ Use short descriptive names:
 - `chore/<issue-number>-short-name`
 - `docs/<issue-number>-short-name`
 
+If GitHub is unavailable and no issue number exists, use `ai-team/workflows/offline-backfill.md`.
+A temporary `feature/0-short-name`, `bug/0-short-name`, `chore/0-short-name`, or `docs/0-short-name` branch is allowed only during that outage path.
+Rename it to the real issue number before opening a PR, unless the report records why renaming was impractical.
+
 ## PR Requirements
 
 Each PR should include:

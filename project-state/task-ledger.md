@@ -8,7 +8,7 @@ This file owns active, blocked, and next work. `index.md` points here rather tha
 
 ## Active
 
-- None.
+- `#41` Harden process-review evidence and offline backfill workflow. Branch: `chore/41-process-evidence-backfill`.
 
 ## Blocked
 
@@ -16,7 +16,7 @@ This file owns active, blocked, and next work. `index.md` points here rather tha
 
 ## Next
 - Start the next graph-generation improvement increment: render/inspect algorithmic candidate sets, then add normalization quality gates for graph shape, branch coverage, subset quality, and connectivity.
-- Remaining operating-model work from the 2026-08-16 audits, listed in `handoff.md`.
+- Remaining operating-model work from the 2026-08-16 audits after #41: canonical gate-restatement consistency and durable demo evidence.
 
 ## Completed
 

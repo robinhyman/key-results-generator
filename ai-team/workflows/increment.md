@@ -17,14 +17,15 @@ The increment is the team's default unit of delivery. Avoid open-ended work. If 
 7. Define the verification plan using `ai-team/workflows/testing.md`.
 8. Delegate the increment's routine work to a cheaper worker by default, per `ai-team/model-policy.md`. Do not deliberate over whether to; deliberate only over whether an enumerated exemption applies, and record it if so.
 9. Build, test, and review the change.
-10. Deploy or start the target demonstration environment.
-11. Check the linked app or demo and confirm the increment works there.
-12. Assess and update documentation using `ai-team/workflows/documentation.md`.
-13. Capture follow-up work as separate GitHub issues when it is real, actionable, and out of scope.
-14. Update project state files and the GitHub issue.
-15. Move `Agent Status` to `Review`, `Blocked`, or `Done` according to the real current state.
-16. After completion, run the retrospective workflow before starting the next increment.
-17. Apply user-approved operating improvements, if any, before starting the next increment.
+10. Run an independent process review against this Definition of Done. Use a cheaper/faster worker when practical.
+11. Deploy or start the target demonstration environment.
+12. Check the linked app or demo and confirm the increment works there.
+13. Assess and update documentation using `ai-team/workflows/documentation.md`.
+14. Capture follow-up work as separate GitHub issues when it is real, actionable, and out of scope.
+15. Update project state files and the GitHub issue.
+16. Move `Agent Status` to `Review`, `Blocked`, or `Done` according to the real current state.
+17. After completion, run the retrospective workflow before starting the next increment.
+18. Apply user-approved operating improvements, if any, before starting the next increment.
 
 ## Increment Definition Of Done
 
@@ -65,6 +66,8 @@ An increment is done only when all applicable checks below are true.
 - The Lead or Reviewer has inspected the changed files.
 - Risks, regressions, missing tests, and UX issues have been considered.
 - Higher-risk work has stronger-model or human review.
+- A process review has checked the increment report against this Definition of Done before `Review` or `Done`.
+- The process reviewer, model tier or exemption, checklist used, evidence returned, and remaining process concerns are recorded.
 
 ### Model Use Is Cost-Conscious
 

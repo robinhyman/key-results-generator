@@ -58,6 +58,19 @@ Risks considered:
 
 Remaining concerns:
 
+## Process Review
+
+<!-- Independent check of the increment report against the DoD/process gates.
+     Use a cheaper/faster worker when practical; otherwise name the exemption. -->
+
+Process reviewer and model tier:
+
+Checklist or rule set checked:
+
+Evidence returned:
+
+Unresolved process concerns:
+
 ## Model Use
 
 <!-- Delegation is the default. Record the worker and what it returned, or name
