@@ -1,6 +1,6 @@
 # Handoff
 
-Last updated: 2026-08-17
+Last updated: 2026-08-18
 
 What the next session should do. For what the product is see `status.md`; for history see `archive/`.
 
@@ -16,12 +16,12 @@ All four operating-model audit increments are merged: #22 mechanical enforcement
 
 Branch protection is enabled as of 2026-08-16: the `main: require increment-check` ruleset requires a PR and a passing `increment-check`, with no bypass actors. CI is now genuinely binding, which was the largest known enforcement gap.
 
-GitHub was unavailable on 2026-08-17, so graph-generation work continued locally on `feature/0-graph-generation-characterization`. The branch now has a local rich graph contract implementation: the AI graph prompt asks for `fullGraph` plus `planningGraph`, the schema requires both, and normalization preserves the rich graph while using the planning graph for current rankings/KR flow. It also has an algorithmic KR-set explorer that enumerates candidate 3-5 KR sets and scores node quality, leading/lagging mix, branch coverage, causal connectedness, redundancy, externality, and user clarification effects. The shadow issue, implementation report, verification plan, delegation evidence, and backfill steps are in `project-state/offline-graph-generation.md`.
+GitHub was unavailable on 2026-08-17, so graph-generation work continued locally on `feature/0-graph-generation-characterization`. GitHub is back as of 2026-08-18: issue #38 exists and Project 4 has `Status=In Progress`, `Agent Status=Review`. The branch has a local rich graph contract implementation: the AI graph prompt asks for `fullGraph` plus `planningGraph`, the schema requires both, and normalization preserves the rich graph while using the planning graph for current rankings/KR flow. It also has an algorithmic KR-set explorer that enumerates candidate 3-5 KR sets and scores node quality, leading/lagging mix, branch coverage, causal connectedness, redundancy, externality, and user clarification effects. The shadow issue, implementation report, verification plan, delegation evidence, and remaining push/PR backfill steps are in `project-state/offline-graph-generation.md`.
 
 ## Next best actions
 
-1. **Finish local verification for the graph/KR exploration slice.** `npm test` passed 95/95. Run `npm run build` and `npm run check` before handoff/commit if they have not already been recorded in `project-state/offline-graph-generation.md`.
-2. **Backfill the offline graph/KR exploration implementation.** Create the GitHub issue, add it to Project 4, set Agent Status to `Review`, push the branch, and open a PR once GitHub is available.
+1. **Finish GitHub backfill.** Push `feature/0-graph-generation-characterization` and open a PR for issue #38.
+2. **Record the PR locally.** Update `project-state/offline-graph-generation.md`, `task-ledger.md`, and `handoff.md` with the PR URL and final Review status.
 3. **Start the next graph-generation improvement.** Recommended next behavior slice: render/inspect algorithmic candidate sets, then add local normalization quality gates for graph shape/connectivity, branch coverage, full/planning subset quality, and exactly-one-outcome validation.
 4. **Run a delta retro on every increment.** Three fields in the increment report, per the tiered principle 10 adopted in #35. The full multi-role retrospective now runs only on a named trigger. No retrospectives are owed.
 

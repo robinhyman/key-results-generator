@@ -1,6 +1,6 @@
 # Offline Graph Generation Increment
 
-Last updated: 2026-08-17
+Last updated: 2026-08-18
 
 GitHub was unavailable when this work started, so this file is the local shadow issue and increment report. Backfill it into GitHub when service returns.
 
@@ -23,7 +23,7 @@ Acceptance criteria:
 - [x] Add an algorithmic KR-set explorer that enumerates candidate sets and scores set quality, not just individual node rank.
 - [x] Expose ranked candidate KR-set alternatives with score components for node quality, indicator mix, branch coverage, connectedness, redundancy, and externality.
 - [x] Use the top algorithmic 4-KR candidate set for the deterministic KR path while keeping the explorer capable of 3-5 item alternatives.
-- [ ] GitHub issue, Project status, branch push, and PR are backfilled after GitHub returns.
+- [ ] GitHub backfill is complete: issue and Project status are backfilled; branch push and PR remain pending.
 
 Verification plan:
 
@@ -99,10 +99,10 @@ Implement an inspection surface for algorithmic KR-set alternatives:
 
 When GitHub is back:
 
-- Create issue: "Generate rich causal map and explore algorithmic KR-set selection".
-- Add to Project 4.
-- Set Agent Status to `Review`.
+- Create issue: "Generate rich causal map and explore algorithmic KR-set selection". Backfilled as issue #38 on 2026-08-18.
+- Add to Project 4. Completed on 2026-08-18.
+- Set Agent Status to `Review`. Completed on 2026-08-18; Project `Status` is `In Progress`.
 - Link branch `feature/0-graph-generation-characterization`.
-- Push the branch.
-- Open a PR with this file as the issue context or completion comment.
+- Push the branch. Pending.
+- Open a PR with this file as the issue context or completion comment. Pending.
 - Backfill that work started offline because GitHub was unavailable, and include the verification results plus skipped browser-test rationale.

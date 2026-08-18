@@ -1,6 +1,6 @@
 # Index
 
-Last updated: 2026-08-17
+Last updated: 2026-08-18
 
 The only state file a session must read. Everything else is read on demand.
 
@@ -24,7 +24,7 @@ npm run check        # process gates (also run by git hooks and CI)
 
 `main` is green. Issues #1-#35 are closed. Process gates are enforced mechanically by `ai-team/bin/increment-check.mjs` via git hooks and the `Process / increment-check` CI job. Branch protection is active, so CI is binding.
 
-GitHub is currently unavailable for this workstream. Local graph-generation work is on `feature/0-graph-generation-characterization`; the shadow issue/report and backfill list are in `project-state/offline-graph-generation.md`.
+GitHub backfill is in progress for local graph-generation work on `feature/0-graph-generation-characterization`; issue #38 exists and the Project is updated. The shadow issue/report and remaining push/PR backfill list are in `project-state/offline-graph-generation.md`.
 
 ## Active work
 
@@ -32,7 +32,7 @@ See `project-state/task-ledger.md`, which owns active, blocked, and next work.
 
 ## Next action
 
-Finish local verification for the graph/KR exploration slice, then backfill the issue, Project status, branch push, and PR when GitHub returns.
+Push `feature/0-graph-generation-characterization`, open the PR for issue #38, and record the PR in local state.
 
 ## Where things live
 
