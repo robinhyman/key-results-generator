@@ -22,7 +22,7 @@ npm run check        # process gates (also run by git hooks and CI)
 
 ## Current state
 
-`main` is green. Issues #1-#38 are closed. Process gates are enforced mechanically by `ai-team/bin/increment-check.mjs` via git hooks and the `Process / increment-check` CI job. Branch protection is active, so CI is binding.
+`main` is green. Issues #1-#43 are closed. Process gates are enforced mechanically by `ai-team/bin/increment-check.mjs` via git hooks and the `Process / increment-check` CI job. Branch protection is active, so CI is binding.
 
 Graph-generation work from the offline branch is merged: issue #38 is closed, PR #39 is merged, and Project 4 is Done. The shadow issue/report is in `project-state/offline-graph-generation.md`.
 
@@ -32,7 +32,7 @@ See `project-state/task-ledger.md`, which owns active, blocked, and next work.
 
 ## Next action
 
-Issue #43 is in review on PR #44 from branch `chore/43-autonomous-closeout-evidence`: autonomous closeout, stronger evidence gates, Project status checks, and state compaction.
+Start the next graph-generation improvement: render or inspect algorithmic candidate KR sets, then add graph quality gates.
 
 ## Where things live
 

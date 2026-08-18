@@ -10,7 +10,7 @@ What the next session should do. For what the product is see `status.md`; for hi
 
 ## Where things stand
 
-Issues #1-#38 are closed and merged. `main` is green: `npm run build` passes, `npm run test:browser` passes 1/1, and the `Process / increment-check` CI job passes.
+Issues #1-#43 are closed and merged. `main` is green: `npm run build` passes, `npm run test:browser` passes 1/1, and the `Process / increment-check` CI job passes.
 
 All four operating-model audit increments are merged: #22 mechanical enforcement, #24 state compaction, #26 obligation tiering, #28 delegate-by-default.
 
@@ -20,9 +20,8 @@ GitHub was unavailable on 2026-08-17, so graph-generation work continued locally
 
 ## Next best actions
 
-1. **Complete PR #44 for issue #43.** Scope: state compaction, hard-gate restatement check, durable demo evidence gate, Project status checker, merge-closeout workflow, lightweight model telemetry, and broader checker tests.
-2. **Then start the next graph-generation improvement.** Recommended next behavior slice: render/inspect algorithmic candidate sets, then add local normalization quality gates for graph shape/connectivity, branch coverage, full/planning subset quality, and exactly-one-outcome validation.
-3. **Run a delta retro on every increment.** Three fields in the increment report, per the tiered principle 10 adopted in #35.
+1. **Start the next graph-generation improvement.** Recommended next behavior slice: render/inspect algorithmic candidate sets, then add local normalization quality gates for graph shape/connectivity, branch coverage, full/planning subset quality, and exactly-one-outcome validation.
+2. **Run a delta retro on every increment.** Three fields in the increment report, per the tiered principle 10 adopted in #35.
 
 ## Remaining operating-model work
 
