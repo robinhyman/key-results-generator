@@ -8,14 +8,14 @@ This file owns active, blocked, and next work. `index.md` points here rather tha
 
 ## Active
 
-- Offline rich graph contract and algorithmic KR-set exploration on `feature/0-graph-generation-characterization`. GitHub issue #38 and Project status are backfilled; branch push and PR creation are in progress. The local shadow issue, implementation report, verification plan, and backfill list live in `project-state/offline-graph-generation.md`. Status language: Review after PR opens; do not mark `Done` yet.
+- Offline rich graph contract and algorithmic KR-set exploration on `feature/0-graph-generation-characterization`. GitHub issue #38 and draft PR #39 are backfilled; Project 4 has `Status=In Progress`. The local shadow issue and implementation report live in `project-state/offline-graph-generation.md`. Status language: Review; do not mark `Done` until PR review, CI, merge, and final Project status updates are complete.
 
 ## Blocked
 
 - None.
 
 ## Next
-- Push the offline rich graph contract and KR-set explorer branch and open the PR for issue #38.
+- Watch PR #39 CI/review, then merge and move issue #38/Project status to Done when complete.
 - Start the next graph-generation improvement increment: render/inspect algorithmic candidate sets, then add normalization quality gates for graph shape, branch coverage, subset quality, and connectivity.
 - Remaining operating-model work from the 2026-08-16 audits, listed in `handoff.md`.
 

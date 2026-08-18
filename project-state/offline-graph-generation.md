@@ -23,7 +23,7 @@ Acceptance criteria:
 - [x] Add an algorithmic KR-set explorer that enumerates candidate sets and scores set quality, not just individual node rank.
 - [x] Expose ranked candidate KR-set alternatives with score components for node quality, indicator mix, branch coverage, connectedness, redundancy, and externality.
 - [x] Use the top algorithmic 4-KR candidate set for the deterministic KR path while keeping the explorer capable of 3-5 item alternatives.
-- [ ] GitHub backfill is complete: issue and Project status are backfilled; branch push and PR remain pending.
+- [x] GitHub backfill is complete: issue #38, Project status, branch push, and draft PR #39 are backfilled.
 
 Verification plan:
 
@@ -46,7 +46,7 @@ Model use:
 
 ## Implementation Report
 
-Status: local complete, GitHub backfill pending. Keep this increment in `Review` language rather than `Done` until GitHub issue, Project, branch push, and PR records exist.
+Status: Review. GitHub backfill is complete, draft PR #39 is open, and issue #38 is in Project 4 with `Status=In Progress`. Keep this increment out of `Done` until PR review, CI, merge, and final Project status updates are complete.
 
 Changed files:
 
@@ -102,7 +102,7 @@ When GitHub is back:
 - Create issue: "Generate rich causal map and explore algorithmic KR-set selection". Backfilled as issue #38 on 2026-08-18.
 - Add to Project 4. Completed on 2026-08-18.
 - Set Agent Status to `Review`. Completed on 2026-08-18; Project `Status` is `In Progress`.
-- Link branch `feature/0-graph-generation-characterization`.
-- Push the branch. Pending.
-- Open a PR with this file as the issue context or completion comment. Pending.
+- Link branch `feature/0-graph-generation-characterization`. Completed on 2026-08-18.
+- Push the branch. Completed on 2026-08-18.
+- Open a PR with this file as the issue context or completion comment. Completed as draft PR #39 on 2026-08-18: https://github.com/robinhyman/key-results-generator/pull/39.
 - Backfill that work started offline because GitHub was unavailable, and include the verification results plus skipped browser-test rationale.
