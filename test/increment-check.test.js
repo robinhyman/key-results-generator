@@ -62,12 +62,16 @@ test('regression: empty headings plus stray evidence elsewhere fails', () => {
 });
 
 test('evidence must sit in the section that claims it', () => {
-  const base = (demo, modelUse) =>
+  const base = (demo, modelUse, processReview = 'Low-cost worker checked the increment report against the DoD; no gaps found.') =>
     [
       '## Verification',
       'npm run build passed.',
       '## Demonstration',
       demo,
+      '## Review',
+      'Lead reviewed the diff.',
+      '## Process Review',
+      processReview,
       '## Model Use',
       modelUse,
       '## Documentation',
@@ -90,6 +94,70 @@ test('evidence must sit in the section that claims it', () => {
     null,
     'evidence in the right sections must pass'
   );
+  assert.ok(
+    evaluateReport(
+      base(
+        'Not user-facing.',
+        'Delegated fixtures to a low-cost worker.',
+        ''
+      ),
+      'pull_request'
+    ),
+    'a missing Process Review claim must fail'
+  );
+  assert.ok(
+    evaluateReport(
+      base(
+        'Not user-facing.',
+        'Delegated fixtures to a low-cost worker.',
+        'Looks good.'
+      ),
+      'pull_request'
+    ),
+    'a weak nonempty Process Review claim must fail'
+  );
+  assert.ok(
+    evaluateReport(
+      [
+        '## Verification',
+        'Low-cost worker checked the process evidence.',
+        '## Demonstration',
+        'Not user-facing.',
+        '## Review',
+        'Lead reviewed the diff.',
+        '## Process Review',
+        'Evidence:',
+        '## Model Use',
+        'Delegated fixtures to a low-cost worker.',
+        '## Documentation',
+        'Updated docs.',
+      ].join('\n'),
+      'pull_request'
+    ),
+    'process-review evidence in the wrong section or only scaffold must fail'
+  );
+  assert.equal(
+    evaluateReport(
+      [
+        '## Verification',
+        'npm run build passed.',
+        '## Demonstration',
+        'Not user-facing.',
+        '## Process Review',
+        'Reviewer/model tier: low-cost worker.',
+        'Checklist: increment Definition of Done and PR report sections.',
+        'Evidence returned: inspected changed files and confirmed process evidence.',
+        'Unresolved process concerns: none.',
+        '## Model Use',
+        'Delegated fixtures to a low-cost worker.',
+        '## Documentation',
+        'Updated docs.',
+      ].join('\n'),
+      'pull_request'
+    ),
+    null,
+    'structured Process Review evidence must pass'
+  );
 });
 
 test('a negated delegation claim is not delegation evidence', () => {
@@ -99,6 +167,10 @@ test('a negated delegation claim is not delegation evidence', () => {
       'Tests pass.',
       '## Demonstration',
       'Not user-facing.',
+      '## Review',
+      'Lead reviewed the diff.',
+      '## Process Review',
+      'Low-cost worker checked the report against the increment DoD; no process concerns found.',
       '## Model Use',
       modelUse,
       '## Documentation',

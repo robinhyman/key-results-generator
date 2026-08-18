@@ -49,6 +49,7 @@ CI is the binding gate — hooks are bypassable with `--no-verify`.
 | Branch, PR, and merge policy | `workflows/branch-and-pr.md` |
 | Model tiers and delegation | `model-policy.md` |
 | Issues, Projects, labels | `github-workflow.md` |
+| Working while GitHub is unavailable | `workflows/offline-backfill.md` |
 | Documentation standards | `workflows/documentation.md` |
 | Retrospectives | `workflows/retrospective.md` |
 | Role specs | `roles/` |

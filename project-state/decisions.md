@@ -228,6 +228,14 @@ Reason: Increments #22, #24, #26, and #28 each owed a retrospective and none ran
 
 Tradeoff: delta retros will surface less than full ones. The triggers are the hedge, and they cover the cases where depth actually pays — failure, rework, and risk. The delta retro is also still a written claim; nothing verifies it happened.
 
+## 2026-08-18: Require Process-Review Evidence And Document Offline Backfill
+
+Decision: Increment reports and PRs require a Process Review section, and `increment-check` treats it as a required substantive section. The team also has a lightweight offline backfill workflow for the case where GitHub is unavailable during an otherwise useful local increment.
+
+Reason: The strongest remaining enforcement gap was Lead self-grading: a report could claim delegation or demo verification without an independent check. Process-review evidence does not prove truth, but it makes the expected second look visible and mechanically hard to omit. The 2026-08-17 graph-generation work also showed that local shadow issues preserve development speed during a GitHub outage; writing the path down keeps that useful exception from becoming improvisation.
+
+Tradeoff: This adds one more PR-report section. The cost is acceptable because it replaces repeated rediscovery of the same process gap and stays in the existing Markdown report rather than introducing a separate evidence manifest.
+
 ## 2026-08-17: Generate Rich Causal Maps Before Converging To Planning Graphs
 
 Decision: Graph generation should not treat the first AI graph as the final planning surface. Generate a broad causal map first, comparable to a manual Miro exploration, then converge it into a smaller planning graph for clarification and KR selection.

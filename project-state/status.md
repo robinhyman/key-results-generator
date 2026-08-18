@@ -31,7 +31,7 @@ Final KRs are a set of 3-5, each carrying an explicit `indicatorType` of `leadin
 
 Delivery unit is the increment, one primary GitHub issue each, tracked in the `Key Results Generator` GitHub Project via the `Agent Status` field.
 
-Process gates are mechanical as of issue #22: `ai-team/bin/increment-check.mjs` runs from `.githooks/pre-commit`, `.githooks/pre-push`, and `.github/workflows/process.yml`. It fails on staged credential material, missing or stale state stamps, non-conforming branch names, and lint/build failures, and enforces state-file line budgets and PR report sections.
+Process gates are mechanical as of issue #22: `ai-team/bin/increment-check.mjs` runs from `.githooks/pre-commit`, `.githooks/pre-push`, and `.github/workflows/process.yml`. It fails on staged credential material, missing or stale state stamps, non-conforming branch names, and lint/build failures, and enforces state-file line budgets plus PR report sections including process-review evidence.
 
 Rules live only in `ai-team/`. No harness-specific instruction file may contain a rule, so the model works identically under Codex, Claude, or OpenClaw.
 

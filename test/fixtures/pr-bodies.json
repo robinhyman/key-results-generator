@@ -123,98 +123,98 @@
     "expect": "pass",
     "reason": "rule 5 satisfied: delegates something AND declines to delegate something else is evidence of real delegation",
     "event": "pull_request",
-    "body": "## Verification\nDelegated test writing to a cheaper worker, but I did the code review myself.\n\n## Demonstration\nNot user-facing.\n\n## Model Use\nDelegated test suite expansion to a mid-capability worker, but skipped delegation on the critical path review.\n\n## Documentation\nUpdated README."
+    "body": "## Verification\nDelegated test writing to a cheaper worker, but I did the code review myself.\n\n## Demonstration\nNot user-facing.\n\n## Process Review\nLow-cost worker checked the increment report against the DoD and found no unresolved process concerns.\n\n## Model Use\nDelegated test suite expansion to a mid-capability worker, but skipped delegation on the critical path review.\n\n## Documentation\nUpdated README."
   },
   {
     "name": "explicit-declaration-no-demo-link",
     "expect": "pass",
     "reason": "rule 4 satisfied: explicit 'no demo link applies' declaration",
     "event": "pull_request",
-    "body": "## Verification\nUnit tests pass; 42 tests added.\n\n## Demonstration\nNo demo link applies. This is an internal refactoring of the validation logic.\n\n## Model Use\nDelegated code review to a cheaper worker.\n\n## Documentation\nAdded inline documentation."
+    "body": "## Verification\nUnit tests pass; 42 tests added.\n\n## Demonstration\nNo demo link applies. This is an internal refactoring of the validation logic.\n\n## Process Review\nLow-cost worker checked the increment report against the DoD and found no unresolved process concerns.\n\n## Model Use\nDelegated code review to a cheaper worker.\n\n## Documentation\nAdded inline documentation."
   },
   {
     "name": "explicit-declaration-no-app-link",
     "expect": "pass",
     "reason": "rule 4 satisfied: explicit 'no app link applies' declaration",
     "event": "pull_request",
-    "body": "## Verification\nAll 89 tests passing.\n\n## Demonstration\nNo app link applies; this is a backend library change.\n\n## Model Use\nDelegated implementation to a cheaper worker.\n\n## Documentation\nUpdated API reference."
+    "body": "## Verification\nAll 89 tests passing.\n\n## Demonstration\nNo app link applies; this is a backend library change.\n\n## Process Review\nLow-cost worker checked the increment report against the DoD and found no unresolved process concerns.\n\n## Model Use\nDelegated implementation to a cheaper worker.\n\n## Documentation\nUpdated API reference."
   },
   {
     "name": "explicit-declaration-not-user-facing",
     "expect": "pass",
     "reason": "rule 4 satisfied: explicit 'not user-facing' declaration",
     "event": "pull_request",
-    "body": "## Verification\nIntegration tests pass; coverage 94%.\n\n## Demonstration\nThis is not user-facing. Internal dependency upgrade.\n\n## Model Use\nDelegated review to cheaper worker for efficiency.\n\n## Documentation\nUpdated changelog."
+    "body": "## Verification\nIntegration tests pass; coverage 94%.\n\n## Demonstration\nThis is not user-facing. Internal dependency upgrade.\n\n## Process Review\nLow-cost worker checked the increment report against the DoD and found no unresolved process concerns.\n\n## Model Use\nDelegated review to cheaper worker for efficiency.\n\n## Documentation\nUpdated changelog."
   },
   {
     "name": "explicit-declaration-no-ufbc",
     "expect": "pass",
     "reason": "rule 4 satisfied: explicit 'no user-facing behavior change' declaration",
     "event": "pull_request",
-    "body": "## Verification\nFull test suite: 156 tests passing.\n\n## Demonstration\nThere is no user-facing behavior change. This is optimization work.\n\n## Model Use\nDelegated analysis to a cheaper model.\n\n## Documentation\nAdded performance notes."
+    "body": "## Verification\nFull test suite: 156 tests passing.\n\n## Demonstration\nThere is no user-facing behavior change. This is optimization work.\n\n## Process Review\nLow-cost worker checked the increment report against the DoD and found no unresolved process concerns.\n\n## Model Use\nDelegated analysis to a cheaper model.\n\n## Documentation\nAdded performance notes."
   },
   {
     "name": "delegation-exemption",
     "expect": "pass",
     "reason": "rule 5 satisfied: explicit exemption 'Delegation gate: exempt'",
     "event": "pull_request",
-    "body": "## Verification\nManual testing complete.\n\n## Demonstration\nNot user-facing.\n\n## Model Use\nDelegation gate: exempt due to security-sensitive review requirements.\n\n## Documentation\nAdded security notes."
+    "body": "## Verification\nManual testing complete.\n\n## Demonstration\nNot user-facing.\n\n## Process Review\nLow-cost worker checked the increment report against the DoD and found no unresolved process concerns.\n\n## Model Use\nDelegation gate: exempt due to security-sensitive review requirements.\n\n## Documentation\nAdded security notes."
   },
   {
     "name": "heading-level-h1",
     "expect": "pass",
     "reason": "rule 2, 3, 4, 5 satisfied: valid sections with all content",
     "event": "pull_request",
-    "body": "# Verification\nAdded comprehensive test coverage for edge cases.\n\n# Demonstration\nNot user-facing; internal optimization.\n\n# Model Use\nDelegated implementation to cheaper worker.\n\n# Documentation\nUpdated inline comments and README."
+    "body": "# Verification\nAdded comprehensive test coverage for edge cases.\n\n# Demonstration\nNot user-facing; internal optimization.\n\n# Process Review\nLow-cost worker checked the increment report against the DoD and found no unresolved process concerns.\n\n# Model Use\nDelegated implementation to cheaper worker.\n\n# Documentation\nUpdated inline comments and README."
   },
   {
     "name": "heading-level-h3",
     "expect": "pass",
     "reason": "rule 2, 3, 4, 5 satisfied: valid sections at h3 level",
     "event": "pull_request",
-    "body": "### Verification\nAll unit tests pass.\n\n### Demonstration\nNo user-facing behavior change.\n\n### Model Use\nDelegated code review to a cheaper worker.\n\n### Documentation\nAdded architecture documentation."
+    "body": "### Verification\nAll unit tests pass.\n\n### Demonstration\nNo user-facing behavior change.\n\n### Process Review\nLow-cost worker checked the increment report against the DoD and found no unresolved process concerns.\n\n### Model Use\nDelegated code review to a cheaper worker.\n\n### Documentation\nAdded architecture documentation."
   },
   {
     "name": "heading-level-h4",
     "expect": "pass",
     "reason": "rule 2, 3, 4, 5 satisfied: valid sections at h4 level",
     "event": "pull_request",
-    "body": "#### Verification\nIntegration tests passing.\n\n#### Demonstration\nNot user-facing.\n\n#### Model Use\nDelegated to cheaper worker for review.\n\n#### Documentation\nUpdated docs."
+    "body": "#### Verification\nIntegration tests passing.\n\n#### Demonstration\nNot user-facing.\n\n#### Process Review\nLow-cost worker checked the increment report against the DoD and found no unresolved process concerns.\n\n#### Model Use\nDelegated to cheaper worker for review.\n\n#### Documentation\nUpdated docs."
   },
   {
     "name": "heading-with-trailing-text",
     "expect": "pass",
     "reason": "rule 2 satisfied: headings with trailing text match by prefix",
     "event": "pull_request",
-    "body": "## Verification And Testing\nAll tests pass; coverage increased to 96%.\n\n## Demonstration Platform\nNot user-facing change.\n\n## Model Use Case Analysis\nDelegated to a cheaper worker.\n\n## Documentation Updates\nAdded new sections to README."
+    "body": "## Verification And Testing\nAll tests pass; coverage increased to 96%.\n\n## Demonstration Platform\nNot user-facing change.\n\n## Process Review\nLow-cost worker checked the increment report against the DoD and found no unresolved process concerns.\n\n## Model Use Case Analysis\nDelegated to a cheaper worker.\n\n## Documentation Updates\nAdded new sections to README."
   },
   {
     "name": "case-insensitive-uppercase",
     "expect": "pass",
     "reason": "rule 4 via line-anchored declaration: \"No user-facing behavior.\" is accepted",
     "event": "pull_request",
-    "body": "## VERIFICATION\nAll tests passing.\n\n## DEMONSTRATION\nNo user-facing behavior.\n\n## MODEL USE\nDelegated to cheaper worker.\n\n## DOCUMENTATION\nUpdated docs."
+    "body": "## VERIFICATION\nAll tests passing.\n\n## DEMONSTRATION\nNo user-facing behavior.\n\n## Process Review\nLow-cost worker checked the increment report against the DoD and found no unresolved process concerns.\n\n## Model Use\nDelegated to cheaper worker.\n\n## DOCUMENTATION\nUpdated docs."
   },
   {
     "name": "case-insensitive-mixed",
     "expect": "pass",
     "reason": "rule 2 satisfied: mixed case headings",
     "event": "pull_request",
-    "body": "## Verification\nUnit tests: 42 passing.\n\n## DeMoNsTraTioN\nNot user-facing.\n\n## model use\nDelegated to cheaper model.\n\n## DocuMENTATION\nAdded comments."
+    "body": "## Verification\nUnit tests: 42 passing.\n\n## DeMoNsTraTioN\nNot user-facing.\n\n## Process Review\nLow-cost worker checked the increment report against the DoD and found no unresolved process concerns.\n\n## Model Use\nDelegated to cheaper model.\n\n## DocuMENTATION\nAdded comments."
   },
   {
     "name": "no-blank-line-after-heading",
     "expect": "pass",
     "reason": "rule 3, 4, 5 satisfied: content immediately after heading still counts",
     "event": "pull_request",
-    "body": "## Verification\nAll tests pass.\n## Demonstration\nNot user-facing.\n## Model Use\nDelegated to cheaper worker.\n## Documentation\nUpdated README."
+    "body": "## Verification\nAll tests pass.\n## Demonstration\nNot user-facing.\n\n## Process Review\nLow-cost worker checked the increment report against the DoD and found no unresolved process concerns.\n\n## Model Use\nDelegated to cheaper worker.\n## Documentation\nUpdated README."
   },
   {
     "name": "fully-valid-realistic",
     "expect": "pass",
     "reason": "all rules satisfied: complete valid PR body",
     "event": "pull_request",
-    "body": "## Verification\nAdded 15 new unit tests covering the validation endpoint. All 287 tests pass locally and in CI. Coverage increased from 91% to 94% for this module.\n\n## Demonstration\nThis change is not user-facing. It refactors internal validation logic to improve maintainability and performance. No behavioral changes are visible to end users.\n\n## Model Use\nDelegated implementation details review to a cheaper worker for efficiency. The critical path review was done by senior engineers.\n\n## Documentation\nUpdated API documentation with new validation rules. Added inline code comments explaining the validation algorithm. Updated CHANGELOG with feature description."
+    "body": "## Verification\nAdded 15 new unit tests covering the validation endpoint. All 287 tests pass locally and in CI. Coverage increased from 91% to 94% for this module.\n\n## Demonstration\nThis change is not user-facing. It refactors internal validation logic to improve maintainability and performance. No behavioral changes are visible to end users.\n\n## Process Review\nLow-cost worker checked the increment report against the DoD and found no unresolved process concerns.\n\n## Model Use\nDelegated implementation details review to a cheaper worker for efficiency. The critical path review was done by senior engineers.\n\n## Documentation\nUpdated API documentation with new validation rules. Added inline code comments explaining the validation algorithm. Updated CHANGELOG with feature description."
   },
   {
     "name": "bypass-empty-body-with-event",
@@ -235,7 +235,7 @@
     "expect": "pass",
     "reason": "rule 2 satisfied: section heading starts with required name",
     "event": "pull_request",
-    "body": "## Verification Process and Results\nComprehensive testing done.\n\n## Demonstration of Features\nNot user-facing.\n\n## Model Use and Cost Analysis\nDelegated to cheaper worker.\n\n## Documentation and Comments\nAll updated."
+    "body": "## Verification Process and Results\nComprehensive testing done.\n\n## Demonstration of Features\nNot user-facing.\n\n## Process Review\nLow-cost worker checked the increment report against the DoD and found no unresolved process concerns.\n\n## Model Use and Cost Analysis\nDelegated to cheaper worker.\n\n## Documentation and Comments\nAll updated."
   },
   {
     "name": "only-template-labels-verification",
@@ -263,21 +263,21 @@
     "expect": "pass",
     "reason": "rule 4 satisfied: valid URL in Demonstration section",
     "event": "pull_request",
-    "body": "## Verification\nFull test suite passing.\n\n## Demonstration\nView the changes at https://staging-env.example.com/features/new-validation-gate\n\n## Model Use\nDelegated to cheaper worker.\n\n## Documentation\nUpdated all references."
+    "body": "## Verification\nFull test suite passing.\n\n## Demonstration\nView the changes at https://staging-env.example.com/features/new-validation-gate\n\n## Process Review\nLow-cost worker checked the increment report against the DoD and found no unresolved process concerns.\n\n## Model Use\nDelegated to cheaper worker.\n\n## Documentation\nUpdated all references."
   },
   {
     "name": "https-url-in-demonstration",
     "expect": "pass",
     "reason": "rule 4 satisfied: valid HTTPS URL in Demonstration",
     "event": "pull_request",
-    "body": "## Verification\nAll tests pass.\n\n## Demonstration\nhttps://example.com/pr-preview/abc123\n\n## Model Use\nDelegated review to cheaper worker.\n\n## Documentation\nAdded docs."
+    "body": "## Verification\nAll tests pass.\n\n## Demonstration\nhttps://example.com/pr-preview/abc123\n\n## Process Review\nLow-cost worker checked the increment report against the DoD and found no unresolved process concerns.\n\n## Model Use\nDelegated review to cheaper worker.\n\n## Documentation\nAdded docs."
   },
   {
     "name": "uppercase-headings-with-real-link",
     "expect": "pass",
     "reason": "rule 2: heading matching is case-insensitive, isolated from the declaration rule",
     "event": "pull_request",
-    "body": "## VERIFICATION\nnpm run build passed 39/39.\n\n## DEMONSTRATION\nChecked link: http://127.0.0.1:5173/ and confirmed the graph renders.\n\n## MODEL USE\nDelegated the smoke check to a low-cost worker.\n\n## DOCUMENTATION\nNo doc impact; behaviour unchanged."
+    "body": "## VERIFICATION\nnpm run build passed 39/39.\n\n## DEMONSTRATION\nChecked link: http://127.0.0.1:5173/ and confirmed the graph renders.\n\n## Process Review\nLow-cost worker checked the increment report against the DoD and found no unresolved process concerns.\n\n## Model Use\nDelegated the smoke check to a low-cost worker.\n\n## DOCUMENTATION\nNo doc impact; behaviour unchanged."
   },
   {
     "name": "demonstration-embedded-no-user-facing-clause",

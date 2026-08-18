@@ -65,7 +65,13 @@ const CONFIG = {
   exemptBranches: ['main'],
 
   // Increment report sections required in a PR body (checked in CI only).
-  requiredReportSections: ['Verification', 'Demonstration', 'Model Use', 'Documentation'],
+  requiredReportSections: [
+    'Verification',
+    'Demonstration',
+    'Process Review',
+    'Model Use',
+    'Documentation',
+  ],
 
   // Paths that must never be committed, regardless of .gitignore state.
   forbiddenPaths: [/^keys\//, /^logs\//, /(^|\/)\.env$/, /(^|\/)ai-traces\.jsonl$/],
@@ -466,6 +472,32 @@ function hasUnnegated(text, re) {
   return false;
 }
 
+function evaluateProcessReview(processReview) {
+  const text = substantive(processReview);
+  if (!text) {
+    return 'Process Review section has no substantive evidence.';
+  }
+
+  const namesReviewerOrExemption =
+    /\b(process reviewer|reviewer|worker|subagent|independent|delegat\w*|handed to|assigned to)\b/i.test(text) ||
+    /\b(exempt|exemption|exception)\b/i.test(text);
+  const namesTierOrModel =
+    /\b(model tier|tier|low-cost|cheaper|cheap|mid-capability|high-capability|gpt-[\w.-]+|haiku|luna|sonnet|opus|codex)\b/i.test(text) ||
+    /\b(exempt|exemption|exception)\b/i.test(text);
+  const namesChecklist = /\b(checklist|rule set|rules checked|definition of done|DoD|process gates?|increment report|PR report)\b/i.test(text);
+  const givesEvidence = /\b(evidence|checked|inspected|ran|reviewed|found|reported|verified|confirmed)\b/i.test(text);
+  const statesConcerns = /\b(no unresolved|none|unresolved|remaining|concerns?|gaps?|issues?|failures?|passed?|clean)\b/i.test(text);
+
+  const missing = [];
+  if (!namesReviewerOrExemption) missing.push('reviewer or exemption');
+  if (!namesTierOrModel) missing.push('model tier or exemption');
+  if (!namesChecklist) missing.push('checklist or rule set');
+  if (!givesEvidence) missing.push('evidence returned');
+  if (!statesConcerns) missing.push('unresolved-concerns status');
+
+  return missing.length > 0 ? `Process Review section is missing: ${missing.join(', ')}.` : null;
+}
+
 // Returns null when the report passes, or the problem detail when it does not.
 export function evaluateReport(rawBody, event) {
   // Template guidance is not evidence. Left in, an unfilled PR template would
@@ -506,6 +538,16 @@ export function evaluateReport(rawBody, event) {
       offender: '(pull request body)',
       fix: 'Populate every required section using ai-team/templates/increment-report.md. A heading with no content below it does not count.',
       rule: 'ai-team/workflows/branch-and-pr.md (PR Requirements)',
+    };
+  }
+
+  const processReviewFailure = evaluateProcessReview(sectionBody(sections, 'Process Review'));
+  if (processReviewFailure) {
+    return {
+      message: processReviewFailure,
+      offender: '(pull request body, Process Review section)',
+      fix: 'Record the process reviewer and model tier or exemption, checklist/rule set checked, evidence returned, and unresolved concerns.',
+      rule: 'ai-team/workflows/increment.md (Review Has Happened)',
     };
   }
 
