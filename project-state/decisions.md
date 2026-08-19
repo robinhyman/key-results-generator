@@ -52,7 +52,8 @@ Current durable decisions only. Detailed pre-compaction history is archived in `
 - The browser never reads credentials. Keys come from environment or ignored local key path only.
 - Trace logging is opt-in, local-only, git-ignored, and redacts credential material.
 - The graph is a first-class serializable artifact with a rich `fullGraph`, converged `planningGraph`, rankings, user assessments, algorithmic candidate KR sets, and traceable final KRs.
+- Decompose the deterministic generator incrementally through issues #52-#56. Preserve behavior, public exports, and serialized contracts during extraction; apply semantic graph, KR, path, and DTO changes only in their dedicated follow-up issues so review evidence stays attributable.
 
 ## Current Product Direction
 
-- Next product increment: render or inspect algorithmic candidate KR sets, then add local normalization quality gates for graph shape/connectivity, branch coverage, full/planning subset quality, and exactly-one-outcome validation.
+- First complete the ordered maintainability sequence #52-#56, beginning with the test split. Independently startable reliability fixes may proceed in parallel increments, but graph/KR semantic changes should wait for their relevant extracted boundary. Resume candidate-set rendering after the architecture backlog; graph normalization quality gates are issue #62.
