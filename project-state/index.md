@@ -1,6 +1,6 @@
 # Index
 
-Last updated: 2026-08-18
+Last updated: 2026-08-19
 
 The only state file a session must read. Everything else is read on demand.
 
@@ -22,7 +22,7 @@ npm run check        # process gates (also run by git hooks and CI)
 
 ## Current state
 
-`main` is green. Issues #1-#43 are closed. Process gates are enforced mechanically by `ai-team/bin/increment-check.mjs` via git hooks and the `Process / increment-check` CI job. Branch protection is active, so CI is binding.
+`main` is green. Issues #1-#43, #46, and #49 are closed. Process and maintainability gates run through git hooks and the binding `Process / increment-check` CI job. The maintainability ratchet uses free local static analysis and deterministic green/amber/red review routing.
 
 Graph-generation work from the offline branch is merged: issue #38 is closed, PR #39 is merged, and Project 4 is Done. The shadow issue/report is in `project-state/offline-graph-generation.md`.
 

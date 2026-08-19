@@ -8,7 +8,7 @@ This file owns active, blocked, and next work. `index.md` points here rather tha
 
 ## Active
 
-- `#49` Add deterministic maintainability quality gates. Branch `chore/49-maintainability-gates`; implementation and focused tests are complete, with full verification and PR closeout in progress.
+- None.
 
 ## Blocked
 
@@ -46,5 +46,6 @@ Issues `#1`-`#22` are closed. Summary of what each delivered:
 - `#41` Process-review evidence and offline backfill workflow.
 - `#43` Autonomous closeout, durable evidence, Project status checks, checker coverage, and decision-state compaction.
 - `#46` Lightweight model-use telemetry guidance for increment reports.
+- `#49` Deterministic maintainability ratchet, static dependency-cycle checks, and risk-based model-review routing.
 
 Per-issue detail, verification runs, retrospectives, and worker evidence are in `archive/2026-08-pre-compaction.md`.
