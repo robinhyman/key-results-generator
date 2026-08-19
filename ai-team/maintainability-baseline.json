@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "thresholds": {
+    "source": {
+      "warningLines": 400,
+      "maximumLines": 600,
+      "maximumComplexity": 15,
+      "maximumFunctionLines": 100
+    },
+    "test": {
+      "warningLines": 700,
+      "maximumLines": 1000,
+      "maximumComplexity": 20,
+      "maximumFunctionLines": 150
+    }
+  },
+  "files": {
+    "ai-team/bin/increment-check.mjs": {
+      "lines": 731,
+      "maxComplexity": 24,
+      "maxFunctionLines": 83
+    },
+    "src/generator.js": {
+      "lines": 656,
+      "maxComplexity": 11,
+      "maxFunctionLines": 50
+    },
+    "test/generator.test.js": {
+      "lines": 932,
+      "maxComplexity": 4,
+      "maxFunctionLines": 42
+    }
+  },
+  "cycles": []
+}

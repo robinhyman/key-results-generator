@@ -7,17 +7,20 @@
     "start": "node server.js",
     "setup": "git config core.hooksPath .githooks",
     "prepare": "git config core.hooksPath .githooks || true",
-    "check": "node ai-team/bin/increment-check.mjs --mode=push",
+    "check": "npm run check:maintainability && node ai-team/bin/increment-check.mjs --mode=push",
+    "check:maintainability": "node ai-team/bin/maintainability-check.mjs",
+    "check:maintainability:json": "node ai-team/bin/maintainability-check.mjs --format=json",
     "test": "node --test",
     "test:browser": "playwright test",
     "check:project": "node ai-team/bin/project-status-check.mjs",
-    "lint": "node --check server.js && node --check src/generator.js && node --check src/ai-service.js && node --check src/ai/client.js && node --check src/ai/constants.js && node --check src/ai/errors.js && node --check src/ai/format.js && node --check src/ai/normalize.js && node --check src/ai/prompts.js && node --check src/ai/schemas.js && node --check src/ai/tracing.js && node --check ai-team/bin/increment-check.mjs && node --check ai-team/bin/project-status-check.mjs && node --check public/api.js && node --check public/app.js && node --check public/format.js && node --check public/render.js",
+    "lint": "eslint .",
     "build": "npm run lint && npm test"
   },
   "engines": {
     "node": ">=20"
   },
   "devDependencies": {
-    "@playwright/test": "^1.62.1"
+    "@playwright/test": "^1.62.1",
+    "eslint": "^9.39.5"
   }
 }

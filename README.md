@@ -6,7 +6,7 @@ Local-first MVP for generating key results from an objective through an inspecta
 
 This repository is developed by an AI delivery team with an explicit operating model. **If you are an agent working here, read `project-state/index.md` and `ai-team/README.md` before doing anything else.** The hard gates — the non-negotiable rules — are listed in `ai-team/README.md`.
 
-Process is enforced mechanically, not by trust. `npm run check` runs from git hooks and CI and blocks credential material, stale state files, non-conforming branches, incomplete increment reports, and lint or build failures. `npm install` installs the hooks.
+Process is enforced mechanically, not by trust. `npm run check` runs from git hooks and CI and blocks credential material, stale state files, maintainability regressions and dependency cycles, non-conforming branches, incomplete increment reports, and lint or build failures. `npm install` installs the hooks.
 
 ## Run Locally
 
@@ -70,9 +70,10 @@ Trace files are local debugging artifacts and are ignored by Git. Treat them as 
 
 ```bash
 npm run build
+npm run check:maintainability
 ```
 
-The build script runs syntax checks and unit tests for the generation, AI provider boundary, server request validation, static routing, fallback diagnostics, and ranking logic.
+The build script runs ESLint and unit tests for the generation, AI provider boundary, server request validation, static routing, fallback diagnostics, ranking logic, process gates, and maintainability ratchet. The maintainability command prints a compact green/amber/red result; `npm run check:maintainability:json` provides bounded input for a model review only when one is recommended.
 
 Browser workflow coverage is available separately:
 

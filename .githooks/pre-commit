@@ -10,4 +10,5 @@
 # missing file.
 [ -f ai-team/bin/increment-check.mjs ] || exit 0
 
+[ ! -f ai-team/bin/maintainability-check.mjs ] || node ai-team/bin/maintainability-check.mjs --mode=commit || exit $?
 exec node ai-team/bin/increment-check.mjs --mode=commit

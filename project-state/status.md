@@ -1,6 +1,6 @@
 # Project Status
 
-Last updated: 2026-08-18
+Last updated: 2026-08-19
 
 What the product is and how it is built. For what to do next see `handoff.md`; for history see `archive/`.
 
@@ -32,6 +32,8 @@ Final KRs are a set of 3-5, each carrying an explicit `indicatorType` of `leadin
 Delivery unit is the increment, one primary GitHub issue each, tracked in the `Key Results Generator` GitHub Project via the `Agent Status` field.
 
 Process gates are mechanical as of issue #22: `ai-team/bin/increment-check.mjs` runs from `.githooks/pre-commit`, `.githooks/pre-push`, and `.github/workflows/process.yml`. It fails on staged credential material, missing or stale state stamps, non-conforming branch names, duplicate hard-gate sections outside `ai-team/README.md`, and lint/build failures, and enforces state-file line budgets plus PR report sections including process-review and durable demo evidence.
+
+Maintainability enforcement is deterministic as of issue #49: ESLint supplies syntax, correctness, complexity, and function-size signals; `ai-team/bin/maintainability-check.mjs` adds file budgets, static import-cycle detection, a monotonic debt baseline, and green/amber/red review routing. Green changes require no additional maintainability LLM review; amber gets one bounded low-cost review; red requires resolving failures and Architect review.
 
 Rules live only in `ai-team/`. No harness-specific instruction file may contain a rule, so the model works identically under Codex, Claude, or OpenClaw.
 
