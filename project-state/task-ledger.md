@@ -16,29 +16,9 @@ This file owns active, blocked, and next work. `index.md` points here rather tha
 
 ## Next
 
-### Ordered refactor
-
-1. #52 split the generator test monolith by subsystem.
-2. #53 extract deterministic graph construction.
-3. #54 extract clarification and variable ranking.
-4. #55 extract candidate-set exploration and path analysis.
-5. #56 consolidate KR selection/fallback composition and leave a slim generator facade.
-
-Keep #52-#56 behavior-preserving. Do not mix graph-quality or scoring changes into those extraction PRs.
-
-### Independently startable fixes
-
-- #57 provider timeout/cancellation; #58 expected-provider-only fallback.
-- #59 HTTP graph validation; #60 objective length limit; #61 stale browser state.
-- #67 trace retention; #68 request URL and static containment hardening.
-
-### Fixes that benefit from the refactor boundary
-
-- #62 semantic graph invariants; #63 KR identity and indicator-mix contracts; #64 deterministic strength-aware paths.
-- #65 generation provenance; #66 canonical model contract.
-
-After the architecture backlog, resume the product increment to render/inspect algorithmic candidate sets. Graph quality gates are now specified by #62 rather than hidden in state prose.
+- Publish the local #52-#68 implementation through the normal branch/PR flow, then update Project 4 and close the issues after review/CI.
+- Resume the product increment to render and inspect algorithmic candidate KR sets.
 
 ## Completed
 
-Issues #1-#43, #46, and #49 are closed. They delivered the local MVP, graph-first AI and deterministic generation, browser/API coverage, algorithmic KR-set exploration, and the enforced AI-team operating model. Per-issue detail, verification, retrospectives, and worker evidence are in `archive/`.
+Issues #1-#43, #46, and #49 are closed. Issues #52-#68 are implemented locally and awaiting publish/closeout. They delivered generator/test decomposition, provider timeout and fallback classification, request validation, stale browser-state invalidation, graph/KR semantic contracts, deterministic path scoring, canonical provenance/DTO fields, trace rotation, and static-serving hardening. Per-issue detail, verification, retrospectives, and worker evidence for closed issues are in `archive/`.

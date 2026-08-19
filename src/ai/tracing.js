@@ -1,7 +1,7 @@
-import { appendFile, mkdir } from "node:fs/promises";
+import { appendFile, mkdir, rename, rm, stat } from "node:fs/promises";
 import { dirname } from "node:path";
 
-import { defaultEndpoint, defaultTracePath } from "./constants.js";
+import { defaultEndpoint, defaultTraceMaxBytes, defaultTracePath } from "./constants.js";
 
 export async function writeAiTrace(options, trace) {
   const enabled = options.traceEnabled ?? process.env.AI_TRACE_LOG === "1";
@@ -15,13 +15,74 @@ export async function writeAiTrace(options, trace) {
     ...trace,
     endpointHost: endpointHost(options.endpoint ?? process.env.OPENAI_RESPONSES_URL ?? defaultEndpoint),
   }, options);
+  const maxBytes = traceMaxBytes(options);
+  const line = traceRecordLine(record, maxBytes);
 
   try {
     await mkdir(dirname(tracePath), { recursive: true });
-    await appendFile(tracePath, `${JSON.stringify(record)}\n`, "utf8");
+    await rotateTraceFileIfNeeded(tracePath, Buffer.byteLength(line, "utf8"), maxBytes);
+    await appendFile(tracePath, line, "utf8");
   } catch {
     // Trace logging must never break generation.
   }
+}
+
+function traceRecordLine(record, maxBytes) {
+  const fullLine = `${JSON.stringify(record)}\n`;
+  if (!Number.isFinite(maxBytes) || maxBytes <= 0 || Buffer.byteLength(fullLine, "utf8") <= maxBytes) {
+    return fullLine;
+  }
+
+  const compactRecord = {
+    timestamp: record.timestamp,
+    operation: record.operation,
+    model: record.model,
+    schemaName: record.schemaName,
+    endpointHost: record.endpointHost,
+    provider: record.provider,
+    traceTruncated: true,
+  };
+  const compactLine = `${JSON.stringify(compactRecord)}\n`;
+  if (Buffer.byteLength(compactLine, "utf8") <= maxBytes) {
+    return compactLine;
+  }
+
+  const minimalLine = `${JSON.stringify({ traceTruncated: true })}\n`;
+  return Buffer.byteLength(minimalLine, "utf8") <= maxBytes ? minimalLine : "";
+}
+
+async function rotateTraceFileIfNeeded(tracePath, nextRecordBytes, maxBytes) {
+  if (!Number.isFinite(maxBytes) || maxBytes <= 0) {
+    return;
+  }
+
+  let currentSize = 0;
+  try {
+    currentSize = (await stat(tracePath)).size;
+  } catch (error) {
+    if (error.code === "ENOENT") {
+      return;
+    }
+    throw error;
+  }
+
+  if (currentSize + nextRecordBytes <= maxBytes) {
+    return;
+  }
+
+  const rotatedPath = `${tracePath}.1`;
+  await rm(rotatedPath, { force: true });
+  await rename(tracePath, rotatedPath);
+}
+
+function traceMaxBytes(options) {
+  const configured = options.traceMaxBytes ?? process.env.AI_TRACE_MAX_BYTES;
+  if (configured === undefined) {
+    return defaultTraceMaxBytes;
+  }
+
+  const parsed = Number(configured);
+  return Number.isFinite(parsed) ? parsed : defaultTraceMaxBytes;
 }
 
 function endpointHost(endpoint) {

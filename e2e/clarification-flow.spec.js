@@ -67,6 +67,41 @@ test("objective clarification flow generates final graph-backed key results", as
   expect(failedRequests).toEqual([]);
 });
 
+test("failed graph generation invalidates stale clarification controls and recovers", async ({ page }) => {
+  await page.goto(baseUrl);
+  await expect(page.locator("#objective-heading")).toContainText("Improve dependable rail service");
+  await expect(page.locator(".clarification-field")).toHaveCount(6);
+
+  let forceFailure = true;
+  await page.route("**/api/graph", async (route) => {
+    const body = route.request().postDataJSON();
+    if (forceFailure && body?.objective === "Force graph failure") {
+      forceFailure = false;
+      await route.fulfill({
+        status: 500,
+        contentType: "application/json",
+        body: JSON.stringify({ error: { code: "SERVER_ERROR", message: "Forced graph failure" } }),
+      });
+      return;
+    }
+
+    await route.fallback();
+  });
+
+  await page.locator("#objective").fill("Force graph failure");
+  await page.getByRole("button", { name: /generate$/i }).click();
+  await expect(page.locator("#provider-status")).toContainText("Generation failed");
+  await expect(page.locator(".clarification-field")).toHaveCount(0);
+  await expect(page.getByRole("button", { name: "Generate final KRs" })).toHaveCount(0);
+  await expect(page.locator("#kr-list")).toContainText("graph generation request failed");
+
+  await page.locator("#objective").fill("Recover onboarding activation");
+  await page.getByRole("button", { name: /generate$/i }).click();
+  await expect(page.locator("#objective-heading")).toContainText("Recover onboarding activation");
+  await expect(page.locator(".clarification-field")).toHaveCount(6);
+  await expect(page.getByRole("button", { name: "Generate final KRs" })).toBeEnabled();
+});
+
 async function setRangeValue(page, selector, value) {
   await page.locator(selector).evaluate((input, nextValue) => {
     input.value = String(nextValue);

@@ -1,7 +1,7 @@
 import {
   indicatorTypeForVariable,
   rankVariables,
-} from "../generator.js";
+} from "../ranking.js";
 import { maxKeyResultCount } from "./constants.js";
 import { providerError } from "./errors.js";
 import {
@@ -12,7 +12,15 @@ import {
   normalizeObjective,
   titleFromId,
 } from "./format.js";
+import {
+  validateGraphSemantics,
+  validatePlanningSubset,
+} from "./graph-validation.js";
 import { graphTypes } from "./schemas.js";
+import {
+  relatedDriverLabels,
+} from "../key-results.js";
+import { validateKeyResultSet } from "../kr-contracts.js";
 
 export function normalizeAiGraph(objective, response) {
   if (!response || typeof response !== "object") {
@@ -23,12 +31,17 @@ export function normalizeAiGraph(objective, response) {
     maxNodes: 70,
     maxEdges: 120,
     includeFallbackOutcome: true,
+    rejectInvalidEdges: true,
   });
   const planningGraph = normalizeGraphContainer(objective, response.planningGraph ?? response, {
     maxNodes: 20,
     maxEdges: 32,
     includeFallbackOutcome: true,
+    rejectInvalidEdges: true,
   });
+  validateGraphSemantics(planningGraph, { label: "planning graph" });
+  validateGraphSemantics(fullGraph, { label: "full graph", requireReachableOutcome: false });
+  validatePlanningSubset(fullGraph, planningGraph);
 
   const nodes = planningGraph.nodes;
   const edges = planningGraph.edges;
@@ -84,7 +97,7 @@ export function normalizeAiKeyResults(graph, response) {
     throw providerError("invalid_provider_output", "AI key result response did not include any usable key results.");
   }
 
-  validateIndicatorMix(keyResults);
+  validateProviderKeyResultSet(keyResults);
 
   return keyResults;
 }
@@ -104,11 +117,13 @@ export function normalizeGraphInput(graph) {
     edges,
     rankings: rankVariables(nodes),
     assessments: graph.assessments && typeof graph.assessments === "object" ? graph.assessments : {},
+    generation: graph.generation && typeof graph.generation === "object" ? graph.generation : undefined,
     fullGraph: graph.fullGraph
       ? normalizeGraphContainer(normalizeObjective(graph.objective), graph.fullGraph, {
         maxNodes: 70,
         maxEdges: 120,
         includeFallbackOutcome: false,
+        rejectInvalidEdges: true,
       })
       : undefined,
     planningGraph: graph.planningGraph
@@ -116,19 +131,13 @@ export function normalizeGraphInput(graph) {
         maxNodes: 20,
         maxEdges: 32,
         includeFallbackOutcome: false,
+        rejectInvalidEdges: true,
       })
       : undefined,
   };
 }
 
-export function relatedDriverLabels(variableId, graph) {
-  return graph.edges
-    .filter((edge) => edge.target === variableId)
-    .map((edge) => graph.nodes.find((node) => node.id === edge.source)?.label)
-    .filter(Boolean);
-}
-
-function normalizeGraphContainer(objective, graph, { maxNodes, maxEdges, includeFallbackOutcome }) {
+function normalizeGraphContainer(objective, graph, { maxNodes, maxEdges, includeFallbackOutcome, rejectInvalidEdges = false }) {
   const nodes = normalizeNodes(graph?.nodes, { maxNodes });
   if (includeFallbackOutcome && !nodes.some((node) => node.type === "outcome")) {
     nodes.push({
@@ -147,7 +156,7 @@ function normalizeGraphContainer(objective, graph, { maxNodes, maxEdges, include
   return {
     summary: cleanText(graph?.summary),
     nodes,
-    edges: normalizeEdges(graph?.edges, new Set(nodes.map((node) => node.id)), { maxEdges }),
+    edges: normalizeEdges(graph?.edges, new Set(nodes.map((node) => node.id)), { maxEdges, rejectInvalidEdges }),
   };
 }
 
@@ -182,12 +191,12 @@ function normalizeNodes(nodes, { maxNodes } = {}) {
   });
 }
 
-function normalizeEdges(edges, nodeIds, { maxEdges } = {}) {
+function normalizeEdges(edges, nodeIds, { maxEdges, rejectInvalidEdges = false } = {}) {
   if (!Array.isArray(edges)) {
     return [];
   }
 
-  return edges
+  const normalizedEdges = edges
     .slice(0, maxEdges ?? 16)
     .map((edge, index) => ({
       id: cleanId(edge.id) || `rel-${index + 1}`,
@@ -195,8 +204,20 @@ function normalizeEdges(edges, nodeIds, { maxEdges } = {}) {
       target: cleanId(edge.target),
       rationale: cleanText(edge.rationale) || "This relationship contributes to the objective.",
       strength: clampNumber(edge.strength, 70, 1, 100),
-    }))
-    .filter((edge) => nodeIds.has(edge.source) && nodeIds.has(edge.target) && edge.source !== edge.target);
+    }));
+
+  if (rejectInvalidEdges) {
+    const invalidEdge = normalizedEdges.find((edge) =>
+      !nodeIds.has(edge.source) || !nodeIds.has(edge.target) || edge.source === edge.target,
+    );
+    if (invalidEdge) {
+      throw new Error(`AI graph edge references invalid nodes: ${invalidEdge.id}`);
+    }
+  }
+
+  return normalizedEdges.filter((edge) =>
+    nodeIds.has(edge.source) && nodeIds.has(edge.target) && edge.source !== edge.target,
+  );
 }
 
 function cleanIndicatorType(value) {
@@ -213,5 +234,13 @@ function validateIndicatorMix(keyResults) {
 
   if (laggingCount < 1 || laggingCount > 2 || leadingCount < 2 || leadingCount > 3) {
     throw providerError("invalid_provider_output", `AI key result indicator mix is invalid: ${laggingCount} lagging and ${leadingCount} leading.`);
+  }
+}
+
+function validateProviderKeyResultSet(keyResults) {
+  try {
+    validateKeyResultSet(keyResults);
+  } catch (error) {
+    throw providerError("invalid_provider_output", error.message, error);
   }
 }
