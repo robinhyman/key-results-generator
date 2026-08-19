@@ -1,6 +1,6 @@
 # Decisions
 
-Last updated: 2026-08-18
+Last updated: 2026-08-19
 
 Current durable decisions only. Detailed pre-compaction history is archived in `project-state/archive/2026-08-decisions-pre-closeout-compaction.md`.
 
@@ -29,6 +29,7 @@ Current durable decisions only. Detailed pre-compaction history is archived in `
 - Delegate routine checks, process review, test-gap analysis, documentation drafts, summaries, and mechanical edits by default unless a named exemption applies.
 - Stronger models remain for Lead work, architecture, ambiguity, high-risk changes, integration judgement, and final review.
 - Reports include lightweight model-use telemetry: Lead role, worker count, delegated tasks, evidence returned, skipped delegation or expensive reruns.
+- Exact token counts are optional and recorded only when the harness exposes them reliably. When unavailable, reports use compact observable proxies: Lead turns, worker count by tier, delegated task count, and expensive reruns or restarts.
 
 ## Autonomous Closeout
 

@@ -84,6 +84,11 @@ Worker model tier(s):
 Worker evidence:
 
 Lightweight model-use telemetry:
+- Lead turns:
+- Worker count by tier, writing 0 where none:
+- Delegated task count, writing 0 where none:
+- Expensive reruns or restarts, writing 0 where none:
+- Exact token counts available? yes/no/not observable:
 
 Tasks kept on high-capability model and why:
 

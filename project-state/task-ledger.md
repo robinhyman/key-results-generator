@@ -1,6 +1,6 @@
 # Task Ledger
 
-Last updated: 2026-08-18
+Last updated: 2026-08-19
 
 Active, blocked, and next work. Completed increments live in `archive/`.
 
@@ -8,7 +8,7 @@ This file owns active, blocked, and next work. `index.md` points here rather tha
 
 ## Active
 
-- None.
+- `#46` Add lightweight model-use telemetry guidance.
 
 ## Blocked
 

@@ -124,4 +124,11 @@ Every substantial increment report should include:
 - Which tasks used a high-capability model and why.
 - Whether the required delegation gate was satisfied or an exception was used.
 - Any obvious missed opportunity to use a cheaper model next time.
-- Lightweight telemetry: count of Lead turns, worker count, and any known expensive reruns. Estimate only when exact token counts are unavailable.
+- Lightweight telemetry:
+  - Lead turn count, estimated if exact session metrics are unavailable.
+  - Worker count by tier.
+  - Delegated task count.
+  - Expensive reruns or restarts, with cause when known.
+  - Token counts only when the harness exposes them reliably; otherwise write "not observable" rather than inventing precision.
+
+Use the telemetry to spot patterns in operating cost, not to create a detailed accounting system. Do not block an increment only because exact token counts are unavailable.
