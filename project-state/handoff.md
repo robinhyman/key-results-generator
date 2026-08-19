@@ -10,7 +10,7 @@ What the next session should do. For what the product is see `status.md`; for hi
 
 ## Where things stand
 
-Issues #1-#43 are closed and merged. Issue #46 is in progress for lightweight model-use telemetry guidance. `main` is green: `npm run build` passes, `npm run test:browser` passes 1/1, and the `Process / increment-check` CI job passes.
+Issues #1-#43 and #46 are closed and merged. `main` is green: `npm run build` passes, `npm run test:browser` passes 1/1, and the `Process / increment-check` CI job passes.
 
 All four operating-model audit increments are merged: #22 mechanical enforcement, #24 state compaction, #26 obligation tiering, #28 delegate-by-default.
 
@@ -36,7 +36,6 @@ Proposed by the 2026-08-16 external audit and declined for now, with reasons, so
 - **Structured YAML/JSON evidence manifest.** Section-scoped validation (#31) gets most of the benefit without a second format to keep in sync with the markdown template.
 - **Generating `index`/`handoff`/`ledger` from one machine-readable source.** Over-engineered for six small files; #32 removes the duplicate ownership instead.
 - **AI-output quality evaluation suite.** Real value, but it is its own project and premature before the next product direction is chosen.
-- **Model cost and routing telemetry.** Token counts are not reliably observable from inside a session, and no decision currently waits on them.
 - **Full model cost and routing telemetry.** Exact token/cost accounting remains deferred; issue #46 adds only lightweight observable proxies for increment reports.
 
 Port anything that proves out to `robinhyman/ai-team-operating-system`.

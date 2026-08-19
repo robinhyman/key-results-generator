@@ -8,7 +8,7 @@ This file owns active, blocked, and next work. `index.md` points here rather tha
 
 ## Active
 
-- `#46` Add lightweight model-use telemetry guidance.
+- None.
 
 ## Blocked
 
@@ -45,5 +45,6 @@ Issues `#1`-`#22` are closed. Summary of what each delivered:
 - `#38` Rich causal map generation and algorithmic KR-set exploration.
 - `#41` Process-review evidence and offline backfill workflow.
 - `#43` Autonomous closeout, durable evidence, Project status checks, checker coverage, and decision-state compaction.
+- `#46` Lightweight model-use telemetry guidance for increment reports.
 
 Per-issue detail, verification runs, retrospectives, and worker evidence are in `archive/2026-08-pre-compaction.md`.
