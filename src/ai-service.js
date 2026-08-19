@@ -1,19 +1,22 @@
 import {
-  applyClarifications,
   exploreKeyResultSets,
   generateCausalMetricsGraph,
-  indicatorTypeForVariable,
-  selectKeyResultVariables,
 } from "./generator.js";
+import { generateKeyResultsForGraph } from "./key-results.js";
+import {
+  applyClarifications,
+} from "./ranking.js";
 import { createOpenAiClient } from "./ai/client.js";
 import { defaultKeyResultCount } from "./ai/constants.js";
-import { fallbackDiagnostic } from "./ai/errors.js";
+import {
+  fallbackDiagnostic,
+  isProviderError,
+} from "./ai/errors.js";
 import { normalizeObjective } from "./ai/format.js";
 import {
   normalizeAiGraph,
   normalizeAiKeyResults,
   normalizeGraphInput,
-  relatedDriverLabels,
 } from "./ai/normalize.js";
 import {
   buildGraphPrompt,
@@ -59,9 +62,10 @@ export async function generateAiKeyResultsModel(graph, clarifications = {}, opti
   const normalizedGraph = normalizeGraphInput(graph) ?? generateCausalMetricsGraph("");
   const clarifiedGraph = applyClarifications(normalizedGraph, clarifications);
   const fallback = (error) => {
-    const keyResults = selectKeyResultVariables(clarifiedGraph.rankings, defaultKeyResultCount, clarifiedGraph).map((variable, index) =>
-      toFallbackKeyResult(variable, clarifiedGraph.edges, clarifiedGraph.nodes, index, clarifiedGraph.assessments[variable.id]),
-    );
+    const { keyResults } = generateKeyResultsForGraph(clarifiedGraph, {
+      count: defaultKeyResultCount,
+      style: "fallback",
+    });
 
     return withModelGenerationInfo(toModel(clarifiedGraph, keyResults), {
       mode: "fallback",
@@ -93,6 +97,9 @@ async function withFallback(action, fallback) {
   try {
     return await action();
   } catch (error) {
+    if (!isProviderError(error)) {
+      throw error;
+    }
     return fallback(error);
   }
 }
@@ -104,9 +111,6 @@ function toModel(graph, keyResults) {
     objective: graph.objective,
     summary: graph.summary,
     graph,
-    variables: graph.nodes,
-    relationships: graph.edges,
-    rankedVariables: graph.rankings,
     candidateKeyResultSets,
     keyResults,
   };
@@ -117,32 +121,13 @@ function withGenerationInfo(graph, generation) {
 }
 
 function withModelGenerationInfo(model, generation) {
+  const graphGeneration = model.graph.generation ?? {
+    mode: "unknown",
+    reason: "Graph generation metadata was not provided.",
+  };
   return {
     ...model,
-    generation,
-    graph: withGenerationInfo(model.graph, generation),
-  };
-}
-
-function toFallbackKeyResult(variable, relationships, variables, index, assessment) {
-  const relatedDrivers = relatedDriverLabels(variable.id, { edges: relationships, nodes: variables });
-  const phrase = variable.direction === "reduce"
-    ? `Reduce ${variable.label} by 20% in the next 90 days`
-    : variable.direction === "increase"
-      ? `Increase ${variable.label} by 15% in the next 90 days`
-      : `Improve ${variable.label} to a clearly measured green status in the next 90 days`;
-  const clarificationContext = assessment
-    ? ` Your clarification rated it ${assessment.influenceability}/5 for influenceability and ${assessment.gap}/5 for perceived gap.`
-    : "";
-
-  return {
-    id: `kr-${index + 1}`,
-    variableId: variable.id,
-    indicatorType: indicatorTypeForVariable(variable),
-    text: phrase,
-    rationale: `${variable.label} remains a strong candidate in the clarified causal model.${clarificationContext}`,
-    relatedDrivers,
-    score: variable.score,
-    assessment: assessment ?? null,
+    graphGeneration,
+    keyResultGeneration: generation,
   };
 }

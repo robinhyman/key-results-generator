@@ -10,6 +10,15 @@ export function toViewModel(graph, keyResults) {
   };
 }
 
+export function modelToViewModel(model) {
+  return {
+    ...model,
+    variables: model.graph.nodes,
+    relationships: model.graph.edges,
+    rankedVariables: model.graph.rankings,
+  };
+}
+
 export function defaultInfluenceValue(variable) {
   return variable.influenceable ? 4 : 2;
 }

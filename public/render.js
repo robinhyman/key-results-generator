@@ -49,6 +49,13 @@ export function renderClarification(graph, clarificationForm) {
   clarificationForm.replaceChildren(...fields, actions);
 }
 
+export function renderClarificationUnavailable(clarificationForm, message) {
+  const status = document.createElement("p");
+  status.className = "pending";
+  status.textContent = message;
+  clarificationForm.replaceChildren(status);
+}
+
 export function readClarifications(clarificationForm) {
   const clarifications = {};
   for (const input of clarificationForm.querySelectorAll("input[type='range']")) {

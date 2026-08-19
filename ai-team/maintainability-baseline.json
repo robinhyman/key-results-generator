@@ -19,16 +19,6 @@
       "lines": 731,
       "maxComplexity": 24,
       "maxFunctionLines": 83
-    },
-    "src/generator.js": {
-      "lines": 656,
-      "maxComplexity": 11,
-      "maxFunctionLines": 50
-    },
-    "test/generator.test.js": {
-      "lines": 932,
-      "maxComplexity": 4,
-      "maxFunctionLines": 42
     }
   },
   "cycles": []

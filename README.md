@@ -46,7 +46,9 @@ Optional model configuration:
 OPENAI_MODEL=gpt-5-mini npm start
 ```
 
-The default model is `gpt-5-mini`, called through the OpenAI Responses API with structured JSON output. The server validates API request bodies and AI output before rendering it. If credentials are missing, the provider is unavailable, quota is exhausted, or the response is malformed, the app falls back to the local deterministic generator and returns safe fallback metadata such as `generation.reasonCode`. The server does not return API keys or raw provider payloads to the browser.
+The default model is `gpt-5-mini`, called through the OpenAI Responses API with structured JSON output. The server validates API request bodies and AI output before rendering it. If credentials are missing, the provider is unavailable, quota is exhausted, or the response is malformed, the app falls back to the local deterministic generator and returns safe fallback metadata on `graph.generation`, `model.graphGeneration`, and `model.keyResultGeneration`. The server does not return API keys or raw provider payloads to the browser.
+
+Provider calls have a 30-second default timeout. Stalled requests are aborted and reported as `reasonCode: "provider_timeout"` before falling back to deterministic local generation.
 
 ### AI Trace Logging
 
@@ -64,7 +66,7 @@ AI_TRACE_LOG=1 AI_TRACE_LOG_PATH=/tmp/key-results-ai-traces.jsonl npm start
 
 Each trace record includes the operation name, model, endpoint host, schema name, exact Responses API request body, provider response body, parsed structured output when available, and provider error diagnostics. Trace records never include the API key or `Authorization` header.
 
-Trace files are local debugging artifacts and are ignored by Git. Treat them as sensitive: prompts and responses can include user-entered objectives, graph data, and clarification ratings.
+Trace files are local debugging artifacts and are ignored by Git. Treat them as sensitive: prompts and responses can include user-entered objectives, graph data, and clarification ratings. Trace logs rotate at 1 MB by default, keeping the previous file as `.1`; override the limit with `AI_TRACE_MAX_BYTES`.
 
 ## Checks
 
@@ -110,7 +112,7 @@ The app lets a user enter a plain-language objective, then generates:
 - a clarification step for rating high-impact metrics by influenceability and perceived gap
 - AI-synthesized final key results with rationales, related drivers, and links back to clarified graph variables when the provider is available
 
-The generator treats the causal metrics graph as a first-class structured artefact with nodes, edges, rankings, user assessments, and traceable key result links. The browser calls local server endpoints; the server may send the objective, graph, and clarification ratings to OpenAI for generation. The app does not store user data or persist projects.
+The generator treats the causal metrics graph as a first-class structured artefact with `nodes`, `edges`, `rankings`, user assessments, and traceable key result links. The key-results API returns a canonical model with `graph`, `candidateKeyResultSets`, `keyResults`, `graphGeneration`, and `keyResultGeneration`; browser-only view aliases are derived locally for rendering. The browser calls local server endpoints; the server may send the objective, graph, and clarification ratings to OpenAI for generation. The `/api/graph` objective is limited to 500 characters before any AI prompting or tracing happens. The `/api/key-results` endpoint validates the minimum graph shape at the HTTP boundary and returns structured client errors for malformed graph payloads. The app does not store user data or persist projects.
 
 ## Current Limitations
 

@@ -1,5 +1,5 @@
 import { createServer } from "node:http";
-import { readFile } from "node:fs/promises";
+import { readFile, realpath } from "node:fs/promises";
 import { extname, join, normalize, relative, sep } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
@@ -7,6 +7,13 @@ import {
   generateAiCausalMetricsGraph,
   generateAiKeyResultsModel,
 } from "./src/ai-service.js";
+import {
+  maxObjectiveLength,
+  validateGraphRequest,
+  validateKeyResultsRequest,
+} from "./src/request-validation.js";
+
+export { maxObjectiveLength };
 
 const root = fileURLToPath(new URL(".", import.meta.url));
 const publicDir = join(root, "public");
@@ -23,7 +30,14 @@ const mimeTypes = {
 export const server = createServer(handleRequest);
 
 export async function handleRequest(request, response) {
-  const url = new URL(request.url ?? "/", `http://${request.headers.host}`);
+  let url;
+  try {
+    url = new URL(request.url ?? "/", "http://127.0.0.1");
+  } catch {
+    response.writeHead(400, { "Content-Type": "text/plain; charset=utf-8" });
+    response.end("Bad request");
+    return;
+  }
 
   if (url.pathname === "/api/graph" && request.method === "POST") {
     await handleGraphRequest(request, response);
@@ -36,7 +50,7 @@ export async function handleRequest(request, response) {
   }
 
   try {
-    const filePath = resolveFilePath(url.pathname);
+    const filePath = await resolveFilePath(url.pathname);
     const body = await readFile(filePath);
     response.writeHead(200, {
       "Content-Type": mimeTypes[extname(filePath)] ?? "text/plain; charset=utf-8",
@@ -88,12 +102,12 @@ async function handleKeyResultsRequest(request, response) {
   }
 }
 
-function resolveFilePath(pathname) {
+async function resolveFilePath(pathname) {
   if (pathname === "/" || pathname === "/index.html") {
-    return join(publicDir, "index.html");
+    return containedPublicPath(join(publicDir, "index.html"));
   }
 
-  return safeJoin(publicDir, pathname.slice(1));
+  return containedPublicPath(safeJoin(publicDir, pathname.slice(1)));
 }
 
 function safeJoin(baseDir, requestedPath) {
@@ -109,6 +123,18 @@ function safeJoin(baseDir, requestedPath) {
     throw httpError("Requested file is outside the public directory.", "NOT_FOUND", 404);
   }
   return filePath;
+}
+
+async function containedPublicPath(filePath) {
+  const [realBaseDir, realFilePath] = await Promise.all([
+    realpath(publicDir),
+    realpath(filePath),
+  ]);
+  const relativePath = relative(realBaseDir, realFilePath);
+  if (relativePath === "" || relativePath.startsWith("..") || relativePath.startsWith(sep)) {
+    throw httpError("Requested file is outside the public directory.", "NOT_FOUND", 404);
+  }
+  return realFilePath;
 }
 
 async function readJsonBody(request) {
@@ -130,33 +156,6 @@ async function readJsonBody(request) {
 function sendJson(response, status, body) {
   response.writeHead(status, { "Content-Type": "application/json; charset=utf-8" });
   response.end(JSON.stringify(body));
-}
-
-function validateGraphRequest(body) {
-  if (!body || typeof body !== "object" || Array.isArray(body)) {
-    throw httpError("Request body must be a JSON object.", "INVALID_REQUEST", 400);
-  }
-
-  if (typeof body.objective !== "string" || body.objective.trim().length === 0) {
-    throw httpError("A non-empty objective string is required.", "INVALID_REQUEST", 400);
-  }
-}
-
-function validateKeyResultsRequest(body) {
-  if (!body || typeof body !== "object" || Array.isArray(body)) {
-    throw httpError("Request body must be a JSON object.", "INVALID_REQUEST", 400);
-  }
-
-  if (!body.graph || typeof body.graph !== "object" || Array.isArray(body.graph)) {
-    throw httpError("A graph object is required.", "INVALID_REQUEST", 400);
-  }
-
-  if (
-    body.clarifications !== undefined &&
-    (!body.clarifications || typeof body.clarifications !== "object" || Array.isArray(body.clarifications))
-  ) {
-    throw httpError("Clarifications must be an object when provided.", "INVALID_REQUEST", 400);
-  }
 }
 
 function sendError(response, error, fallbackMessage) {

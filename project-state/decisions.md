@@ -50,10 +50,10 @@ Current durable decisions only. Detailed pre-compaction history is archived in `
 - The app is local-first and dependency-light: Node server, native browser modules, no frontend framework or build step.
 - AI generation runs server-side through the OpenAI Responses API with structured JSON output and deterministic local fallback.
 - The browser never reads credentials. Keys come from environment or ignored local key path only.
-- Trace logging is opt-in, local-only, git-ignored, and redacts credential material.
-- The graph is a first-class serializable artifact with a rich `fullGraph`, converged `planningGraph`, rankings, user assessments, algorithmic candidate KR sets, and traceable final KRs.
-- Decompose the deterministic generator incrementally through issues #52-#56. Preserve behavior, public exports, and serialized contracts during extraction; apply semantic graph, KR, path, and DTO changes only in their dedicated follow-up issues so review evidence stays attributable.
+- Trace logging is opt-in, local-only, git-ignored, redacts credential material, and rotates bounded JSONL files.
+- The graph is a first-class serializable artifact with a rich `fullGraph`, converged `planningGraph`, rankings, user assessments, algorithmic candidate KR sets, and traceable final KRs. The server model DTO uses canonical `graph`, `candidateKeyResultSets`, `keyResults`, `graphGeneration`, and `keyResultGeneration` fields; browser-only aliases are derived in `public/format.js`.
+- The local #52-#68 architecture backlog decomposes the generator, hardens provider/API/server behavior, and adds graph/KR/path/DTO contracts. Publish/PR closeout remains before those GitHub issues are closed.
 
 ## Current Product Direction
 
-- First complete the ordered maintainability sequence #52-#56, beginning with the test split. Independently startable reliability fixes may proceed in parallel increments, but graph/KR semantic changes should wait for their relevant extracted boundary. Resume candidate-set rendering after the architecture backlog; graph normalization quality gates are issue #62.
+- Publish and close out the local #52-#68 architecture backlog, then resume candidate-set rendering/inspection.

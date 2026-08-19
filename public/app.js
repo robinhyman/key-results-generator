@@ -1,8 +1,12 @@
 import { generateGraph, generateKeyResults } from "./api.js";
-import { toViewModel } from "./format.js";
+import {
+  modelToViewModel,
+  toViewModel,
+} from "./format.js";
 import {
   readClarifications,
   renderClarification,
+  renderClarificationUnavailable,
   renderGenerationStatus,
   renderModel,
   renderPendingKeyResults,
@@ -41,8 +45,8 @@ elements.clarificationForm.addEventListener("submit", async (event) => {
   try {
     const model = await generateKeyResults(currentGraph, clarifications);
     currentGraph = model.graph;
-    renderModel(model, elements);
-    renderGenerationStatus(elements.providerStatus, model.generation);
+    renderModel(modelToViewModel(model), elements);
+    renderGenerationStatus(elements.providerStatus, model.keyResultGeneration);
   } catch {
     renderPendingKeyResults(elements.keyResultsList, "The final KR generation request failed. Try again.");
     setProviderStatus(elements.providerStatus, "Generation failed", "error");
@@ -54,13 +58,17 @@ elements.clarificationForm.addEventListener("submit", async (event) => {
 renderGraphOnly(elements.objectiveInput.value);
 
 async function renderGraphOnly(objective) {
+  currentGraph = undefined;
   setBusy(true, "Generating causal metrics graph...");
+  renderClarificationUnavailable(elements.clarificationForm, "Generate a graph before rating metrics.");
   renderPendingKeyResults(elements.keyResultsList, "Awaiting clarification");
 
   try {
     currentGraph = await generateGraph(objective);
     renderGenerationStatus(elements.providerStatus, currentGraph.generation);
   } catch {
+    renderClarificationUnavailable(elements.clarificationForm, "Graph generation failed. Try again before rating metrics.");
+    renderPendingKeyResults(elements.keyResultsList, "The graph generation request failed. Try again.");
     setProviderStatus(elements.providerStatus, "Generation failed", "error");
     return;
   } finally {

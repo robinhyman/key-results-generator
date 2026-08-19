@@ -10,27 +10,27 @@ What the next session should do. For what the product is see `status.md`; for hi
 
 ## Where things stand
 
-Issues #1-#43, #46, and #49 are closed and merged. `main` is green: `npm run build` passes, `npm run test:browser` passes 1/1, and the `Process / increment-check` CI job passes.
+Issues #1-#43, #46, and #49 are closed and merged. `main` is green at the remote baseline. The current local working tree implements issues #52-#68 and passes `npm test`, `npm run test:browser`, and `npm run check`.
 
-The application Architect review is complete. It inspected `server.js`, all `src/**`, all `public/**`, application tests, and the browser flow. Issues #52-#68 contain the resulting refactor and fix increments; every issue has bounded scope, acceptance criteria, verification, labels, Project 4 placement, `Agent Status=Ready`, and `Status=Todo`.
+The application Architect review backlog is implemented locally. Highlights: focused generator/AI test files, extracted graph/ranking/candidate/KR modules, provider timeouts, expected-provider-only fallback, HTTP request validation, stale clarification invalidation, semantic graph validation, shared KR set contracts, deterministic strength-aware candidate paths, separated graph/KR generation provenance, canonical server model DTOs, bounded AI trace rotation, and realpath static containment.
 
 The maintainability ratchet, binding CI, branch protection, graph-generation increment, and operating-model audits are merged. Closed detail is in `project-state/archive/` and `project-state/offline-graph-generation.md`.
 
 ## Next best actions
 
-1. **Start #52.** Split the 932-line generator test suite into focused subsystem tests without changing production behavior.
-2. **Continue #53-#56 in order.** Extract graph construction, ranking/clarification, candidate/path analysis, then KR selection/composition. Preserve current exports and response shapes during these refactors.
-3. **Take independent safety fixes when useful.** #57-#61, #67, and #68 do not require the full generator decomposition. #62-#66 should follow the relevant extracted boundary.
-4. **Run a delta retro on every increment.** Three fields in the increment report, per the tiered principle 10 adopted in #35.
+1. **Publish the local implementation.** Create/use a `codex/` branch, commit the #52-#68 changes, push, open a PR, and let CI run.
+2. **Close out Project 4.** Move #52-#68 to Done only after review/CI are complete, then comment/close each issue with verification evidence.
+3. **Resume product work.** Render and inspect algorithmic candidate KR sets in the UI.
 
 ## Architect review evidence
 
-- `npm test`: 115/115 passed.
-- `npm run test:browser`: 1/1 passed.
-- Focused application coverage: 94.09% lines, 77.51% branches, 94.55% functions.
-- `npm run check:maintainability:json`: green, no additional LLM review, zero cycles.
-- Independent low-cost application review corroborated provider timeout, malformed-graph 500, stale browser state, graph invariants, KR mix, path determinism, objective size, and server-routing findings.
-- No application code changed during the review/backlog increment.
+- `npm test`: 147/147 passed for the local #52-#68 implementation.
+- `npm run test:browser`: 2/2 passed for the local #52-#68 implementation.
+- `npm run check`: passed; maintainability risk is amber because `src/ai/graph-validation.js` is approaching a budget, with zero dependency cycles.
+- Focused checks passed: `node --test test/ai-key-results.test.js test/generator-candidates.test.js`; `node --test test/ai-tracing.test.js test/server.test.js`.
+- Independent subagent reviews found no blocking implementation defects in the decompositions, provider handling, graph/KR contracts, path selection, DTO/provenance, trace rotation, or server-hardening changes after the latest fixes.
+- Browser demo link used by Playwright: `http://127.0.0.1:5173/`.
+- Earlier Architect evidence: `npm test` 115/115, `npm run test:browser` 1/1, focused application coverage 94.09% lines / 77.51% branches / 94.55% functions, maintainability green, and no dependency cycles.
 
 ## Deferred operating work
 

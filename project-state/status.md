@@ -16,16 +16,17 @@ Final KRs are a set of 3-5, each carrying an explicit `indicatorType` of `leadin
 
 ## Architecture
 
-- `server.js` exports `handleRequest` for sandbox-friendly API tests, validates request bodies, serves only files under `public/`, and returns structured JSON errors. There is no static `/src/*` exposure.
-- `src/generator.js` is the deterministic local generator: structured graph, clarification application, and the fallback KR path.
+- `server.js` exports `handleRequest` for sandbox-friendly API tests, validates request bodies, serves only real files under `public/`, ignores untrusted Host headers while parsing request URLs, and returns structured JSON errors. There is no static `/src/*` exposure.
+- `src/generator.js` is a slim compatibility facade over focused deterministic modules for graph construction, ranking/clarification, candidate-set exploration, and KR composition.
 - `src/ai-service.js` is the thin server-side AI generation facade. Focused modules under `src/ai/` own prompts, schemas, provider transport, output normalization, trace logging, and fallback diagnostics.
+- The key-results API returns canonical `graph`, `candidateKeyResultSets`, `keyResults`, `graphGeneration`, and `keyResultGeneration` fields. Browser-only view aliases are derived in `public/format.js`.
 - The browser calls `/api/graph` and `/api/key-results` and never imports generator logic or reads credentials. Browser code is native ES modules: `public/api.js`, `app.js`, `format.js`, `render.js`. No framework, no build step.
 
 ## Configuration
 
 - Model defaults to `gpt-5-mini`; override with `OPENAI_MODEL` or `AI_MODEL`.
 - Credentials come from `OPENAI_API_KEY`, a configured key-path env var, or a local ignored `keys/key.txt`. Never print, commit, or copy the key value.
-- `AI_TRACE_LOG=1` appends JSONL request/response traces to `logs/ai-traces.jsonl`, overridable with `AI_TRACE_LOG_PATH`. Traces are local-only, git-ignored, and redact credential material.
+- `AI_TRACE_LOG=1` appends JSONL request/response traces to `logs/ai-traces.jsonl`, overridable with `AI_TRACE_LOG_PATH`. Traces are local-only, git-ignored, redact credential material, and rotate at a bounded byte limit.
 
 ## Operating model
 
