@@ -18,6 +18,7 @@ Current durable decisions only. Detailed pre-compaction history is archived in `
 ## Enforcement
 
 - Process enforcement lives in `ai-team/bin/increment-check.mjs`, run by git hooks and the `Process / increment-check` CI job.
+- Maintainability enforcement uses free local static analysis and a monotonic checked-in baseline. Deterministic green/amber/red routing suppresses additional maintainability LLM review for green changes, bounds amber review to one low-cost pass, and reserves Architect review for red changes after blockers are resolved.
 - Branch protection is active for `main`: PR required, `increment-check` required, force-push/deletion blocked, no bypass actors.
 - The checker enforces credential scans, state stamps, state budgets, active-work coherence, branch naming, hard-gate section duplication, build/lint, required PR-report sections, process-review evidence, delegation evidence, and durable demo evidence for user-facing links.
 - Treat `increment-check` as production code. PR-body gate logic and state coherence are covered by automated tests; fixture-repo tests cover secrets, state freshness, state budget, and hard-gate section duplication.

@@ -64,6 +64,7 @@ An increment is done only when all applicable checks below are true.
 ### Review Has Happened
 
 - The Lead or Reviewer has inspected the changed files.
+- The deterministic maintainability check has run; any amber or red signal was reviewed according to `ai-team/workflows/maintainability.md`.
 - Risks, regressions, missing tests, and UX issues have been considered.
 - Higher-risk work has stronger-model or human review.
 - A process review has checked the increment report against this Definition of Done before `Review` or `Done`.

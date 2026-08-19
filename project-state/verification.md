@@ -1,14 +1,15 @@
 # Verification
 
-Last updated: 2026-08-18
+Last updated: 2026-08-19
 
 Current verification posture and known gaps. Per-increment verification history is in `archive/`.
 
 ## Current posture
 
+- Issue #49 local verification passes: 13 focused maintainability tests cover green/amber/red routing, malformed schemas, monotonic debt and threshold baselines, cycle bypasses, stale debt, tracked-file isolation, real ESLint metrics, and staged-versus-working-tree content. `npm run build` passed 115/115 and `npm run check` passed 8/8 without warnings. The staged static report is amber only because five code files changed: 28 files analyzed, zero cycles, no failures, and one bounded low-cost review completed. Browser tests were skipped because no application behavior changed; risk is limited to CI integration, which remains to run.
 - Issue #43 / PR #44 is merged. `npm test` passed 102/102, `npm run build` passed, `npm run check` passed 8/8 with no warnings, and Project closeout was verified.
 - Issue #41 / PR #42 is merged; process-review evidence is now part of the baseline PR-report gate.
-- On the current local branch, `npm test` passes 102/102 unit, API, process-checker, and Project-status checker tests. Covers the deterministic generator, graph and KR contracts, rich `fullGraph` plus converged `planningGraph` AI response contract, algorithmic KR-set exploration, server routing and validation, path-traversal rejection, AI instruction composition, 3-5 KR normalization, provider fallback diagnostics, indicator-type validation, trace redaction, and process gate regressions.
+- On the current local branch, `npm test` passes 115/115 unit, API, process-checker, maintainability, and Project-status checker tests. Covers the deterministic generator, graph and KR contracts, rich `fullGraph` plus converged `planningGraph` AI response contract, algorithmic KR-set exploration, server routing and validation, path-traversal rejection, AI instruction composition, 3-5 KR normalization, provider fallback diagnostics, indicator-type validation, trace redaction, and process gate regressions.
 - `npm run test:browser` passes 1/1 Playwright test covering objective submission, slider adjustment, final-KR submission, repeated generation, the rendered Leading/Lagging label, and console/page/request failures. Requires `npx playwright install chromium` first; a missing binary is a setup failure, not a product failure.
 - `npm run check` enforces the process gates. Failing gates: credential material, state stamp presence and freshness, branch naming, lint/build. Budget and PR-report gates are enforced as failures as of issue #24.
 - **CI is binding.** The `main: require increment-check` repository ruleset is active as of 2026-08-16: pull requests are required, `increment-check` is a required status check, force-pushes and deletion are blocked, and there are no bypass actors. Hooks remain bypassable with `--no-verify`, but nothing reaches `main` without CI passing.
@@ -19,6 +20,7 @@ Current verification posture and known gaps. Per-increment verification history 
 
 ## Known gaps
 
+- Maintainability analysis intentionally uses static relative imports and structural proxies. Dynamic imports, runtime coupling, and responsibility cohesion remain judgement calls when amber/red routing triggers review.
 - Graph-generation quality is not yet automatically evaluated. The 2026-08-17 offline implementation now asks the AI for a rich `fullGraph` followed by a converged `planningGraph`, but no automated quality suite yet checks whether live AI output is actually good.
 - Graph convergence validation is still thin. Tests pin prompt/schema shape and mocked normalization, but local code does not yet enforce branch coverage, connectivity, full/planning subset quality, or exactly-one-outcome invariants beyond schema/prompt guidance.
 - Algorithmic KR-set selection is implemented as an explorable heuristic, not yet a proven optimizer. It enumerates and scores candidate sets with explainable components, but the weights still need human review against live rich graphs and product judgment.

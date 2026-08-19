@@ -8,7 +8,7 @@ This file owns active, blocked, and next work. `index.md` points here rather tha
 
 ## Active
 
-- None.
+- `#49` Add deterministic maintainability quality gates. Branch `chore/49-maintainability-gates`; implementation and focused tests are complete, with full verification and PR closeout in progress.
 
 ## Blocked
 

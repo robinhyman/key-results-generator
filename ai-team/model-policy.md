@@ -105,6 +105,7 @@ An exemption is a claim that must be written down, not a silence. `increment-che
 
 ## Token Efficiency Rules
 
+- Let deterministic static analysis classify maintainability risk before commissioning an additional model review; follow `ai-team/workflows/maintainability.md`.
 - Fresh sessions read compact state files before reading long issue threads.
 - Workers receive task briefs, not the entire project history.
 - Agents summarize findings into durable files rather than relying on chat.

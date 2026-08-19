@@ -12,6 +12,8 @@ What the next session should do. For what the product is see `status.md`; for hi
 
 Issues #1-#43 and #46 are closed and merged. `main` is green: `npm run build` passes, `npm run test:browser` passes 1/1, and the `Process / increment-check` CI job passes.
 
+Issue #49 is active on `chore/49-maintainability-gates`. The implementation adds free local static analysis, a monotonic debt baseline, dependency-cycle detection, and deterministic green/amber/red routing so extra maintainability model review runs only when objective signals warrant it. Focused and full local checks pass; commit, PR/CI, and closeout remain.
+
 All four operating-model audit increments are merged: #22 mechanical enforcement, #24 state compaction, #26 obligation tiering, #28 delegate-by-default.
 
 Branch protection is enabled as of 2026-08-16: the `main: require increment-check` ruleset requires a PR and a passing `increment-check`, with no bypass actors. CI is now genuinely binding, which was the largest known enforcement gap.
@@ -20,8 +22,9 @@ GitHub was unavailable on 2026-08-17, so graph-generation work continued locally
 
 ## Next best actions
 
-1. **Start the next graph-generation improvement.** Recommended next behavior slice: render/inspect algorithmic candidate sets, then add local normalization quality gates for graph shape/connectivity, branch coverage, full/planning subset quality, and exactly-one-outcome validation.
-2. **Run a delta retro on every increment.** Three fields in the increment report, per the tiered principle 10 adopted in #35.
+1. **Finish issue #49.** Run full verification, independent review, PR/CI, and routine autonomous closeout.
+2. **Start the next graph-generation improvement.** Recommended next behavior slice: render/inspect algorithmic candidate sets, then add local normalization quality gates for graph shape/connectivity, branch coverage, full/planning subset quality, and exactly-one-outcome validation.
+3. **Run a delta retro on every increment.** Three fields in the increment report, per the tiered principle 10 adopted in #35.
 
 ## Remaining operating-model work
 

@@ -33,9 +33,7 @@ This file is authoritative on what these gates *say*. Workflow and role docs app
 
 ## Enforced mechanically
 
-`npm run check` runs `ai-team/bin/increment-check.mjs` from the git hooks and from CI. It blocks credential material in commits, missing or stale state stamps, over-budget state files, non-conforming branch names, incomplete PR increment reports, and lint or build failures. Install the hooks with `npm run setup`; `npm install` does it automatically.
-
-CI is the binding gate — hooks are bypassable with `--no-verify`.
+`npm run check` runs deterministic process and maintainability checks from the git hooks and binding CI. It blocks credential material in commits, missing or stale state stamps, over-budget state files, maintainability regressions, dependency cycles, non-conforming branch names, incomplete PR increment reports, and lint or build failures. Install the hooks with `npm run setup`; `npm install` does it automatically. Hooks remain bypassable with `--no-verify`.
 
 ## Everything else
 
@@ -45,6 +43,7 @@ CI is the binding gate — hooks are bypassable with `--no-verify`.
 | What to read when | `workflows/session-start.md` |
 | Delivery loop and Definition of Done | `workflows/increment.md` |
 | Verification planning and failure handling | `workflows/testing.md` |
+| Maintainability ratchet and review funnel | `workflows/maintainability.md` |
 | Turning goals into issues | `workflows/intake-and-specification.md` |
 | Branch, PR, and merge policy | `workflows/branch-and-pr.md` |
 | Final checks, autonomous merge, and closeout | `workflows/merge-closeout.md` |

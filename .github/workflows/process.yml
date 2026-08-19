@@ -40,4 +40,4 @@ jobs:
           # HEAD and the diff is empty — the secrets scan would examine nothing
           # and report a pass. The pushed range has to come from the payload.
           PUSH_BEFORE: ${{ github.event.before }}
-        run: node ai-team/bin/increment-check.mjs --mode=ci
+        run: npm run check:maintainability -- --mode=ci && node ai-team/bin/increment-check.mjs --mode=ci

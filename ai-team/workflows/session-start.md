@@ -15,7 +15,7 @@ Tier: guidance. Hard gates are in `ai-team/README.md`.
 |---|---|
 | Deliver product progress | `ai-team/workflows/increment.md`, `ai-team/workflows/testing.md` |
 | Create, refine, split, or triage issues | `ai-team/workflows/intake-and-specification.md` |
-| Change code | `ai-team/workflows/branch-and-pr.md`, the relevant project profile |
+| Change code | `ai-team/workflows/branch-and-pr.md`, `ai-team/workflows/maintainability.md`, the relevant project profile |
 | Prepare to merge, close, or mark Done | `ai-team/workflows/merge-closeout.md` |
 | Change behavior, setup, architecture, deployment, user workflow, or operating rules | `ai-team/workflows/documentation.md` |
 | Touch GitHub issues or Project fields | `ai-team/github-workflow.md` |
