@@ -26,13 +26,15 @@ npm run check        # process gates (also run by git hooks and CI)
 
 Graph-generation work from the offline branch is merged: issue #38 is closed, PR #39 is merged, and Project 4 is Done. The shadow issue/report is in `project-state/offline-graph-generation.md`.
 
+The 2026-08-19 application Architect review is captured as issues #52-#68. All are in Project 4 with `Agent Status=Ready` and `Status=Todo`. Issues #52-#56 form the ordered behavior-preserving generator refactor; #57-#68 are discrete reliability, contract, algorithm, browser-state, tracing, and server-hardening increments.
+
 ## Active work
 
 See `project-state/task-ledger.md`, which owns active, blocked, and next work.
 
 ## Next action
 
-Start the next graph-generation improvement: render or inspect algorithmic candidate KR sets, then add graph quality gates.
+Start issue #52: split the generator test monolith by subsystem. Then continue the ordered refactor through #56 before taking graph- and KR-domain fixes that depend on the extracted boundaries.
 
 ## Where things live
 

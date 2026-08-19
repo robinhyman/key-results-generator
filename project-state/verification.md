@@ -6,6 +6,7 @@ Current verification posture and known gaps. Per-increment verification history 
 
 ## Current posture
 
+- The 2026-08-19 application Architect review ran against current `main`: `npm test` passed 115/115, Playwright passed 1/1, focused application coverage was 94.09% lines / 77.51% branches / 94.55% functions, and the maintainability check was green with zero cycles. An independent low-cost reviewer inspected all application and application-test files. Findings are specified as Ready issues #52-#68.
 - Issue #49 / PR #50 is merged. Thirteen focused maintainability tests cover green/amber/red routing, malformed schemas, monotonic debt and threshold baselines, cycle bypasses, stale debt, tracked-file isolation, real ESLint metrics, and staged-versus-working-tree content. `npm run build` passed 115/115, `npm run check` passed 8/8 without warnings, independent low-cost review passed, and binding CI passed. Browser tests were skipped because no application behavior changed.
 - Issue #43 / PR #44 is merged. `npm test` passed 102/102, `npm run build` passed, `npm run check` passed 8/8 with no warnings, and Project closeout was verified.
 - Issue #41 / PR #42 is merged; process-review evidence is now part of the baseline PR-report gate.
@@ -20,6 +21,7 @@ Current verification posture and known gaps. Per-increment verification history 
 
 ## Known gaps
 
+- Application architecture debt is now explicit rather than implicit: #52-#56 decompose the generator/test monolith; #57-#68 cover the concrete reliability, API-contract, graph/KR invariant, path, provenance, trace, browser-state, and routing gaps found by the review.
 - Maintainability analysis intentionally uses static relative imports and structural proxies. Dynamic imports, runtime coupling, and responsibility cohesion remain judgement calls when amber/red routing triggers review.
 - Graph-generation quality is not yet automatically evaluated. The 2026-08-17 offline implementation now asks the AI for a rich `fullGraph` followed by a converged `planningGraph`, but no automated quality suite yet checks whether live AI output is actually good.
 - Graph convergence validation is still thin. Tests pin prompt/schema shape and mocked normalization, but local code does not yet enforce branch coverage, connectivity, full/planning subset quality, or exactly-one-outcome invariants beyond schema/prompt guidance.

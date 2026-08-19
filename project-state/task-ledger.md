@@ -15,37 +15,30 @@ This file owns active, blocked, and next work. `index.md` points here rather tha
 - None.
 
 ## Next
-- Start the next graph-generation improvement increment: render/inspect algorithmic candidate sets, then add normalization quality gates for graph shape, branch coverage, subset quality, and connectivity.
+
+### Ordered refactor
+
+1. #52 split the generator test monolith by subsystem.
+2. #53 extract deterministic graph construction.
+3. #54 extract clarification and variable ranking.
+4. #55 extract candidate-set exploration and path analysis.
+5. #56 consolidate KR selection/fallback composition and leave a slim generator facade.
+
+Keep #52-#56 behavior-preserving. Do not mix graph-quality or scoring changes into those extraction PRs.
+
+### Independently startable fixes
+
+- #57 provider timeout/cancellation; #58 expected-provider-only fallback.
+- #59 HTTP graph validation; #60 objective length limit; #61 stale browser state.
+- #67 trace retention; #68 request URL and static containment hardening.
+
+### Fixes that benefit from the refactor boundary
+
+- #62 semantic graph invariants; #63 KR identity and indicator-mix contracts; #64 deterministic strength-aware paths.
+- #65 generation provenance; #66 canonical model contract.
+
+After the architecture backlog, resume the product increment to render/inspect algorithmic candidate sets. Graph quality gates are now specified by #62 rather than hidden in state prose.
 
 ## Completed
 
-Issues `#1`-`#22` are closed. Summary of what each delivered:
-
-- `#1` AI team operating system.
-- `#2` First dependency-free local MVP for objective-to-KR generation.
-- `#4` AI-guided clarification step and the server-side AI generation service.
-- `#6` Playwright browser coverage for the clarification flow.
-- `#7` Documented GitHub CLI fallback for Project status updates.
-- `#9` Server routing, request validation, and AI fallback diagnostics.
-- `#10` Frontend split into native browser modules.
-- `#11` Closed as a duplicate of `#6`.
-- `#12` Architecture hardening closeout and decision records.
-- `#14` Approved AI instruction specification for graph-first OKR generation.
-- `#15` Approved instruction structure implemented in the generation service.
-- `#16` Regression checks for AI instruction and output quality.
-- `#19` Explicit `leading`/`lagging` indicator types on key results.
-- `#20` Env-gated AI prompt and response trace logging.
-- `#22` Harness-agnostic process enforcement via `increment-check`, git hooks, and CI.
-- `#24` project-state compaction, archiving, and enforced state budgets.
-- `#26` Obligation tiering into hard gates, mechanical rules, and guidance.
-- `#28` Cheaper-worker delegation made the default with recorded exemptions.
-- `#31` Section-scoped PR-report gate, push-range fix, and the checker's first test suite.
-- `#32` Single owner for active work, a state-coherence gate, PR template, and scoped role reads.
-- `#35` Tiered retrospectives, and the #22-#28 retrospective debt discharged.
-- `#38` Rich causal map generation and algorithmic KR-set exploration.
-- `#41` Process-review evidence and offline backfill workflow.
-- `#43` Autonomous closeout, durable evidence, Project status checks, checker coverage, and decision-state compaction.
-- `#46` Lightweight model-use telemetry guidance for increment reports.
-- `#49` Deterministic maintainability ratchet, static dependency-cycle checks, and risk-based model-review routing.
-
-Per-issue detail, verification runs, retrospectives, and worker evidence are in `archive/2026-08-pre-compaction.md`.
+Issues #1-#43, #46, and #49 are closed. They delivered the local MVP, graph-first AI and deterministic generation, browser/API coverage, algorithmic KR-set exploration, and the enforced AI-team operating model. Per-issue detail, verification, retrospectives, and worker evidence are in `archive/`.

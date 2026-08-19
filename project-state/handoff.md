@@ -12,35 +12,29 @@ What the next session should do. For what the product is see `status.md`; for hi
 
 Issues #1-#43, #46, and #49 are closed and merged. `main` is green: `npm run build` passes, `npm run test:browser` passes 1/1, and the `Process / increment-check` CI job passes.
 
-Issue #49 / PR #50 added free local static analysis, a monotonic debt baseline, dependency-cycle detection, and deterministic green/amber/red routing so extra maintainability model review runs only when objective signals warrant it. CI passed and Project 4 is Done.
+The application Architect review is complete. It inspected `server.js`, all `src/**`, all `public/**`, application tests, and the browser flow. Issues #52-#68 contain the resulting refactor and fix increments; every issue has bounded scope, acceptance criteria, verification, labels, Project 4 placement, `Agent Status=Ready`, and `Status=Todo`.
 
-All four operating-model audit increments are merged: #22 mechanical enforcement, #24 state compaction, #26 obligation tiering, #28 delegate-by-default.
-
-Branch protection is enabled as of 2026-08-16: the `main: require increment-check` ruleset requires a PR and a passing `increment-check`, with no bypass actors. CI is now genuinely binding, which was the largest known enforcement gap.
-
-GitHub was unavailable on 2026-08-17, so graph-generation work continued locally on `feature/0-graph-generation-characterization`. That work is now merged: issue #38 is closed, PR #39 is merged, and Project 4 is Done. The merged implementation asks the AI for `fullGraph` plus `planningGraph`, requires both in schema, and preserves the rich graph while using the planning graph for current rankings/KR flow. It also has an algorithmic KR-set explorer that enumerates candidate 3-5 KR sets and scores node quality, leading/lagging mix, branch coverage, causal connectedness, redundancy, externality, and user clarification effects. The shadow issue, implementation report, verification plan, delegation evidence, and backfill record are in `project-state/offline-graph-generation.md`.
+The maintainability ratchet, binding CI, branch protection, graph-generation increment, and operating-model audits are merged. Closed detail is in `project-state/archive/` and `project-state/offline-graph-generation.md`.
 
 ## Next best actions
 
-1. **Start the next graph-generation improvement.** Recommended next behavior slice: render/inspect algorithmic candidate sets, then add local normalization quality gates for graph shape/connectivity, branch coverage, full/planning subset quality, and exactly-one-outcome validation.
-2. **Run a delta retro on every increment.** Three fields in the increment report, per the tiered principle 10 adopted in #35.
+1. **Start #52.** Split the 932-line generator test suite into focused subsystem tests without changing production behavior.
+2. **Continue #53-#56 in order.** Extract graph construction, ranking/clarification, candidate/path analysis, then KR selection/composition. Preserve current exports and response shapes during these refactors.
+3. **Take independent safety fixes when useful.** #57-#61, #67, and #68 do not require the full generator decomposition. #62-#66 should follow the relevant extracted boundary.
+4. **Run a delta retro on every increment.** Three fields in the increment report, per the tiered principle 10 adopted in #35.
 
-## Remaining operating-model work
+## Architect review evidence
 
-From the 2026-08-16 audits, approved by the user but not yet done after #43:
+- `npm test`: 115/115 passed.
+- `npm run test:browser`: 1/1 passed.
+- Focused application coverage: 94.09% lines, 77.51% branches, 94.55% functions.
+- `npm run check:maintainability:json`: green, no additional LLM review, zero cycles.
+- Independent low-cost application review corroborated provider timeout, malformed-graph 500, stale browser state, graph invariants, KR mix, path determinism, objective size, and server-routing findings.
+- No application code changed during the review/backlog increment.
 
-- Consider rewriting operating docs from prose to checklists. Lower value now that tiering keeps most docs off the mandatory read path — reassess before spending on it.
+## Deferred operating work
 
-### Deliberately deferred
-
-Proposed by the 2026-08-16 external audit and declined for now, with reasons, so they are not silently rediscovered:
-
-- **Structured YAML/JSON evidence manifest.** Section-scoped validation (#31) gets most of the benefit without a second format to keep in sync with the markdown template.
-- **Generating `index`/`handoff`/`ledger` from one machine-readable source.** Over-engineered for six small files; #32 removes the duplicate ownership instead.
-- **AI-output quality evaluation suite.** Real value, but it is its own project and premature before the next product direction is chosen.
-- **Full model cost and routing telemetry.** Exact token/cost accounting remains deferred; issue #46 adds only lightweight observable proxies for increment reports.
-
-Port anything that proves out to `robinhyman/ai-team-operating-system`.
+Checklist-style operating docs, a structured evidence manifest, generated state files, full AI-output evaluation, and exact cost telemetry remain deliberately deferred. Reassess only when evidence justifies the added machinery. Port proven OS improvements to `robinhyman/ai-team-operating-system`.
 
 ## Standing rules worth not rediscovering
 
