@@ -1,6 +1,6 @@
 # Decisions
 
-Last updated: 2026-08-19
+Last updated: 2026-08-20
 
 Current durable decisions only. Detailed pre-compaction history is archived in `project-state/archive/2026-08-decisions-pre-closeout-compaction.md`.
 
@@ -12,6 +12,7 @@ Current durable decisions only. Detailed pre-compaction history is archived in `
 - `Done` requires a checked demonstration link for user-facing work. Local links must still be running when handed over.
 - User-facing increments also need durable demo evidence, such as a screenshot, recording, artifact, committed evidence path, log, or trace reference.
 - Testing is a first-class gate. Prefer test-first for clear behavior and report skipped checks with risk.
+- Solution design is the pre-build front gate for maintainable code: increments must record a lightweight design or explain why the issue spec is enough, and Builders start from the shared code-quality standard.
 - Documentation impact is assessed every increment; required docs are part of `Done`.
 - Retrospectives are tiered: every increment gets a three-field delta retro; full multi-role retros run only on named triggers.
 

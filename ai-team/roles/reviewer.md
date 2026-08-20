@@ -21,6 +21,7 @@ High-capability model for final review, high-risk changes, architecture-sensitiv
 ## Responsibilities
 
 - Review changed behavior against acceptance criteria.
+- Compare the implementation shape with the solution design and code-quality standard.
 - Inspect risks, regressions, missing tests, and scope creep.
 - Confirm GitHub status matches reality.
 - Confirm `Done` requirements are satisfied before approving Done.
@@ -37,4 +38,3 @@ High-capability model for final review, high-risk changes, architecture-sensitiv
 - Review findings.
 - Approval, requested changes, or blockers.
 - Follow-up issue recommendations.
-

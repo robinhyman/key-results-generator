@@ -1,6 +1,6 @@
 # Task Ledger
 
-Last updated: 2026-08-19
+Last updated: 2026-08-20
 
 Active, blocked, and next work. Completed increments live in `archive/`.
 
@@ -8,7 +8,7 @@ This file owns active, blocked, and next work. `index.md` points here rather tha
 
 ## Active
 
-- None.
+- #72 Add solution design workflow to prevent maintainability issues. Implementation and local verification are complete and awaiting PR review.
 
 ## Blocked
 
