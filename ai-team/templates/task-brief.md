@@ -39,6 +39,18 @@ What this agent must not change.
 - Acceptance criteria:
 - Out-of-scope notes:
 
+## Solution Design
+
+Design note or link:
+
+Affected boundaries:
+
+Code-quality constraints:
+
+Architect review required:
+
+Escalation triggers:
+
 ## Verification
 
 Checks to run or evidence to collect.

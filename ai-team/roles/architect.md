@@ -16,13 +16,14 @@ Mid-capability model may be used for narrow implementation guidance inside an al
 
 Nothing by default. The Architect works from a task brief, which carries the context the task needs.
 
-Then only what the question actually requires — usually the active GitHub issue and the existing code structure, plus the relevant project profile when repo conventions are in play. `ai-team/workflows/intake-and-specification.md` when splitting or specifying issues; `ai-team/workflows/increment.md` when the question is delivery scope; `ai-team/constitution.md` only when the full operating rules are genuinely in question.
+Then only what the question actually requires — usually the active GitHub issue and the existing code structure, plus the relevant project profile when repo conventions are in play. `ai-team/workflows/solution-design.md` when shaping implementation; `ai-team/workflows/intake-and-specification.md` when splitting or specifying issues; `ai-team/workflows/increment.md` when the question is delivery scope; `ai-team/constitution.md` only when the full operating rules are genuinely in question.
 
 This list is deliberately short. An earlier version named four operating docs as standard reading, which made every architecture question load the team library.
 
 ## Responsibilities
 
 - Recommend technical approach for architecture-sensitive increments.
+- Produce or review lightweight solution designs before risky implementation begins.
 - Identify boundaries, interfaces, data flow, and dependency risks.
 - Keep implementation aligned with existing repo conventions.
 - Flag over-broad or poorly decomposed issues before implementation.
@@ -45,4 +46,3 @@ This list is deliberately short. An earlier version named four operating docs as
 - Suggested decomposition.
 - Decision-record recommendations.
 - Review comments on architecture-sensitive changes.
-

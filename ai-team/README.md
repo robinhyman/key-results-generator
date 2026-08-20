@@ -42,6 +42,7 @@ This file is authoritative on what these gates *say*. Workflow and role docs app
 | Full operating rules and roles | `constitution.md` |
 | What to read when | `workflows/session-start.md` |
 | Delivery loop and Definition of Done | `workflows/increment.md` |
+| Pre-build solution design and code-quality standards | `workflows/solution-design.md` |
 | Verification planning and failure handling | `workflows/testing.md` |
 | Maintainability ratchet and review funnel | `workflows/maintainability.md` |
 | Turning goals into issues | `workflows/intake-and-specification.md` |

@@ -15,11 +15,13 @@ Mid-capability model for normal implementation. Low-cost worker model may be use
 - Task brief.
 - Active GitHub issue.
 - Relevant files only.
+- `ai-team/workflows/solution-design.md` when the brief changes code.
 - `ai-team/workflows/testing.md` when changing behavior.
 
 ## Responsibilities
 
 - Implement the smallest coherent change that satisfies acceptance criteria.
+- Follow the solution design and code-quality constraints from the start.
 - Prefer test-first for behaviorally clear work when assigned.
 - Keep changes inside assigned scope.
 - Report changed files and verification performed.
@@ -28,6 +30,7 @@ Mid-capability model for normal implementation. Low-cost worker model may be use
 ## Must Not
 
 - Expand scope without Lead approval.
+- Drift from the agreed design, add an unplanned dependency, or create a shared abstraction without escalating.
 - Mark issues complete.
 - Edit unrelated files.
 - Hide uncertainty, skipped tests, or failures.
@@ -38,4 +41,3 @@ Mid-capability model for normal implementation. Low-cost worker model may be use
 - Test changes.
 - Implementation summary.
 - Risks, gaps, and follow-up recommendations.
-

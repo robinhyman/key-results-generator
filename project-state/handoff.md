@@ -1,6 +1,6 @@
 # Handoff
 
-Last updated: 2026-08-19
+Last updated: 2026-08-20
 
 What the next session should do. For what the product is see `status.md`; for history see `archive/`.
 
@@ -16,12 +16,15 @@ The application Architect review is complete. It inspected `server.js`, all `src
 
 The maintainability ratchet, binding CI, branch protection, graph-generation increment, and operating-model audits are merged. Closed detail is in `project-state/archive/` and `project-state/offline-graph-generation.md`.
 
+Issue #72 is active for the solution-design operating-doc change requested by Robin on 2026-08-20. The issue exists in GitHub Project 4 with Agent Status `In Progress`; implementation and local verification are complete and awaiting PR review.
+
 ## Next best actions
 
-1. **Start #52.** Split the 932-line generator test suite into focused subsystem tests without changing production behavior.
-2. **Continue #53-#56 in order.** Extract graph construction, ranking/clarification, candidate/path analysis, then KR selection/composition. Preserve current exports and response shapes during these refactors.
-3. **Take independent safety fixes when useful.** #57-#61, #67, and #68 do not require the full generator decomposition. #62-#66 should follow the relevant extracted boundary.
-4. **Run a delta retro on every increment.** Three fields in the increment report, per the tiered principle 10 adopted in #35.
+1. **Review issue #72.** Merge or revise the solution-design operating-doc PR after CI/review.
+2. **Start #52.** Split the 932-line generator test suite into focused subsystem tests without changing production behavior.
+3. **Continue #53-#56 in order.** Extract graph construction, ranking/clarification, candidate/path analysis, then KR selection/composition. Preserve current exports and response shapes during these refactors.
+4. **Take independent safety fixes when useful.** #57-#61, #67, and #68 do not require the full generator decomposition. #62-#66 should follow the relevant extracted boundary.
+5. **Run a delta retro on every increment.** Three fields in the increment report, per the tiered principle 10 adopted in #35.
 
 ## Architect review evidence
 
@@ -40,6 +43,7 @@ Checklist-style operating docs, a structured evidence manifest, generated state 
 
 - An increment is not `Done` without a checked demo link the user can open. If the link is local, the server must still be running when the link is handed over.
 - Every increment needs a verification plan before implementation, and must report skipped checks, known failures, and follow-up bugs.
+- Every code-changing increment needs lightweight solution design before implementation, or an explicit note that the issue spec is enough.
 - Delegate at least one bounded routine task to a cheaper worker per increment, or document the exception with its risk.
 - Operating-doc changes from a retrospective require user approval before being applied.
 - The API key path exists locally and `keys/` is git-ignored. Never print, commit, or copy the value.

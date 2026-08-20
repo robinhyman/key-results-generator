@@ -4,6 +4,8 @@ Tier: mechanically enforced where stated; otherwise guidance. Hard gates are in 
 
 Use deterministic analysis to find routine structural risk. Spend model tokens only where the resulting signal needs judgement.
 
+This workflow is a backstop, not the first line of defense. Use `ai-team/workflows/solution-design.md` before implementation so boundaries, naming, cohesion, and maintainability risks are shaped up front.
+
 ## Binding Checks
 
 `npm run check:maintainability` uses ESLint plus the repository checker to measure:

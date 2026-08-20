@@ -13,19 +13,20 @@ The increment is the team's default unit of delivery. Avoid open-ended work. If 
 3. Add the issue to the GitHub Project.
 4. Set `Agent Status` to `In Progress` as soon as meaningful work starts.
 5. Plan the smallest coherent change that satisfies the acceptance criteria.
-6. Make a lightweight model-use plan using `ai-team/model-policy.md`.
-7. Define the verification plan using `ai-team/workflows/testing.md`.
-8. Delegate the increment's routine work to a cheaper worker by default, per `ai-team/model-policy.md`. Do not deliberate over whether to; deliberate only over whether an enumerated exemption applies, and record it if so.
-9. Build, test, and review the change.
-10. Run an independent process review against this Definition of Done. Use a cheaper/faster worker when practical.
-11. Deploy or start the target demonstration environment.
-12. Check the linked app or demo and confirm the increment works there.
-13. Assess and update documentation using `ai-team/workflows/documentation.md`.
-14. Capture follow-up work as separate GitHub issues when it is real, actionable, and out of scope.
-15. Update project state files and the GitHub issue.
-16. Move `Agent Status` to `Review`, `Blocked`, or `Done` according to the real current state.
-17. After completion, run the retrospective workflow before starting the next increment.
-18. Apply user-approved operating improvements, if any, before starting the next increment.
+6. Produce or confirm the lightweight solution design using `ai-team/workflows/solution-design.md`.
+7. Make a lightweight model-use plan using `ai-team/model-policy.md`.
+8. Define the verification plan using `ai-team/workflows/testing.md`.
+9. Delegate the increment's routine work to a cheaper worker by default, per `ai-team/model-policy.md`. Do not deliberate over whether to; deliberate only over whether an enumerated exemption applies, and record it if so.
+10. Build, test, and review the change.
+11. Run an independent process review against this Definition of Done. Use a cheaper/faster worker when practical.
+12. Deploy or start the target demonstration environment.
+13. Check the linked app or demo and confirm the increment works there.
+14. Assess and update documentation using `ai-team/workflows/documentation.md`.
+15. Capture follow-up work as separate GitHub issues when it is real, actionable, and out of scope.
+16. Update project state files and the GitHub issue.
+17. Move `Agent Status` to `Review`, `Blocked`, or `Done` according to the real current state.
+18. After completion, run the retrospective workflow before starting the next increment.
+19. Apply user-approved operating improvements, if any, before starting the next increment.
 
 ## Increment Definition Of Done
 
@@ -34,7 +35,9 @@ An increment is done only when all applicable checks below are true.
 ### Scope Is Closed
 
 - The linked GitHub issue has clear acceptance criteria.
+- A solution design exists, or the increment report explains why the issue spec was enough.
 - The implemented change matches the agreed scope.
+- The implemented shape matches the solution design, or intentional deviations are recorded.
 - Out-of-scope discoveries are either deliberately ignored or captured as separate GitHub issues.
 - No hidden partial implementation remains.
 
@@ -64,6 +67,7 @@ An increment is done only when all applicable checks below are true.
 ### Review Has Happened
 
 - The Lead or Reviewer has inspected the changed files.
+- Review considered whether the code follows the code-quality standard in `ai-team/workflows/solution-design.md`.
 - The deterministic maintainability check has run; any amber or red signal was reviewed according to `ai-team/workflows/maintainability.md`.
 - Risks, regressions, missing tests, and UX issues have been considered.
 - Higher-risk work has stronger-model or human review.

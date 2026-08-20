@@ -1,6 +1,6 @@
 # Index
 
-Last updated: 2026-08-19
+Last updated: 2026-08-20
 
 The only state file a session must read. Everything else is read on demand.
 
@@ -34,7 +34,7 @@ See `project-state/task-ledger.md`, which owns active, blocked, and next work.
 
 ## Next action
 
-Start issue #52: split the generator test monolith by subsystem. Then continue the ordered refactor through #56 before taking graph- and KR-domain fixes that depend on the extracted boundaries.
+Review and merge or revise issue #72's solution-design operating-doc PR. Then start issue #52: split the generator test monolith by subsystem, and continue the ordered refactor through #56 before taking graph- and KR-domain fixes that depend on the extracted boundaries.
 
 ## Where things live
 
@@ -50,4 +50,4 @@ Start issue #52: split the generator test monolith by subsystem. Then continue t
 
 ## Operating guardrails
 
-Read canonical hard gates in `ai-team/README.md`. `npm run check` enforces the mechanical subset; the rest is on the Lead and closeout review.
+Read canonical hard gates in `ai-team/README.md`. `npm run check` enforces the mechanical subset; the rest is on the Lead and closeout review. Use `ai-team/workflows/solution-design.md` before code changes to prevent maintainability issues before review.

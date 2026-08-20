@@ -17,6 +17,16 @@ What changed and why.
 - [ ] Criterion 1
 - [ ] Criterion 2
 
+## Solution Design
+
+Design used or skipped:
+
+Architect review:
+
+Code-quality constraints:
+
+Implementation deviations:
+
 ## Verification
 
 Test plan:

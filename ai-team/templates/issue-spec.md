@@ -46,6 +46,16 @@ Related issues, decisions, credentials, services, or user input.
 
 Optional guidance. Include enough to help without overconstraining the Builder.
 
+## Solution Design Notes
+
+Affected boundaries:
+
+Expected implementation shape:
+
+Maintainability risks:
+
+Architect review required:
+
 ## Agent Notes
 
 Suggested owner:
@@ -61,4 +71,3 @@ Needs human input:
 ## Labels
 
 Suggested labels:
-
