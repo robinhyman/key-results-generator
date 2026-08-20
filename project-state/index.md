@@ -22,7 +22,7 @@ npm run check        # process gates (also run by git hooks and CI)
 
 ## Current state
 
-`main` is green. Issues #1-#43, #46, and #49 are closed. Process and maintainability gates run through git hooks and the binding `Process / increment-check` CI job. The maintainability ratchet uses free local static analysis and deterministic green/amber/red review routing.
+`main` is green. Issues #1-#43, #46, #49, and #72 are closed. Process and maintainability gates run through git hooks and the binding `Process / increment-check` CI job. The maintainability ratchet uses free local static analysis and deterministic green/amber/red review routing.
 
 Graph-generation work from the offline branch is merged: issue #38 is closed, PR #39 is merged, and Project 4 is Done. The shadow issue/report is in `project-state/offline-graph-generation.md`.
 
@@ -34,7 +34,7 @@ See `project-state/task-ledger.md`, which owns active, blocked, and next work.
 
 ## Next action
 
-Review and merge or revise issue #72's solution-design operating-doc PR. Then start issue #52: split the generator test monolith by subsystem, and continue the ordered refactor through #56 before taking graph- and KR-domain fixes that depend on the extracted boundaries.
+Start issue #52: split the generator test monolith by subsystem. Then continue the ordered refactor through #56 before taking graph- and KR-domain fixes that depend on the extracted boundaries.
 
 ## Where things live
 

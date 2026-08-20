@@ -8,7 +8,7 @@ This file owns active, blocked, and next work. `index.md` points here rather tha
 
 ## Active
 
-- #72 Add solution design workflow to prevent maintainability issues. Implementation and local verification are complete and awaiting PR review.
+- None.
 
 ## Blocked
 
@@ -41,4 +41,4 @@ After the architecture backlog, resume the product increment to render/inspect a
 
 ## Completed
 
-Issues #1-#43, #46, and #49 are closed. They delivered the local MVP, graph-first AI and deterministic generation, browser/API coverage, algorithmic KR-set exploration, and the enforced AI-team operating model. Per-issue detail, verification, retrospectives, and worker evidence are in `archive/`.
+Issues #1-#43, #46, #49, and #72 are closed. They delivered the local MVP, graph-first AI and deterministic generation, browser/API coverage, algorithmic KR-set exploration, the enforced AI-team operating model, and the solution-design workflow for preventive code quality. Per-issue detail, verification, retrospectives, and worker evidence are in `archive/`.
